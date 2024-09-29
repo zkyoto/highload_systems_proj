@@ -9,8 +9,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.ResolvableType;
 import ru.itmo.cs.command_bus.Command;
-import ru.itmo.cs.command_bus.Command;
-import ru.itmo.cs.command_bus.CommandHandler;
 import ru.itmo.cs.command_bus.CommandHandler;
 import ru.itmo.cs.command_bus.exception.CommandHandlerConflictException;
 import ru.itmo.cs.command_bus.exception.CommandHandlerNotExistException;

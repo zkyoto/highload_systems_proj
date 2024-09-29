@@ -23,6 +23,11 @@ public class InMemoryStubInterviewerRepository implements InterviewerRepository 
     }
 
     @Override
+    public List<Interviewer> findAll() {
+        return stubRepository;
+    }
+
+    @Override
     public void save(Interviewer interviewer) {
         List<InterviewerEvent> releasedEvents = interviewer.releaseEvents();
         boolean isNew = releasedEvents.stream().anyMatch(event -> event instanceof InterviewerCreatedEvent);
