@@ -7,11 +7,11 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
 @Value
-public class InterviewerCreatedEvent implements InterviewerEvent {
+public class InterviewerDemotedEvent implements InterviewerEvent{
     InterviewerId interviewerId;
     Instant occurredOn;
 
-    public static InterviewerCreatedEvent fromCreatedEntity(Interviewer interviewer) {
-        return new InterviewerCreatedEvent(interviewer.getInterviewerId(), interviewer.getCreatedAt());
+    public static InterviewerDemotedEvent fromDemotedEntity(Interviewer interviewer) {
+        return new InterviewerDemotedEvent(interviewer.getInterviewerId(), interviewer.getCreatedAt());
     }
 }

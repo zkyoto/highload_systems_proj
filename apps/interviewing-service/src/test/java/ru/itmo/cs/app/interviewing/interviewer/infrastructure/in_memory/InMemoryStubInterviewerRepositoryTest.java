@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.ifmo.cs.misc.Name;
+import ru.ifmo.cs.misc.UserId;
 import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
@@ -16,7 +18,7 @@ public class InMemoryStubInterviewerRepositoryTest {
     @BeforeEach
     void setUp() {
         repository = new InMemoryStubInterviewerRepository();
-        dummyInterviewer = Interviewer.create();
+        dummyInterviewer = Interviewer.create(UserId.of(1488), Name.of("Z V"));
         dummyId = dummyInterviewer.getInterviewerId();
     }
 
