@@ -17,14 +17,14 @@ public class InMemoryStubInterviewerRepository implements InterviewerRepository 
     @Override
     public Interviewer findById(InterviewerId id) {
         return stubRepository.stream()
-                .filter(entity -> entity.getId().equals(id))
-                .findAny()
-                .orElseThrow(IllegalArgumentException::new);
+                             .filter(entity -> entity.getId().equals(id))
+                             .findAny()
+                             .orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
     public List<Interviewer> findAll() {
-        return stubRepository;
+        List.copyOf(stubRepository);
     }
 
     @Override

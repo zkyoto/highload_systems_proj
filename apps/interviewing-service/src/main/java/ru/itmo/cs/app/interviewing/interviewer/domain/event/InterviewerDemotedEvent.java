@@ -9,4 +9,9 @@ public record InterviewerDemotedEvent(InterviewerId interviewerId, Instant occur
     public static InterviewerDemotedEvent fromDemotedEntity(Interviewer interviewer) {
         return new InterviewerDemotedEvent(interviewer.getId(), interviewer.getUpdatedAt());
     }
+
+    @Override
+    public String eventType() {
+        return "InterviewerDemotedEvent";
+    }
 }

@@ -1,0 +1,69 @@
+package ru.itmo.cs.app.interviewing.interview.domain;
+
+import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateId;
+import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewCancelledEvent;
+import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewEvent;
+import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewRescheduledEvent;
+import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewScheduledEvent;
+import ru.itmo.cs.app.interviewing.interview.domain.value.InterviewId;
+import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
+
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public class Interview {
+    private final InterviewId id;
+    private final Instant createdAt;
+    private final Instant updatedAt;
+    private final InterviewerId interviewerId;
+    private final CandidateId candidateId;
+    private final List<Schedule> schedules;
+    @Getter(AccessLevel.NONE)
+    private List<InterviewEvent> events = new LinkedList<>();
+
+    public static Interview create(InterviewerId interviewerId, CandidateId candidateId, Instant scheduledFor) {
+        Instant now = Instant.now();
+        Interview createdInterview = new Interview(InterviewId.generate(),
+                                                   now,
+                                                   now,
+                                                   interviewerId,
+                                                   candidateId,
+                                                   List.of(Schedule.create(scheduledFor)));
+        createdInterview.events.add(InterviewScheduledEvent.fromEntity(createdInterview));
+        return createdInterview;
+    }
+
+    public Instant getScheduledFor() {
+        return getActualSchedule().orElseThrow().getScheduledFor();
+    }
+
+    public void reschedule(Instant newScheduledFor) {
+        getActualSchedule().orElseThrow().cancel();
+        this.schedules.add(Schedule.create(newScheduledFor));
+        this.events.add(InterviewRescheduledEvent.fromEntity(this));
+    }
+
+    public void cancel() {
+        getActualSchedule().orElseThrow().cancel();
+        this.events.add(InterviewCancelledEvent.fromEntity(this));
+    }
+
+    private Optional<Schedule> getActualSchedule() {
+        return schedules.stream()
+                        .filter(Schedule::isActual)
+                        .findAny();
+    }
+
+    public List<InterviewEvent> releaseEvents() {
+        List<InterviewEvent> releasedEvents = events;
+        events = new LinkedList<>();
+        return releasedEvents;
+    }
+}

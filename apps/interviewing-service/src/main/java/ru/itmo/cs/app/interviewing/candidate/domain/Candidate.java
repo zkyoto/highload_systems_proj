@@ -26,13 +26,14 @@ public class Candidate {
     private List<CandidateEvent> events = new LinkedList<>();
 
     public static Candidate create(Name name) {
+        Instant now = Instant.now();
         Candidate createdCandidate = new Candidate(CandidateId.generate(),
-                                                   Instant.now(),
-                                                   Instant.now(),
+                                                   now,
+                                                   now,
                                                    CandidateStatus.WAITING_FOR_APPOINTMENT_AN_INTERVIEW,
                                                    name);
 
-        createdCandidate.events.add(CandidateCreatedEvent.fromCreatedEntity(createdCandidate));
+        createdCandidate.events.add(CandidateCreatedEvent.fromEntity(createdCandidate));
         return createdCandidate;
     }
 
