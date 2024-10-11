@@ -19,7 +19,7 @@ public class InMemoryStubInterviewerRepositoryTest {
     void setUp() {
         repository = new InMemoryStubInterviewerRepository();
         dummyInterviewer = Interviewer.create(UserId.of(1488), Name.of("Z V"));
-        dummyId = dummyInterviewer.getInterviewerId();
+        dummyId = dummyInterviewer.getId();
     }
 
     @Test

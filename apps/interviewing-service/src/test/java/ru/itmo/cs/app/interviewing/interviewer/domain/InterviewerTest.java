@@ -4,7 +4,6 @@ package ru.itmo.cs.app.interviewing.interviewer.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
 import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerActivatedEvent;
@@ -14,7 +13,6 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerEvent;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerStatus;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +30,7 @@ public class InterviewerTest {
 
     @Test
     void create_ShouldInitializeInterviewerWithCorrectValues() {
-        Assertions.assertThat(interviewer.getInterviewerId()).isNotNull();
+        Assertions.assertThat(interviewer.getId()).isNotNull();
         Assertions.assertThat(interviewer.getCreatedAt()).isNotNull();
         Assertions.assertThat(interviewer.getUpdatedAt()).isNotNull();
         assertTrue(interviewer.getCreatedAt().isBefore(Instant.now()));
