@@ -17,14 +17,14 @@ import ru.itmo.cs.app.interviewing.interviewer.presentation.dto.ActivateIntervie
 import ru.itmo.cs.app.interviewing.interviewer.presentation.dto.DemoteInterviewerRequestBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@AllArgsConstructor
 @RestController
+@AllArgsConstructor
 public class InterviewersApiController {
     private final CommandBus commandBus;
     private final InterviewerUniqueIdentifiersQueryService interviewerUniqueIdentifiersQueryService;
 
     @PostMapping("/api/v1/interviewers/add")
-    public ResponseEntity addInterviewer(
+    public ResponseEntity<?> addInterviewer(
             @RequestBody AddInterviewerRequestBodyDto addInterviewerRequestBodyDto
     ) {
         commandBus.submit(new AddInterviewerCommand(addInterviewerRequestBodyDto.userId()));
@@ -32,7 +32,7 @@ public class InterviewersApiController {
     }
 
     @PostMapping("/api/v1/interviewers/activate")
-    public ResponseEntity activateInterviewer(
+    public ResponseEntity<?> activateInterviewer(
             @RequestBody ActivateInterviewerRequestBodyDto activateInterviewerRequestBodyDto
     ) {
         InterviewerUniqueIdentifiersDto interviewerUniqueIds;
@@ -47,7 +47,7 @@ public class InterviewersApiController {
     }
 
     @PostMapping("/api/v1/interviewers/demote")
-    public ResponseEntity demoteInterviewer(
+    public ResponseEntity<?> demoteInterviewer(
             @RequestBody DemoteInterviewerRequestBodyDto demoteInterviewerRequestBodyDto
     ) {
         InterviewerUniqueIdentifiersDto interviewerUniqueIds;

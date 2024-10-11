@@ -1,7 +1,5 @@
 package ru.itmo.cs.app.interviewing.interviewer.infrastructure.in_memory;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.ifmo.cs.misc.UserId;
@@ -29,7 +27,7 @@ public class InMemoryStubInterviewerUniqueIdentifiersQueryService implements Int
     public InterviewerUniqueIdentifiersDto findBy(InterviewerId interviewerId) {
         return interviewerRepository.findAll()
                 .stream()
-                .filter(interviewer -> interviewer.getInterviewerId().equals(interviewerId))
+                .filter(interviewer -> interviewer.getId().equals(interviewerId))
                 .findAny()
                 .map(InterviewerUniqueIdentifiersDto::hydrateFromEntity)
                 .orElseThrow();

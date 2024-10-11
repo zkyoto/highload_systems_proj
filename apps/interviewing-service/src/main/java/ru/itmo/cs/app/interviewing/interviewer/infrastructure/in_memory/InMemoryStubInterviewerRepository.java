@@ -17,7 +17,7 @@ public class InMemoryStubInterviewerRepository implements InterviewerRepository 
     @Override
     public Interviewer findById(InterviewerId id) {
         return stubRepository.stream()
-                .filter(entity -> entity.getInterviewerId().equals(id))
+                .filter(entity -> entity.getId().equals(id))
                 .findAny()
                 .orElseThrow(IllegalArgumentException::new);
     }
@@ -43,7 +43,7 @@ public class InMemoryStubInterviewerRepository implements InterviewerRepository 
     }
 
     private void update(Interviewer interviewer) {
-        boolean entityForUpdateExists = stubRepository.removeIf(entity -> entity.getInterviewerId().equals(interviewer.getInterviewerId()));
+        boolean entityForUpdateExists = stubRepository.removeIf(entity -> entity.getId().equals(interviewer.getId()));
         if (!entityForUpdateExists) {
             throw new IllegalStateException();
         }

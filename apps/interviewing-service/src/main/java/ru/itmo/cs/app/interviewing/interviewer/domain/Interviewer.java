@@ -19,7 +19,7 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerStatus;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Interviewer {
-    private final InterviewerId interviewerId;
+    private final InterviewerId id;
     private final UserId userId;
     private final Name name;
     private final Instant createdAt;
@@ -68,14 +68,14 @@ public class Interviewer {
 
     private void validateCanBeDemoted() {
         if (interviewerStatus != InterviewerStatus.ACTIVE) {
-            throw new IllegalStateException("Interviewer " + interviewerId + "can not be demoted!");
+            throw new IllegalStateException("Interviewer " + id + "can not be demoted!");
         }
     }
 
     private void validateCanBeActivated() {
         if (interviewerStatus != InterviewerStatus.PENDING_ACTIVATION
                 && interviewerStatus != InterviewerStatus.DEMOTED) {
-            throw new IllegalStateException("Interviewer " + interviewerId + "can not be activated!");
+            throw new IllegalStateException("Interviewer " + id + "can not be activated!");
         }
     }
 
