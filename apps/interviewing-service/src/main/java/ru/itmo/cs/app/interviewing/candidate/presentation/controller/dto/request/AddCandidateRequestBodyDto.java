@@ -1,4 +1,4 @@
-package ru.itmo.cs.app.interviewing.candidate.presentation.dto;
+package ru.itmo.cs.app.interviewing.candidate.presentation.controller.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;

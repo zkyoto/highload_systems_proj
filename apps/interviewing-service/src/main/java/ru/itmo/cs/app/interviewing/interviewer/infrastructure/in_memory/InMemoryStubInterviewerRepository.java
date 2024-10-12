@@ -24,7 +24,7 @@ public class InMemoryStubInterviewerRepository implements InterviewerRepository 
 
     @Override
     public List<Interviewer> findAll() {
-        List.copyOf(stubRepository);
+        return List.copyOf(stubRepository);
     }
 
     @Override

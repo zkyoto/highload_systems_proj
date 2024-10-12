@@ -1,4 +1,4 @@
-package ru.itmo.cs.app.interviewing.interviewer.presentation;
+package ru.itmo.cs.app.interviewing.interviewer.presentation.controller;
 
 import java.util.NoSuchElementException;
 
@@ -12,18 +12,18 @@ import ru.itmo.cs.app.interviewing.interviewer.application.command.AddInterviewe
 import ru.itmo.cs.app.interviewing.interviewer.application.command.DemoteInterviewerCommand;
 import ru.itmo.cs.app.interviewing.interviewer.application.query.dto.InterviewerUniqueIdentifiersDto;
 import ru.itmo.cs.app.interviewing.interviewer.application.query.InterviewerUniqueIdentifiersQueryService;
-import ru.itmo.cs.app.interviewing.interviewer.presentation.dto.AddInterviewerRequestBodyDto;
-import ru.itmo.cs.app.interviewing.interviewer.presentation.dto.ActivateInterviewerRequestBodyDto;
-import ru.itmo.cs.app.interviewing.interviewer.presentation.dto.DemoteInterviewerRequestBodyDto;
+import ru.itmo.cs.app.interviewing.interviewer.presentation.controller.dto.request.AddInterviewerRequestBodyDto;
+import ru.itmo.cs.app.interviewing.interviewer.presentation.controller.dto.request.ActivateInterviewerRequestBodyDto;
+import ru.itmo.cs.app.interviewing.interviewer.presentation.controller.dto.request.DemoteInterviewerRequestBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@RestController
+@RestController("/api/interviewers")
 @AllArgsConstructor
 public class InterviewersApiController {
     private final CommandBus commandBus;
     private final InterviewerUniqueIdentifiersQueryService interviewerUniqueIdentifiersQueryService;
 
-    @PostMapping("/api/v1/interviewers/add")
+    @PostMapping("/v1/add")
     public ResponseEntity<?> addInterviewer(
             @RequestBody AddInterviewerRequestBodyDto addInterviewerRequestBodyDto
     ) {
@@ -31,7 +31,7 @@ public class InterviewersApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/api/v1/interviewers/activate")
+    @PostMapping("/v1/activate")
     public ResponseEntity<?> activateInterviewer(
             @RequestBody ActivateInterviewerRequestBodyDto activateInterviewerRequestBodyDto
     ) {
@@ -46,7 +46,7 @@ public class InterviewersApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/api/v1/interviewers/demote")
+    @PostMapping("/v1/demote")
     public ResponseEntity<?> demoteInterviewer(
             @RequestBody DemoteInterviewerRequestBodyDto demoteInterviewerRequestBodyDto
     ) {

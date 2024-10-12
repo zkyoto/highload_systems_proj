@@ -8,10 +8,11 @@ import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateId;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 import ru.itmo.cs.command_bus.Command;
 
-@FieldDefaults(makeFinal = true)
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true)
 public class ScheduleInterviewCommand implements Command {
     InterviewerId interviewerId;
     CandidateId candidateId;
     Instant scheduledTime;
 }
+
