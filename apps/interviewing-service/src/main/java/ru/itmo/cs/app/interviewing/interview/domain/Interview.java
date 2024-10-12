@@ -13,6 +13,8 @@ import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewCancelledEven
 import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewEvent;
 import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewRescheduledEvent;
 import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewScheduledEvent;
+import ru.itmo.cs.app.interviewing.interview.domain.specification.InterviewIsCancelledSpecification;
+import ru.itmo.cs.app.interviewing.interview.domain.specification.InterviewIsWaitingForConductSpecification;
 import ru.itmo.cs.app.interviewing.interview.domain.value.InterviewId;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
@@ -45,12 +47,18 @@ public class Interview {
     }
 
     public void reschedule(Instant newScheduledFor) {
+        if (!InterviewIsWaitingForConductSpecification.isSatisfiedBy(this)) {
+            throw new IllegalStateException("Interview is not waiting for conduct");
+        }
         getActualSchedule().orElseThrow().cancel();
         this.schedules.add(Schedule.create(newScheduledFor));
         this.events.add(InterviewRescheduledEvent.fromEntity(this));
     }
 
     public void cancel() {
+        if (InterviewIsCancelledSpecification.isSatisfiedBy(this)) {
+            throw new IllegalStateException("Interview is already cancelled");
+        }
         getActualSchedule().orElseThrow().cancel();
         this.events.add(InterviewCancelledEvent.fromEntity(this));
     }

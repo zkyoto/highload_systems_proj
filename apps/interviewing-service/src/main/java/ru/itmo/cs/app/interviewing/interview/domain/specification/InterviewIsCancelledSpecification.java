@@ -5,7 +5,7 @@ import ru.itmo.cs.app.interviewing.interview.domain.Schedule;
 
 public class InterviewIsCancelledSpecification {
 
-    public boolean isSatisfiedBy(Interview interview) {
+    public static boolean isSatisfiedBy(Interview interview) {
         return interview.getSchedules().stream().allMatch(Schedule::isCancelled);
     }
 
