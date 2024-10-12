@@ -6,7 +6,12 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
 public record InterviewerCreatedEvent(InterviewerId interviewerId, Instant occurredOn) implements InterviewerEvent {
-    public static InterviewerCreatedEvent fromCreatedEntity(Interviewer interviewer) {
+    public static InterviewerCreatedEvent fromEntity(Interviewer interviewer) {
         return new InterviewerCreatedEvent(interviewer.getId(), interviewer.getCreatedAt());
+    }
+
+    @Override
+    public String eventType() {
+        return "InterviewerCreatedEvent";
     }
 }

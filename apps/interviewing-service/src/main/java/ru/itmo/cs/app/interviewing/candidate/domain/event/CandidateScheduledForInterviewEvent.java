@@ -12,4 +12,9 @@ public record CandidateScheduledForInterviewEvent(
     public static CandidateScheduledForInterviewEvent fromEntity(Candidate candidate) {
         return new CandidateScheduledForInterviewEvent(candidate.getId(), candidate.getCreatedAt());
     }
+
+    @Override
+    public String eventType() {
+        return "CandidateScheduledForInterviewEvent";
+    }
 }

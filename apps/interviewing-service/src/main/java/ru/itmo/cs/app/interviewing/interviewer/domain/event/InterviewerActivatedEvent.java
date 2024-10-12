@@ -9,4 +9,9 @@ public record InterviewerActivatedEvent(InterviewerId interviewerId, Instant occ
     public static InterviewerActivatedEvent fromActivatedEntity(Interviewer interviewer) {
         return new InterviewerActivatedEvent(interviewer.getId(), interviewer.getUpdatedAt());
     }
+
+    @Override
+    public String eventType() {
+        return "InterviewerActivatedEvent";
+    }
 }

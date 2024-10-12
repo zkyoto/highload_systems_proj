@@ -29,26 +29,28 @@ public class Interviewer {
     private List<InterviewerEvent> events;
 
     public static Interviewer create(UserId userId, Name name, InterviewerStatus status) {
+        Instant now = Instant.now();
         Interviewer createdEntity = new Interviewer(InterviewerId.generate(),
                                                     userId,
                                                     name,
-                                                    Instant.now(),
-                                                    Instant.now(),
+                                                    now,
+                                                    now,
                                                     status,
                                                     new LinkedList<>());
-        createdEntity.events.add(InterviewerCreatedEvent.fromCreatedEntity(createdEntity));
+        createdEntity.events.add(InterviewerCreatedEvent.fromEntity(createdEntity));
         return createdEntity;
     }
 
     public static Interviewer create(UserId userId, Name name) {
+        Instant now = Instant.now();
         Interviewer createdEntity = new Interviewer(InterviewerId.generate(),
                                                     userId,
                                                     name,
-                                                    Instant.now(),
-                                                    Instant.now(),
+                                                    now,
+                                                    now,
                                                     InterviewerStatus.PENDING_ACTIVATION,
                                                     new LinkedList<>());
-        createdEntity.events.add(InterviewerCreatedEvent.fromCreatedEntity(createdEntity));
+        createdEntity.events.add(InterviewerCreatedEvent.fromEntity(createdEntity));
         return createdEntity;
     }
 
