@@ -3,12 +3,14 @@ package ru.itmo.cs.app.interviewing.interview.infrastructure.in_memory;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
 import ru.itmo.cs.app.interviewing.interview.domain.Interview;
 import ru.itmo.cs.app.interviewing.interview.domain.InterviewRepository;
 import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewEvent;
 import ru.itmo.cs.app.interviewing.interview.domain.event.InterviewScheduledEvent;
 import ru.itmo.cs.app.interviewing.interview.domain.value.InterviewId;
 
+@Repository
 public class InMemoryStubInterviewRepository implements InterviewRepository {
     private final List<Interview> stubRepository = new LinkedList<>();
     @Override
