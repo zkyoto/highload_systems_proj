@@ -41,15 +41,15 @@ public class Feedback {
         return feedback;
     }
 
-    public void setGrade(int value) {
+    public void setGrade(Grade grade) {
         ensureGradeShouldNotBeAlreadySet();
-        this.grade = Grade.of(value);
+        this.grade = grade;
         this.updatedAt = Instant.now();
     }
 
-    public void setComment(String value) {
+    public void setComment(Comment comment) {
         ensureCommentShouldNotBeAlreadySet();
-        this.comment = Comment.of(value);
+        this.comment = comment;
         this.updatedAt = Instant.now();
     }
 
@@ -60,9 +60,9 @@ public class Feedback {
         this.events.add(FeedbackSubmittedEvent.fromEntity(this));
     }
 
-    public void rewrite(int grade, String comment) {
-        this.grade = Grade.of(grade);
-        this.comment = Comment.of(comment);
+    public void rewrite(Grade grade, Comment comment) {
+        this.grade = grade;
+        this.comment = comment;
         this.updatedAt = Instant.now();
         this.events.add(FeedbackRewrittenEvent.fromEntity(this));
     }

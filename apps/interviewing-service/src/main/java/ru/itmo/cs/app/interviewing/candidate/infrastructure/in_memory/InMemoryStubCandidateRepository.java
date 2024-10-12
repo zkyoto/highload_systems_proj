@@ -24,7 +24,7 @@ public class InMemoryStubCandidateRepository implements CandidateRepository {
 
     @Override
     public List<Candidate> findAll() {
-        List.copyOf(stubRepository);
+        return List.copyOf(stubRepository);
     }
 
     @Override

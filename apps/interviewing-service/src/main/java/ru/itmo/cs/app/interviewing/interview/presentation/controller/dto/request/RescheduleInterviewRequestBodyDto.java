@@ -1,4 +1,4 @@
-package ru.itmo.cs.app.interviewing.interview.presentation.dto;
+package ru.itmo.cs.app.interviewing.interview.presentation.controller.dto.request;
 
 import java.time.Instant;
 

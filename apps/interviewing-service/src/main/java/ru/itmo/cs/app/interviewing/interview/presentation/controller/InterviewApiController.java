@@ -1,4 +1,4 @@
-package ru.itmo.cs.app.interviewing.interview.presentation;
+package ru.itmo.cs.app.interviewing.interview.presentation.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.cs.app.interviewing.interview.application.command.CancelInterviewCommand;
 import ru.itmo.cs.app.interviewing.interview.application.command.RescheduleInterviewCommand;
 import ru.itmo.cs.app.interviewing.interview.application.command.ScheduleInterviewCommand;
-import ru.itmo.cs.app.interviewing.interview.presentation.dto.CancelInterviewRequestBodyDto;
-import ru.itmo.cs.app.interviewing.interview.presentation.dto.RescheduleInterviewRequestBodyDto;
-import ru.itmo.cs.app.interviewing.interview.presentation.dto.ScheduleInterviewRequestBodyDto;
+import ru.itmo.cs.app.interviewing.interview.presentation.controller.dto.request.CancelInterviewRequestBodyDto;
+import ru.itmo.cs.app.interviewing.interview.presentation.controller.dto.request.RescheduleInterviewRequestBodyDto;
+import ru.itmo.cs.app.interviewing.interview.presentation.controller.dto.request.ScheduleInterviewRequestBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@RestController
+@RestController("/api/interview")
 @AllArgsConstructor
 public class InterviewApiController {
     private final CommandBus commandBus;
 
-    @PostMapping("/api/v1/interview/schedule")
+    @PostMapping("/v1/schedule")
     public ResponseEntity<?> scheduleInterview(
             @RequestBody ScheduleInterviewRequestBodyDto scheduleInterviewRequestBodyDto
     ) {
@@ -28,7 +28,7 @@ public class InterviewApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/api/v1/interview/reschedule")
+    @PostMapping("/v1/reschedule")
     public ResponseEntity<?> rescheduleInterview(
             @RequestBody RescheduleInterviewRequestBodyDto rescheduleInterviewRequestBodyDto
     ) {
@@ -37,7 +37,7 @@ public class InterviewApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/api/v1/interview/cancel")
+    @PostMapping("/v1/cancel")
     public ResponseEntity<?> cancelInterview(
             @RequestBody CancelInterviewRequestBodyDto cancelInterviewRequestBodyDto
     ) {

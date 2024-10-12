@@ -1,4 +1,4 @@
-package ru.itmo.cs.app.interviewing.candidate.presentation;
+package ru.itmo.cs.app.interviewing.candidate.presentation.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ifmo.cs.misc.Name;
 import ru.itmo.cs.app.interviewing.candidate.application.command.AddCandidateCommand;
-import ru.itmo.cs.app.interviewing.candidate.presentation.dto.AddCandidateRequestBodyDto;
+import ru.itmo.cs.app.interviewing.candidate.presentation.controller.dto.request.AddCandidateRequestBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@RestController
+@RestController("/api/v1/candidates")
 @AllArgsConstructor
 public class CandidatesApiController {
     private final CommandBus commandBus;
 
-    @PostMapping("/api/v1/candidates/add")
+    @PostMapping("/v1/add")
     public ResponseEntity<?> addCandidate(
             @RequestBody AddCandidateRequestBodyDto addCandidateRequestBodyDto
     ) {
