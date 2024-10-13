@@ -3,10 +3,10 @@ name: Build Docker Image
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main
   pull_request:
     branches:
-      - main  # Optional: Trigger on pull requests to the main branch
+      - main 
 
 jobs:
   build:
@@ -17,4 +17,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t GhoulTeam/highload-systems:latest .
+      - name: Run tests
+        run: |
+          docker run --rm GhoulTeam/highload-systems:latest ./mvnw test
 

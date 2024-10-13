@@ -4,5 +4,6 @@ WORKDIR /app
 COPY . .
 RUN cd /app/common && ./install.sh
 RUN cd /app/apps/interviewing-service && ./mvnw dependency:go-offline
-CMD ["./apps/interviewing-service/mvnw", "spring-boot:run"]
+WORKDIR /app/apps/interviewing-service 
+CMD ["./mvnw", "spring-boot:run"]
 
