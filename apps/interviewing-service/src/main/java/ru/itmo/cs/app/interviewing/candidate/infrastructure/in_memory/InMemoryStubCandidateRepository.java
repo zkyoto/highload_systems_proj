@@ -5,6 +5,8 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEvent;
+import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 import ru.itmo.cs.app.interviewing.candidate.domain.Candidate;
 import ru.itmo.cs.app.interviewing.candidate.domain.CandidateRepository;
 import ru.itmo.cs.app.interviewing.candidate.domain.event.CandidateCreatedEvent;
@@ -12,8 +14,11 @@ import ru.itmo.cs.app.interviewing.candidate.domain.event.CandidateEvent;
 import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateId;
 
 @Repository
+@AllArgsConstructor
 public class InMemoryStubCandidateRepository implements CandidateRepository {
+    private final StoredDomainEventRepository storedDomainEventRepository;
     private final List<Candidate> stubRepository = new LinkedList<>();
+
     @Override
     public Candidate findById(CandidateId id) {
         return stubRepository.stream()
@@ -29,14 +34,18 @@ public class InMemoryStubCandidateRepository implements CandidateRepository {
 
     @Override
     public void save(Candidate candidate) {
-        List<CandidateEvent> events = candidate.releaseEvents();
-        boolean isNew = events.stream().anyMatch(e -> e instanceof CandidateCreatedEvent);
+        List<CandidateEvent> releasedEvents = candidate.releaseEvents();
+        boolean isNew = releasedEvents.stream().anyMatch(e -> e instanceof CandidateCreatedEvent);
 
         if (isNew) {
             insert(candidate);
         } else {
             update(candidate);
         }
+
+        releasedEvents.stream()
+                .map(StoredDomainEvent::of)
+                .forEach(storedDomainEventRepository::save);
     }
 
     private void insert(Candidate candidate) {

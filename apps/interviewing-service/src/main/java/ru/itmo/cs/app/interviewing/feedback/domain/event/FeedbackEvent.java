@@ -1,8 +1,6 @@
 package ru.itmo.cs.app.interviewing.feedback.domain.event;
 
-import java.time.Instant;
+import ru.ifmo.cs.domain_event.domain.DomainEvent;
 
-public interface FeedbackEvent {
-    String eventType();
-    Instant occurredOn();
+public interface FeedbackEvent extends DomainEvent {
 }

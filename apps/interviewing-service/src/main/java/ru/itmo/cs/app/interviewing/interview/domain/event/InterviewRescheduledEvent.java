@@ -10,6 +10,7 @@ public record InterviewRescheduledEvent(
         Instant occurredOn,
         Instant scheduledFor
 ) implements InterviewEvent {
+    public static final String EVENT_TYPE = "InterviewRescheduledEvent";
 
     public static InterviewRescheduledEvent fromEntity(Interview interview) {
         return new InterviewRescheduledEvent(interview.getId(), interview.getUpdatedAt(), interview.getScheduledFor());
@@ -17,7 +18,7 @@ public record InterviewRescheduledEvent(
 
     @Override
     public String eventType() {
-        return "InterviewRescheduledEvent";
+        return EVENT_TYPE;
     }
 
 }

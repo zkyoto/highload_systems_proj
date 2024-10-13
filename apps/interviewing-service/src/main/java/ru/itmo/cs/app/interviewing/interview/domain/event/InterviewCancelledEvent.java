@@ -6,6 +6,7 @@ import ru.itmo.cs.app.interviewing.interview.domain.Interview;
 import ru.itmo.cs.app.interviewing.interview.domain.value.InterviewId;
 
 public record InterviewCancelledEvent(InterviewId interviewId, Instant occurredOn) implements InterviewEvent {
+    public static final String EVENT_TYPE = "InterviewCancelledEvent";
 
     public static InterviewCancelledEvent fromEntity(Interview interview) {
         return new InterviewCancelledEvent(interview.getId(), Instant.now());
@@ -13,6 +14,6 @@ public record InterviewCancelledEvent(InterviewId interviewId, Instant occurredO
 
     @Override
     public String eventType() {
-        return "InterviewCancelledEvent";
+        return EVENT_TYPE;
     }
 }

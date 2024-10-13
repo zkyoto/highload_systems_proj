@@ -1,8 +1,6 @@
 package ru.itmo.cs.app.interviewing.interviewer.domain.event;
 
-import java.time.Instant;
+import ru.ifmo.cs.domain_event.domain.DomainEvent;
 
-public interface InterviewerEvent {
-    String eventType();
-    Instant occurredOn();
+public interface InterviewerEvent extends DomainEvent {
 }
