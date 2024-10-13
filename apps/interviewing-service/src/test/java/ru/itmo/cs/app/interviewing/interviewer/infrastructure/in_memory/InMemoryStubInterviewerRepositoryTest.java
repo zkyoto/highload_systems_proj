@@ -4,20 +4,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.A;
 import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
+import ru.itmo.cs.app.interviewing.configuration.InterviewingServiceConfiguration;
 import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
 
+@SpringBootTest
 public class InMemoryStubInterviewerRepositoryTest {
+    @Autowired
     private InMemoryStubInterviewerRepository repository;
     private InterviewerId dummyId;
     private Interviewer dummyInterviewer;
 
     @BeforeEach
     void setUp() {
-        repository = new InMemoryStubInterviewerRepository();
         dummyInterviewer = Interviewer.create(UserId.of(1488), Name.of("Z V"));
         dummyId = dummyInterviewer.getId();
     }
