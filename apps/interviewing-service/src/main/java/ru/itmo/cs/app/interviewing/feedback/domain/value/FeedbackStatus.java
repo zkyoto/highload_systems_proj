@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.feedback.domain.value;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import ru.ifmo.cs.string_enum.StringEnum;
 import ru.ifmo.cs.string_enum.StringEnumResolver;
 
@@ -10,7 +11,7 @@ public enum FeedbackStatus implements StringEnum {
 
     public static final StringEnumResolver<FeedbackStatus> R = StringEnumResolver.r(FeedbackStatus.class);
 
-    private final String value;
+    @JsonValue private final String value;
 
     FeedbackStatus(String value) {
         this.value = value;

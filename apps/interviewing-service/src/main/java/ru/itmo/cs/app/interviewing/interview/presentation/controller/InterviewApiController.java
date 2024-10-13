@@ -13,12 +13,12 @@ import ru.itmo.cs.app.interviewing.interview.presentation.controller.dto.request
 import ru.itmo.cs.app.interviewing.interview.presentation.controller.dto.request.ScheduleInterviewRequestBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@RestController("/api/interview")
+@RestController
 @AllArgsConstructor
 public class InterviewApiController {
     private final CommandBus commandBus;
 
-    @PostMapping("/v1/schedule")
+    @PostMapping("/api/v1/interview/schedule")
     public ResponseEntity<?> scheduleInterview(
             @RequestBody ScheduleInterviewRequestBodyDto scheduleInterviewRequestBodyDto
     ) {
@@ -28,7 +28,7 @@ public class InterviewApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/v1/reschedule")
+    @PostMapping("/api/v1/interview/reschedule")
     public ResponseEntity<?> rescheduleInterview(
             @RequestBody RescheduleInterviewRequestBodyDto rescheduleInterviewRequestBodyDto
     ) {
@@ -37,7 +37,7 @@ public class InterviewApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/v1/cancel")
+    @PostMapping("/api/v1/interview/cancel")
     public ResponseEntity<?> cancelInterview(
             @RequestBody CancelInterviewRequestBodyDto cancelInterviewRequestBodyDto
     ) {
