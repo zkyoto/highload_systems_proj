@@ -10,12 +10,12 @@ import ru.itmo.cs.app.interviewing.candidate.application.command.AddCandidateCom
 import ru.itmo.cs.app.interviewing.candidate.presentation.controller.dto.request.AddCandidateRequestBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@RestController("/api/v1/candidates")
+@RestController
 @AllArgsConstructor
 public class CandidatesApiController {
     private final CommandBus commandBus;
 
-    @PostMapping("/v1/add")
+    @PostMapping("/api/v1/candidates/add")
     public ResponseEntity<?> addCandidate(
             @RequestBody AddCandidateRequestBodyDto addCandidateRequestBodyDto
     ) {

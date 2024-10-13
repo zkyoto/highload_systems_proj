@@ -2,7 +2,10 @@ package ru.itmo.cs.app.interviewing.interviewer.domain.value;
 
 import java.util.UUID;
 
-public record InterviewerId(UUID id) {
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public record InterviewerId(@JsonValue UUID value) {
+
     public static InterviewerId generate() {
         return new InterviewerId(UUID.randomUUID());
     }
@@ -10,4 +13,5 @@ public record InterviewerId(UUID id) {
     public static InterviewerId hydrate(String uuid) {
         return new InterviewerId(UUID.fromString(uuid));
     }
+
 }

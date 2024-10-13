@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.feedback.domain.value;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Grade {
-    private final int value;
+    @JsonValue private final int value;
 
     public static Grade of(Integer value) {
         if (value == null) {

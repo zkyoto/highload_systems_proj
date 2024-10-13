@@ -2,7 +2,9 @@ package ru.itmo.cs.app.interviewing.interview.domain.value;
 
 import java.util.UUID;
 
-public record ScheduleId(UUID id) {
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public record ScheduleId(@JsonValue UUID value) {
     public static ScheduleId generate() {
         return new ScheduleId(UUID.randomUUID());
     }
