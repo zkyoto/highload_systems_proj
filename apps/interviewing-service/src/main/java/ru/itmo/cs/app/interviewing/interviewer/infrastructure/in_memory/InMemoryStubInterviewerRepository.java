@@ -3,7 +3,10 @@ package ru.itmo.cs.app.interviewing.interviewer.infrastructure.in_memory;
 import java.util.LinkedList;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEvent;
+import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.InterviewerRepository;
 import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerCreatedEvent;
@@ -11,8 +14,10 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerEvent;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
 @Repository
+@AllArgsConstructor
 public class InMemoryStubInterviewerRepository implements InterviewerRepository {
-    List<Interviewer> stubRepository = new LinkedList<>();
+    private final StoredDomainEventRepository storedDomainEventRepository;
+    private final List<Interviewer> stubRepository = new LinkedList<>();
 
     @Override
     public Interviewer findById(InterviewerId id) {
@@ -36,6 +41,9 @@ public class InMemoryStubInterviewerRepository implements InterviewerRepository 
         } else {
             update(interviewer);
         }
+        releasedEvents.stream()
+                      .map(StoredDomainEvent::of)
+                      .forEach(storedDomainEventRepository::save);
     }
 
     private void insert(Interviewer interviewer) {

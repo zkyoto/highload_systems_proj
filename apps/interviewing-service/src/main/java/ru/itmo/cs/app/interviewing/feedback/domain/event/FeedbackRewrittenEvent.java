@@ -6,6 +6,7 @@ import ru.itmo.cs.app.interviewing.feedback.domain.Feedback;
 import ru.itmo.cs.app.interviewing.feedback.domain.value.FeedbackId;
 
 public record FeedbackRewrittenEvent(FeedbackId feedbackId, Instant occurredOn) implements FeedbackEvent {
+    public static final String EVENT_TYPE = "FeedbackRewrittenEvent";
 
     public static FeedbackRewrittenEvent fromEntity(Feedback feedback) {
         return new FeedbackRewrittenEvent(feedback.getId(), feedback.getUpdatedAt());
@@ -13,6 +14,6 @@ public record FeedbackRewrittenEvent(FeedbackId feedbackId, Instant occurredOn) 
 
     @Override
     public String eventType() {
-        return "FeedbackRewrittenEvent";
+        return EVENT_TYPE;
     }
 }

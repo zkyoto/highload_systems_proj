@@ -6,12 +6,14 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
 public record InterviewerDemotedEvent(InterviewerId interviewerId, Instant occurredOn) implements InterviewerEvent {
+    public static final String EVENT_TYPE = "InterviewerDemotedEvent";
+
     public static InterviewerDemotedEvent fromDemotedEntity(Interviewer interviewer) {
         return new InterviewerDemotedEvent(interviewer.getId(), interviewer.getUpdatedAt());
     }
 
     @Override
     public String eventType() {
-        return "InterviewerDemotedEvent";
+        return EVENT_TYPE;
     }
 }

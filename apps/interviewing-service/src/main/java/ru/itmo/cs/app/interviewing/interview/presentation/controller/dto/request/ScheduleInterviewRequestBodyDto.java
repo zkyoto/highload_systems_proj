@@ -7,7 +7,7 @@ import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateId;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 
 public record ScheduleInterviewRequestBodyDto(
-        @JsonProperty("interviewer_id") InterviewerId interviewerId,
-        @JsonProperty("candidate_id") CandidateId candidateId,
+        @JsonProperty("interviewer_id") String interviewerId,
+        @JsonProperty("candidate_id") String candidateId,
         @JsonProperty("scheduled_time") Instant scheduledTime
 ) {}

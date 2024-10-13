@@ -10,20 +10,11 @@ import ru.itmo.cs.command_bus.impl.SpringContextHandlerResolver;
 import ru.itmo.cs.command_bus.impl.SpringContextSimpleCommandBusProcessor;
 
 @Configuration
-@Import(StubPassportClientConfiguration.class)
+@Import({
+        StubPassportClientConfiguration.class,
+        CommandBusConfiguration.class,
+        CronTasksConfiguration.class,
+        DomainEventsConfiguration.class,
+})
 public class InterviewingServiceConfiguration {
-
-    @Bean
-    public SimpleCommandBusService commandBusService(
-            SpringContextHandlerResolver springContextHandlerResolver
-    ) {
-        return new SimpleCommandBusService(new SpringContextSimpleCommandBusProcessor(
-                springContextHandlerResolver
-        ));
-    }
-
-    @Bean
-    SpringContextHandlerResolver springContextHandlerResolver(ApplicationContext applicationContext) {
-        return new SpringContextHandlerResolver(applicationContext);
-    }
 }

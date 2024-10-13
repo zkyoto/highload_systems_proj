@@ -14,6 +14,7 @@ public record InterviewScheduledEvent(
         CandidateId candidateId,
         Instant scheduledFor
 ) implements InterviewEvent {
+    public static final String EVENT_TYPE = "InterviewScheduledEvent";
 
     public static InterviewScheduledEvent fromEntity(Interview interview) {
         return new InterviewScheduledEvent(interview.getId(),
@@ -25,7 +26,7 @@ public record InterviewScheduledEvent(
 
     @Override
     public String eventType() {
-        return "InterviewScheduledEvent";
+        return EVENT_TYPE;
     }
 
 }
