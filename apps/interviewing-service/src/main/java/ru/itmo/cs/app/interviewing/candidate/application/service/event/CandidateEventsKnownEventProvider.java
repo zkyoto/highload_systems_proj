@@ -14,7 +14,7 @@ public class CandidateEventsKnownEventProvider implements KnownEventProvider {
     @Override
     public List<KnownDomainEvent> provide() {
         return List.of(new KnownDomainEvent(CandidateCreatedEvent.EVENT_TYPE, CandidateCreatedEvent.class),
-                       new KnownDomainEvent(CandidateScheduledForInterviewEvent.EVENT_TYPE, CandidateCreatedEvent.class));
+                       new KnownDomainEvent(CandidateScheduledForInterviewEvent.EVENT_TYPE, CandidateScheduledForInterviewEvent.class));
     }
 
 }

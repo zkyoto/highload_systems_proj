@@ -1,9 +1,11 @@
 package ru.itmo.cs.app.interviewing.interview.domain;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,7 +39,7 @@ public class Interview {
                                                    now,
                                                    interviewerId,
                                                    candidateId,
-                                                   List.of(Schedule.create(scheduledFor)));
+                                                   new LinkedList<>(List.of(Schedule.create(scheduledFor))));
         createdInterview.events.add(InterviewScheduledEvent.fromEntity(createdInterview));
         return createdInterview;
     }
