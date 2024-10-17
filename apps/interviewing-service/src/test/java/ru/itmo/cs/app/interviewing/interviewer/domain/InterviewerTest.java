@@ -1,9 +1,13 @@
 package ru.itmo.cs.app.interviewing.interviewer.domain;
 
 
+import java.time.Instant;
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.And;
 import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
 import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerActivatedEvent;
@@ -12,9 +16,7 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerDemotedEv
 import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerEvent;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerStatus;
 
-import java.time.Instant;
-import java.util.List;
-
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -128,6 +130,44 @@ public class InterviewerTest {
 
     private void preparePending() {
         interviewer.releaseEvents();
+    }
+
+    @Test
+    void testActivateThrowsException_WhenInterviewerIsActive() {
+        prepareActivated();
+        assertThrows(IllegalStateException.class, interviewer::activate);
+        assertEquals(InterviewerStatus.ACTIVE, interviewer.getInterviewerStatus());
+    }
+
+    @Test
+    void testCreate_ShouldInitializeInterviewerWithDefaultStatus() {
+        Interviewer newInterviewer = Interviewer.create(UserId.of(1234), Name.of("John Doe"));
+        assertEquals(InterviewerStatus.PENDING_ACTIVATION, newInterviewer.getInterviewerStatus());
+    }
+
+    @Test
+    void testActivate_ShouldSetUpdateTimestampCorrectly() {
+        preparePending();
+        Instant creationTimestamp = interviewer.getCreatedAt();
+        interviewer.activate();
+        Instant updateTimestamp = interviewer.getUpdatedAt();
+        assertTrue(updateTimestamp.isAfter(creationTimestamp));
+    }
+
+    @Test
+    void testReleaseEvents_ShouldClearEventsList() {
+        preparePending();
+        interviewer.activate();
+        List<InterviewerEvent> events = interviewer.releaseEvents();
+        assertFalse(events.isEmpty());
+        interviewer.releaseEvents();
+        assertTrue(interviewer.releaseEvents().isEmpty());
+    }
+
+    @Test
+    void testCreate_ShouldInitializeInterviewerWithSpecificStatus() {
+        Interviewer newInterviewer = Interviewer.create(UserId.of(5678), Name.of("Jane Doe"), InterviewerStatus.ACTIVE);
+        assertEquals(InterviewerStatus.ACTIVE, newInterviewer.getInterviewerStatus());
     }
 
 }
