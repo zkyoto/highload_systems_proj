@@ -68,12 +68,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ru.itmo.cs</groupId>
-            <artifactId>command_bus</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>ru.ifmo.cs</groupId>
             <artifactId>misc</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -97,7 +91,7 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!--        uncomment @Transactional-->
+<!--                uncomment @Transactional-->
 <!--        <dependency>-->
 <!--            <groupId>org.postgresql</groupId>-->
 <!--            <artifactId>postgresql</artifactId>-->
