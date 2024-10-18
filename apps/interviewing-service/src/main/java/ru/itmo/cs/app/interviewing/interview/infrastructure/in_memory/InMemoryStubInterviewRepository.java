@@ -24,7 +24,7 @@ public class InMemoryStubInterviewRepository implements InterviewRepository {
         return stubRepository.stream()
                              .filter(interview -> interview.getId().equals(id))
                              .findAny()
-                             .orElseThrow(IllegalArgumentException::new);
+                             .orElseThrow();
     }
 
     @Override

@@ -48,6 +48,10 @@ public class Interview {
         return getActualSchedule().orElseThrow().getScheduledFor();
     }
 
+    public Optional<Instant> getScheduledForO() {
+        return getActualSchedule().map(Schedule::getScheduledFor);
+    }
+
     public void reschedule(Instant newScheduledFor) {
         if (!InterviewIsWaitingForConductSpecification.isSatisfiedBy(this)) {
             throw new IllegalStateException("Interview is not waiting for conduct");
