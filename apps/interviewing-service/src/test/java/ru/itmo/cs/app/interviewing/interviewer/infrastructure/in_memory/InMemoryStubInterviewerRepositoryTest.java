@@ -1,5 +1,7 @@
 package ru.itmo.cs.app.interviewing.interviewer.infrastructure.in_memory;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +39,7 @@ public class InMemoryStubInterviewerRepositoryTest {
 
     @Test
     void findById_ShouldThrowException_WhenInterviewerDoesNotExist() {
-        assertThrows(IllegalArgumentException.class, () -> repository.findById(dummyId));
+        assertThrows(NoSuchElementException.class, () -> repository.findById(dummyId));
     }
 
     @Test
