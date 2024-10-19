@@ -1,9 +1,16 @@
-version: '3'
+include:
+  - c-network.yaml
 
 services:
-  app:
-    build:
-      context: .
-    ports:
-      - "8080:8080"
+  interviewing-service:
+    extends:
+      file: c-services.yaml
+      service: interviewing-service
+    depends_on:
+      postgres:
+        condition: service_healthy
 
+  postgres:
+    extends:
+      file: c-services.yaml
+      service: postgres
