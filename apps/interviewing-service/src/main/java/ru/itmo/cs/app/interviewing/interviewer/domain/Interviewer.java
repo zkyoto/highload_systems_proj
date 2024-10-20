@@ -7,6 +7,8 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.misc.Name;
 import ru.itmo.cs.app.interviewing.interviewer.domain.event.InterviewerActivatedEvent;
@@ -17,16 +19,16 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerStatus;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Interviewer {
     private final InterviewerId id;
     private final UserId userId;
     private final Name name;
     private final Instant createdAt;
-    private Instant updatedAt;
-    private InterviewerStatus interviewerStatus;
+    @NonNull private Instant updatedAt;
+    @NonNull private InterviewerStatus interviewerStatus;
     @Getter(AccessLevel.NONE)
-    private List<InterviewerEvent> events;
+    private List<InterviewerEvent> events = new LinkedList<>();
 
     public static Interviewer create(UserId userId, Name name, InterviewerStatus status) {
         Instant now = Instant.now();
@@ -35,8 +37,7 @@ public class Interviewer {
                                                     name,
                                                     now,
                                                     now,
-                                                    status,
-                                                    new LinkedList<>());
+                                                    status);
         createdEntity.events.add(InterviewerCreatedEvent.fromEntity(createdEntity));
         return createdEntity;
     }
@@ -48,8 +49,7 @@ public class Interviewer {
                                                     name,
                                                     now,
                                                     now,
-                                                    InterviewerStatus.PENDING_ACTIVATION,
-                                                    new LinkedList<>());
+                                                    InterviewerStatus.PENDING_ACTIVATION);
         createdEntity.events.add(InterviewerCreatedEvent.fromEntity(createdEntity));
         return createdEntity;
     }
