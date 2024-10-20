@@ -3,6 +3,7 @@ package ru.ifmo.cs.domain_event.infrastructure.event_delivery;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ifmo.cs.domain_event.application.service.ConsumptionLogJournalService;
 import ru.ifmo.cs.domain_event.application.service.DomainEventDelivererService;
 import ru.ifmo.cs.domain_event.domain.DomainEvent;
@@ -16,7 +17,7 @@ public class IdempotentDomainEventDelivererService implements DomainEventDeliver
     private final DomainEventDelivererService domainEventDelivererService;
     private final ConsumptionLogJournalService consumptionLogJournalService;
 
-    //    @Transactional
+    @Transactional
     public void deliver(
             SubscriberReferenceId referenceId,
             UUID eventId,
