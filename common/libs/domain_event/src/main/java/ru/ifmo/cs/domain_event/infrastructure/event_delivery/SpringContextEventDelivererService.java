@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ifmo.cs.domain_event.application.service.DomainEventConsumer;
 import ru.ifmo.cs.domain_event.application.service.DomainEventDelivererService;
 import ru.ifmo.cs.domain_event.domain.DomainEvent;
@@ -17,7 +18,7 @@ public class SpringContextEventDelivererService implements DomainEventDelivererS
         this.applicationContext = applicationContext;
     }
 
-//    @Transactional
+    @Transactional
     public void deliver(SubscriberReferenceId referenceId, UUID eventId, DomainEvent domainEvent) {
         DomainEventConsumer<DomainEvent> domainEventConsumer =
                 (DomainEventConsumer<DomainEvent>) applicationContext.getBean(referenceId.id());
