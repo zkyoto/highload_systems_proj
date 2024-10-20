@@ -24,9 +24,8 @@ jobs:
         run: |
           mkdir -p coverage
           cp -r target/site/jacoco/* coverage/
-          tar -czvf coverage-report.tar.gz coverage
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-coverage-report
-          path: coverage-report.tar.gz
+          path: coverage
