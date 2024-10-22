@@ -3,6 +3,11 @@ services:
     build: ./
     ports:
       - "8080:8080"
+    environment:
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PORT: 5252
+      POSTGRES_HOST: localhost
 
   postgres:
     build: ./pg

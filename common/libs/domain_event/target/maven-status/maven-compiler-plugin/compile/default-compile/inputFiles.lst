@@ -15,6 +15,9 @@
 /Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/event_delivery/IdempotentDomainEventDelivererService.java
 /Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/event_delivery/SpringContextDomainEventRecipientsResolverService.java
 /Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/event_delivery/SpringContextEventDelivererService.java
-/Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/InMemoryStubConsumptionLogJournalService.java
-/Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/InMemoryStubStoredDomainEventRepository.java
 /Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/KnownDomainEventTypeResolver.java
+/Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/in_memory/InMemoryStubConsumptionLogJournalService.java
+/Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/in_memory/InMemoryStubStoredDomainEventRepository.java
+/Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/pg/PgConsumptionLogJournalService.java
+/Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/pg/PgStoredDomainEventRepository.java
+/Users/zkyoto/workspace/highload_systems_proj/common/libs/domain_event/src/main/java/ru/ifmo/cs/domain_event/infrastructure/repository/pg/mapper/StoredDomainEventRowMapper.java
