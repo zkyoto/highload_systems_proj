@@ -9,8 +9,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ru.ifmo.cs.misc.Name;
+import ru.itmo.cs.app.interviewing.candidate.domain.event.CandidateCancelledEvent;
 import ru.itmo.cs.app.interviewing.candidate.domain.event.CandidateCreatedEvent;
 import ru.itmo.cs.app.interviewing.candidate.domain.event.CandidateEvent;
+import ru.itmo.cs.app.interviewing.candidate.domain.event.CandidateProcessedEvent;
 import ru.itmo.cs.app.interviewing.candidate.domain.event.CandidateScheduledForInterviewEvent;
 import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateId;
 import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateStatus;
@@ -58,6 +60,18 @@ public class Candidate {
         this.status = CandidateStatus.WAITING_FOR_INTERVIEW;
         this.updatedAt = Instant.now();
         events.add(CandidateScheduledForInterviewEvent.fromEntity(this));
+    }
+
+    public void changeStatusToProcessed() {
+        this.status = CandidateStatus.PROCESSED;
+        this.updatedAt = Instant.now();
+        events.add(CandidateProcessedEvent.fromEntity(this));
+    }
+
+    public void changeStatusToCancelled() {
+        this.status = CandidateStatus.CANCELLED;
+        this.updatedAt = Instant.now();
+        events.add(CandidateCancelledEvent.fromEntity(this));
     }
 
     private void validateState() {

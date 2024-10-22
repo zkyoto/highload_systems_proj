@@ -5,7 +5,10 @@ import ru.ifmo.cs.string_enum.StringEnumResolver;
 
 public enum CandidateStatus implements StringEnum {
     WAITING_FOR_APPOINTMENT_AN_INTERVIEW("waiting_for_appointment_an_interview"),
-    WAITING_FOR_INTERVIEW("waiting_for_interview");
+    WAITING_FOR_INTERVIEW("waiting_for_interview"),
+    PROCESSED("processed"),
+    CANCELLED("cancelled"),
+    ;
 
     private final String value;
 
