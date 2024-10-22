@@ -85,8 +85,8 @@ public class PgInterviewRepository implements InterviewRepository {
         return entities.stream().map(e -> Interview.hydrate(e, pgScheduleEntityDao.findFor(e))).toList();
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void save(Interview interview) {
         List<InterviewEvent> releasedEvents = interview.releaseEvents();
         boolean isNew = releasedEvents.stream().anyMatch(event -> event instanceof InterviewScheduledEvent);

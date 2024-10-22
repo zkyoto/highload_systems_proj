@@ -1,12 +1,9 @@
 package ru.itmo.cs.app.interviewing.interview.infrastructure.pg;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Service;
@@ -15,11 +12,12 @@ import ru.itmo.cs.app.interviewing.interview.application.query.dto.InterviewPage
 import ru.itmo.cs.app.interviewing.interview.domain.Interview;
 import ru.itmo.cs.app.interviewing.interview.infrastructure.pg.entity.PgInterviewEntity;
 import ru.itmo.cs.app.interviewing.interview.infrastructure.pg.mapper.PgInterviewEntityRowMapper;
+import ru.itmo.cs.app.interviewing.libs.page.infrastructure.pg.AbstractPgPageQueryService;
 
 @Primary
 @Service
 @AllArgsConstructor
-public class PgInterviewPageQueryService implements InterviewPageQueryService {
+public class PgInterviewPageQueryService extends AbstractPgPageQueryService implements InterviewPageQueryService {
     private final NamedParameterJdbcOperations jdbcOperations;
     private final PgScheduleEntityDao pgScheduleEntityDao;
     private final PgInterviewEntityRowMapper pgInterviewEntityRowMapper;
@@ -49,14 +47,6 @@ public class PgInterviewPageQueryService implements InterviewPageQueryService {
                                                           .map(e -> Interview.hydrate(e, pgScheduleEntityDao.findFor(e)))
                                                           .toList();
         return new InterviewPage(content, page, size, countTotal);
-    }
-
-    private static class CountTotalRowMapper implements RowMapper<Long> {
-
-        @Override
-        public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return rs.getLong("cnt");
-        }
     }
 
 }

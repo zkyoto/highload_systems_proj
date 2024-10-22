@@ -37,6 +37,22 @@ public class Candidate {
         return createdCandidate;
     }
 
+    public static Candidate hydrate(
+            String id,
+            Instant createdAt,
+            Instant updatedAt,
+            String status,
+            String full_name
+    ) {
+        return new Candidate(
+                CandidateId.hydrate(id),
+                createdAt,
+                updatedAt,
+                CandidateStatus.R.fromValue(status),
+                Name.of(full_name)
+        );
+    }
+
     public void changeStatusToScheduled() {
         validateState();
         this.status = CandidateStatus.WAITING_FOR_INTERVIEW;

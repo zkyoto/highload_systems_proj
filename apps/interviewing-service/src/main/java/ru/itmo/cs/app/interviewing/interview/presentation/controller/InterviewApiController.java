@@ -28,20 +28,11 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 import ru.itmo.cs.command_bus.CommandBus;
 
 @RestController
+@AllArgsConstructor
 public class InterviewApiController {
     private final CommandBus commandBus;
     private final InterviewRepository interviewRepository;
     private final InterviewPageQueryService interviewPageQueryService;
-
-    public InterviewApiController(
-            CommandBus commandBus,
-            @Qualifier("pgInterviewRepository") InterviewRepository interviewRepository,
-            @Qualifier("pgInterviewPageQueryService") InterviewPageQueryService interviewPageQueryService
-    ) {
-        this.commandBus = commandBus;
-        this.interviewRepository = interviewRepository;
-        this.interviewPageQueryService = interviewPageQueryService;
-    }
 
     @PostMapping("/api/v1/interviews/schedule")
     public ResponseEntity<?> scheduleInterview(
