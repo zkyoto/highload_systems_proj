@@ -16,7 +16,7 @@ import ru.itmo.cs.app.interviewing.feedback.domain.value.FeedbackId;
 @Repository
 @AllArgsConstructor
 public class InMemoryStubFeedbackRepository implements FeedbackRepository {
-    private final StoredDomainEventRepository storedDomainEventRepository;
+    private final StoredDomainEventRepository inMemoryStubStoredDomainEventRepository;
     private final List<Feedback> stubRepository = new LinkedList<>();
 
     @Override
@@ -44,7 +44,7 @@ public class InMemoryStubFeedbackRepository implements FeedbackRepository {
 
         releasedEvents.stream()
                 .map(StoredDomainEvent::of)
-                .forEach(storedDomainEventRepository::save);
+                .forEach(inMemoryStubStoredDomainEventRepository::save);
     }
 
     private void insert(Feedback feedback) {

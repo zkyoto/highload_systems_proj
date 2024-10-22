@@ -16,7 +16,7 @@ import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 @Repository
 @AllArgsConstructor
 public class InMemoryStubInterviewerRepository implements InterviewerRepository {
-    private final StoredDomainEventRepository storedDomainEventRepository;
+    private final StoredDomainEventRepository inMemoryStubStoredDomainEventRepository;
     private final List<Interviewer> stubRepository = new LinkedList<>();
 
     @Override
@@ -43,7 +43,7 @@ public class InMemoryStubInterviewerRepository implements InterviewerRepository 
         }
         releasedEvents.stream()
                       .map(StoredDomainEvent::of)
-                      .forEach(storedDomainEventRepository::save);
+                      .forEach(inMemoryStubStoredDomainEventRepository::save);
     }
 
     private void insert(Interviewer interviewer) {

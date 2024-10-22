@@ -1,5 +1,13 @@
 package ru.ifmo.cs.domain_event.domain.consumed_event;
 
+import java.time.Instant;
 import java.util.UUID;
 
-public record ConsumedDomainEvent(UUID eventId, String beanId) {}
+import ru.ifmo.cs.domain_event.domain.SubscriberReferenceId;
+
+public record ConsumedDomainEvent(
+        UUID eventId,
+        String eventTypeId,
+        SubscriberReferenceId referenceId,
+        Instant consumedAt
+) {}

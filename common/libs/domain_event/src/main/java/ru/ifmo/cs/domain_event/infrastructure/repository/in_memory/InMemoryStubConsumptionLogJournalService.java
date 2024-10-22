@@ -1,4 +1,4 @@
-package ru.ifmo.cs.domain_event.infrastructure.repository;
+package ru.ifmo.cs.domain_event.infrastructure.repository.in_memory;
 
 import java.util.LinkedList;
 import java.util.List;
