@@ -1,8 +1,9 @@
-package ru.ifmo.cs.domain_event.infrastructure.repository;
+package ru.ifmo.cs.domain_event.infrastructure.repository.in_memory;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEvent;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventStatus;

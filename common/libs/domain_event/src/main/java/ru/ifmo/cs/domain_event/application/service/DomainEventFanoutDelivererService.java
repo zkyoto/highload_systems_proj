@@ -3,6 +3,7 @@ package ru.ifmo.cs.domain_event.application.service;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ifmo.cs.domain_event.domain.SubscriberReferenceId;
 import ru.ifmo.cs.domain_event.domain.consumed_event.exception.DomainEventAlreadyConsumedException;
