@@ -9,7 +9,7 @@ import ru.itmo.cs.command_bus.CommandBus;
 
 @Component
 @AllArgsConstructor
-public class InterviewCancelledEventConsumer implements DomainEventConsumer<InterviewCancelledEvent> {
+public class InterviewCancelledEventCandidateDomainEventConsumer implements DomainEventConsumer<InterviewCancelledEvent> {
     private final CommandBus commandBus;
 
     @Override

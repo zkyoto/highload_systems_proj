@@ -15,7 +15,7 @@ import ru.itmo.cs.command_bus.CommandBus;
 
 @Component
 @AllArgsConstructor
-public class InterviewResultCreatedEventConsumer implements DomainEventConsumer<InterviewResultCreatedEvent> {
+public class InterviewResultCreatedEventCandidateDomainEventConsumer implements DomainEventConsumer<InterviewResultCreatedEvent> {
     private final InterviewResultRepository interviewResultRepository;
     private final FeedbackRepository feedbackRepository;
     private final InterviewRepository interviewRepository;
