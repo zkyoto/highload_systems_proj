@@ -72,12 +72,12 @@ public class PgInterviewResultRepository implements InterviewResultRepository {
     }
 
     @Override
-    @Transactional
     public List<InterviewResult> findAll() {
         return jdbcOperations.query(FIND_ALL, rowMapper);
     }
 
     @Override
+    @Transactional
     public void save(InterviewResult interviewResult) {
         List<InterviewResultEvent> releasedEvents = interviewResult.releaseEvents();
         boolean isNew = releasedEvents.stream().anyMatch(event -> event instanceof InterviewResultCreatedEvent);

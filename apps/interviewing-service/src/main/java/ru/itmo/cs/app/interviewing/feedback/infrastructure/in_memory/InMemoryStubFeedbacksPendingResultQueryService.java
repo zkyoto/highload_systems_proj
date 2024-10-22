@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.itmo.cs.app.interviewing.feedback.application.query.FeedbacksPendingResultQueryService;
 import ru.itmo.cs.app.interviewing.feedback.domain.Feedback;
@@ -15,10 +16,17 @@ import ru.itmo.cs.app.interviewing.interview_result.domain.InterviewResult;
 import ru.itmo.cs.app.interviewing.interview_result.domain.InterviewResultRepository;
 
 @Service
-@AllArgsConstructor
 public class InMemoryStubFeedbacksPendingResultQueryService implements FeedbacksPendingResultQueryService {
     private final FeedbackRepository feedbackRepository;
     private final InterviewResultRepository interviewResultRepository;
+
+    public InMemoryStubFeedbacksPendingResultQueryService(
+            @Qualifier("inMemoryStubFeedbackRepository") FeedbackRepository feedbackRepository,
+            @Qualifier("inMemoryStubInterviewResultRepository") InterviewResultRepository interviewResultRepository
+    ) {
+        this.feedbackRepository = feedbackRepository;
+        this.interviewResultRepository = interviewResultRepository;
+    }
 
     @Override
     public List<Feedback> findAll() {

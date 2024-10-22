@@ -1,4 +1,4 @@
-package ru.itmo.cs.app.interviewing.libs.page;
+package ru.itmo.cs.app.interviewing.libs.page.domain;
 
 import java.util.List;
 

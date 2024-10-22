@@ -3,7 +3,7 @@ package ru.itmo.cs.app.interviewing.feedback.application.query.dto;
 import java.util.List;
 
 import ru.itmo.cs.app.interviewing.feedback.domain.Feedback;
-import ru.itmo.cs.app.interviewing.libs.page.Page;
+import ru.itmo.cs.app.interviewing.libs.page.domain.Page;
 
 public record FeedbackPage(
         List<Feedback> content,

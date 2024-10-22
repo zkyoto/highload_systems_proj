@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.exception_handling;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -33,6 +34,16 @@ public class ExceptionHandlingController {
                                         ex.getClass(),
                                         ex.getMessage(),
                                         stackTraceToString(ex.getStackTrace()));
+    }
+
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({SQLException.class})
+    @ResponseBody ErrorResponseBodyDto
+    handleSQLException(HttpServletRequest req, Exception ex) {
+        return new ErrorResponseBodyDto(HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getClass(),
+                ex.getMessage(),
+                stackTraceToString(ex.getStackTrace()));
     }
 
     private String stackTraceToString(StackTraceElement[] stackTraceElements) {

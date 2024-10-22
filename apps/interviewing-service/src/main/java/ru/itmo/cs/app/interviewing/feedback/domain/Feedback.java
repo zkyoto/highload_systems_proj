@@ -4,7 +4,9 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 
+import jakarta.annotation.Nullable;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,31 @@ public class Feedback {
                                          interviewId,
                                          FeedbackStatus.WAITING_FOR_SUBMIT);
         feedback.events.add(FeedbackCreatedEvent.fromEntity(feedback));
+        return feedback;
+    }
+
+    public static Feedback hydrate(
+            String id,
+            Instant createdAt,
+            Instant updatedAt,
+            String interviewId,
+            String status,
+            @Nullable Integer grade,
+            @Nullable String comment
+    ) {
+        Feedback feedback = new Feedback(
+                FeedbackId.hydrate(id),
+                createdAt,
+                updatedAt,
+                InterviewId.hydrate(interviewId),
+                FeedbackStatus.R.fromValue(status)
+        );
+        if (grade != null) {
+            feedback.grade = Grade.of(grade);
+        }
+        if (comment != null) {
+            feedback.comment = Comment.of(comment);
+        }
         return feedback;
     }
 
