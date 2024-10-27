@@ -20,7 +20,7 @@ jobs:
       - name: Run tests
         run: |
           pwd
-          docker run -u root --rm -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest /var/run/docker.sock:/var/run/docker.sock ./mvnw test
+          docker run -u root --rm -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest /var/run/docker.sock:/var/run/docker.sock $(which docker):/usr/bin/docker ./mvnw test
       - name: Archive JaCoCo coverage report
         run: |
           mkdir -p coverage
