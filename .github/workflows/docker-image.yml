@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - main 
+      - main
 
 jobs:
   build:
@@ -19,8 +19,7 @@ jobs:
           docker build -t GhoulTeam/highload-systems:latest .
       - name: Run tests
         run: |
-          pwd
-          docker run -u root --rm -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest /var/run/docker.sock:/var/run/docker.sock $(which docker):/usr/bin/docker ./mvnw test
+          docker run --rm -v $PWD:$PWD -w $PWD -v /var/run/docker.sock:/var/run/docker.sock maven:3 mvn test
       - name: Archive JaCoCo coverage report
         run: |
           mkdir -p coverage
