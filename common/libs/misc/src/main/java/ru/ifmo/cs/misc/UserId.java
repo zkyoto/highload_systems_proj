@@ -2,13 +2,19 @@ package ru.ifmo.cs.misc;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public final class UserId {
+    @JsonValue
     private final long uid;
 
+    @JsonCreator
     public static UserId of(long uid) {
         return new UserId(uid);
     }
 
+    @JsonCreator
     public static UserId of(String uid) {
         return new UserId(Long.parseLong(uid));
     }

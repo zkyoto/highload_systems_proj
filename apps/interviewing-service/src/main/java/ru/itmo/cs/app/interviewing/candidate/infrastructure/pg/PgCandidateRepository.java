@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.candidate.infrastructure.pg;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -38,15 +39,15 @@ public class PgCandidateRepository implements CandidateRepository {
     private final static String INSERT = """
             INSERT INTO candidates(
             id,
+            full_name,
             created_at,
             updated_at,
-            full_name,
             status
             ) VALUES (
             :id,
+            :fullName,
             :createdAt,
             :updatedAt,
-            :fullName,
             :status
             )
             """;
@@ -64,7 +65,7 @@ public class PgCandidateRepository implements CandidateRepository {
     public Candidate findById(CandidateId id) {
         return jdbcOperations.query(
                         FIND_BY_ID,
-                        new MapSqlParameterSource().addValue("id", id.value().toString()),
+                        new MapSqlParameterSource().addValue("id", id.value()),
                         rowMapper).stream()
                 .findAny()
                 .orElseThrow();
@@ -94,9 +95,9 @@ public class PgCandidateRepository implements CandidateRepository {
     private void insert(Candidate candidate) {
         jdbcOperations.update(
                 INSERT,
-                new MapSqlParameterSource().addValue("id", candidate.getId().value().toString())
-                        .addValue("createdAt", candidate.getCreatedAt())
-                        .addValue("updatedAt", candidate.getUpdatedAt())
+                new MapSqlParameterSource().addValue("id", candidate.getId().value())
+                        .addValue("createdAt", Timestamp.from(candidate.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(candidate.getUpdatedAt()))
                         .addValue("fullName", candidate.getName().fullName())
                         .addValue("status", candidate.getStatus().value()));
     }
@@ -104,9 +105,9 @@ public class PgCandidateRepository implements CandidateRepository {
     private void update(Candidate candidate) {
         jdbcOperations.update(
                 UPDATE,
-                new MapSqlParameterSource().addValue("id", candidate.getId().value().toString())
-                        .addValue("createdAt", candidate.getCreatedAt())
-                        .addValue("updatedAt", candidate.getUpdatedAt())
+                new MapSqlParameterSource().addValue("id", candidate.getId().value())
+                        .addValue("createdAt", Timestamp.from(candidate.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(candidate.getUpdatedAt()))
                         .addValue("fullName", candidate.getName().fullName())
                         .addValue("status", candidate.getStatus().value()));
     }

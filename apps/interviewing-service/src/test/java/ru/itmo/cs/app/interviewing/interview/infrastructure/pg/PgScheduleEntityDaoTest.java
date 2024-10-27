@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 import ru.itmo.cs.app.interviewing.interview.infrastructure.pg.entity.PgInterviewEntity;
 import ru.itmo.cs.app.interviewing.interview.infrastructure.pg.entity.PgScheduleEntity;
@@ -37,37 +38,32 @@ public class PgScheduleEntityDaoTest {
 
     @Test
     public void testFindFor() {
-        // Arrange
         PgInterviewEntity mockInterviewEntity = mock(PgInterviewEntity.class);
-        when(mockInterviewEntity.interviewerId()).thenReturn("testInterviewerId");
+        when(mockInterviewEntity.id()).thenReturn(UUID.randomUUID().toString());
 
         PgScheduleEntity mockScheduleEntity = mock(PgScheduleEntity.class);
 
         when(jdbcOperations.query(anyString(), any(MapSqlParameterSource.class), eq(pgScheduleEntityRowMapper)))
                 .thenReturn(List.of(mockScheduleEntity));
 
-        // Act
         List<PgScheduleEntity> result = dao.findFor(mockInterviewEntity);
 
-        // Assert
         assertEquals(1, result.size());
         assertEquals(mockScheduleEntity, result.get(0));
     }
 
     @Test
     public void testSave() {
-        // Arrange
         PgScheduleEntity mockScheduleEntity = mock(PgScheduleEntity.class);
-        when(mockScheduleEntity.id()).thenReturn("scheduleId");
+        when(mockScheduleEntity.id()).thenReturn(UUID.randomUUID().toString());
         when(mockScheduleEntity.createdAt()).thenReturn(Timestamp.valueOf("2023-10-01 00:00:00"));
         when(mockScheduleEntity.updatedAt()).thenReturn(Timestamp.valueOf("2023-10-01 00:01:00"));
         when(mockScheduleEntity.scheduledFor()).thenReturn(Timestamp.valueOf("2023-10-02 00:00:00"));
         when(mockScheduleEntity.status()).thenReturn("Scheduled");
+        when(mockScheduleEntity.interviewId()).thenReturn(UUID.randomUUID().toString());
 
-        // Act
         dao.save(mockScheduleEntity);
 
-        // Assert
         verify(jdbcOperations).update(anyString(), any(MapSqlParameterSource.class));
     }
 }

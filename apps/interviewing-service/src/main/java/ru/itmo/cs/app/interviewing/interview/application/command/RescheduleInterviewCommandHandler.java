@@ -14,7 +14,7 @@ public class RescheduleInterviewCommandHandler implements CommandHandler<Resched
     @Override
     public void handle(RescheduleInterviewCommand command) {
         Interview interview = interviewRepository.findById(command.interviewId);
-        interview.reschedule(command.newscheduledTime);
+        interview.reschedule(command.newScheduledTime);
         interviewRepository.save(interview);
     }
 

@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.interview.infrastructure.pg;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -67,7 +68,7 @@ public class PgInterviewRepository implements InterviewRepository {
     public Interview findById(InterviewId id) {
         PgInterviewEntity pgInterviewEntity = jdbcOperations.query(
                         FIND_BY_ID,
-                        new MapSqlParameterSource().addValue("id", id.value().toString()),
+                        new MapSqlParameterSource().addValue("id", id.value()),
                         pgInterviewEntityRowMapper
                 ).stream()
                 .findAny()
@@ -79,7 +80,6 @@ public class PgInterviewRepository implements InterviewRepository {
     public List<Interview> findAll() {
         List<PgInterviewEntity> entities = jdbcOperations.query(
                 FIND_ALL,
-                new MapSqlParameterSource(),
                 pgInterviewEntityRowMapper);
 
         return entities.stream().map(e -> Interview.hydrate(e, pgScheduleEntityDao.findFor(e))).toList();
@@ -104,21 +104,28 @@ public class PgInterviewRepository implements InterviewRepository {
     private void insert(Interview interview) {
         jdbcOperations.update(
                 INSERT,
-                new MapSqlParameterSource().addValue("id", interview.getId().toString())
-                                           .addValue("createdAt", interview.getCreatedAt())
-                                           .addValue("updatedAt", interview.getUpdatedAt())
-                                           .addValue("interviewerId", interview.getInterviewerId())
-                                           .addValue("candidateId", interview.getCandidateId()));
+                new MapSqlParameterSource().addValue("id", interview.getId().value())
+                        .addValue("createdAt", Timestamp.from(interview.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(interview.getUpdatedAt()))
+                        .addValue("interviewerId", interview.getInterviewerId().value())
+                        .addValue("candidateId", interview.getCandidateId().value()));
+        interview.getSchedules()
+                .stream()
+                .map(schedule -> PgScheduleEntity.from(interview.getId(), schedule))
+                .forEach(pgScheduleEntityDao::save);
     }
 
     private void update(Interview interview) {
         jdbcOperations.update(
                 UPDATE,
-                new MapSqlParameterSource().addValue("id", interview.getId().toString())
-                                           .addValue("createdAt", interview.getCreatedAt())
-                                           .addValue("updatedAt", interview.getUpdatedAt())
-                                           .addValue("interviewerId", interview.getInterviewerId())
-                                           .addValue("candidateId", interview.getCandidateId()));
-        interview.getSchedules().stream().map(PgScheduleEntity::from).forEach(pgScheduleEntityDao::save);
+                new MapSqlParameterSource().addValue("id", interview.getId().value())
+                        .addValue("createdAt", Timestamp.from(interview.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(interview.getUpdatedAt()))
+                        .addValue("interviewerId", interview.getInterviewerId().value())
+                        .addValue("candidateId", interview.getCandidateId().value()));
+        interview.getSchedules()
+                .stream()
+                .map(schedule -> PgScheduleEntity.from(interview.getId(), schedule))
+                .forEach(pgScheduleEntityDao::save);
     }
 }

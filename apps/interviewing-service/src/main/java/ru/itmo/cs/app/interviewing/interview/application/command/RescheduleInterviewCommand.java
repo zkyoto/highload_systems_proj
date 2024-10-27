@@ -11,5 +11,5 @@ import ru.itmo.cs.command_bus.Command;
 @FieldDefaults(makeFinal = true)
 public class RescheduleInterviewCommand implements Command {
     InterviewId interviewId;
-    Instant newscheduledTime;
+    Instant newScheduledTime;
 }

@@ -31,7 +31,7 @@ public class PgFeedbackByInterviewQueryService implements FeedbackByInterviewQue
     public Optional<Feedback> findByInterviewId(InterviewId interviewId) {
         return jdbcOperations.query(
                         FIND_BY_INTERVIEW_ID,
-                        new MapSqlParameterSource().addValue("interviewId", interviewId.value().toString()),
+                        new MapSqlParameterSource().addValue("interviewId", interviewId.value()),
                         rowMapper)
                 .stream()
                 .findAny();

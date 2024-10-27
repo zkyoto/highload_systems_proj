@@ -14,10 +14,11 @@ public class PgScheduleEntityRowMapper implements RowMapper<PgScheduleEntity> {
     @Override
     public PgScheduleEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new PgScheduleEntity(rs.getString("id"),
-                                    rs.getTimestamp("created_at"),
-                                    rs.getTimestamp("updated_at"),
-                                    rs.getTimestamp("scheduled_for"),
-                                    rs.getString("status"));
+                rs.getTimestamp("created_at"),
+                rs.getTimestamp("updated_at"),
+                rs.getTimestamp("scheduled_for"),
+                rs.getString("status"),
+                rs.getString("interview_id"));
     }
 
 }

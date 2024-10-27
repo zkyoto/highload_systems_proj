@@ -2,12 +2,13 @@ package ru.itmo.cs.app.interviewing.candidate.domain.event;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ru.itmo.cs.app.interviewing.candidate.domain.Candidate;
 import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateId;
 
 public record CandidateScheduledForInterviewEvent(
-        CandidateId candidateId,
-        Instant occurredOn
+        @JsonProperty("candidateId") CandidateId candidateId,
+        @JsonProperty("occurredOn") Instant occurredOn
 ) implements CandidateEvent {
     public static final String EVENT_TYPE = "CandidateScheduledForInterviewEvent";
 

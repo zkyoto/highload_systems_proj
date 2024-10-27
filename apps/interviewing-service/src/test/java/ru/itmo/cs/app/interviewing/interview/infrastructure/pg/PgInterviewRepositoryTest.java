@@ -74,7 +74,7 @@ public class PgInterviewRepositoryTest {
         PgInterviewEntity mockEntity = mock(PgInterviewEntity.class);
         List<PgScheduleEntity> scheduleEntities = Collections.emptyList();
 
-        when(jdbcOperations.query(anyString(), any(MapSqlParameterSource.class), eq(pgInterviewEntityRowMapper)))
+        when(jdbcOperations.query(anyString(), eq(pgInterviewEntityRowMapper)))
                 .thenReturn(List.of(mockEntity));
         when(pgScheduleEntityDao.findFor(mockEntity)).thenReturn(scheduleEntities);
 

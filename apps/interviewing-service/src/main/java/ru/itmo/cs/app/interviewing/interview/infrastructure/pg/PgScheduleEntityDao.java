@@ -1,6 +1,7 @@
 package ru.itmo.cs.app.interviewing.interview.infrastructure.pg;
 
 import java.util.List;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,25 +30,26 @@ class PgScheduleEntityDao {
             created_at = :createdAt,
             updated_at = :updatedAt,
             scheduled_for = :scheduledFor,
-            status = :status,
-            interview_id = :interviewId
+            status = :status
             """;
 
     List<PgScheduleEntity> findFor(PgInterviewEntity pgInterviewEntity) {
         return jdbcOperations.query(
                 FIND_BY_INTERVIEW_ID,
-                new MapSqlParameterSource().addValue("interview_id", pgInterviewEntity.interviewerId()),
+                new MapSqlParameterSource().addValue("interviewId", UUID.fromString(pgInterviewEntity.id())),
                 pgScheduleEntityRowMapper
         );
     }
 
     void save(PgScheduleEntity schedule) {
         jdbcOperations.update(
-                INSERT_ON_CONFLICT_UPDATE, new MapSqlParameterSource().addValue("id", schedule.id())
+                INSERT_ON_CONFLICT_UPDATE, new MapSqlParameterSource()
+                        .addValue("id", UUID.fromString(schedule.id()))
                         .addValue("createdAt", schedule.createdAt())
                         .addValue("updatedAt", schedule.updatedAt())
                         .addValue("scheduledFor", schedule.scheduledFor())
-                        .addValue("status", schedule.status()));
+                        .addValue("status", schedule.status())
+                        .addValue("interviewId", UUID.fromString(schedule.interviewId())));
     }
 
 }

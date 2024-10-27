@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.ifmo.cs.domain_event.application.service.DomainEventConsumer;
 import ru.itmo.cs.app.interviewing.candidate.application.command.ChageStatusToProcessedCommand;
+import ru.itmo.cs.app.interviewing.candidate.application.query.CandidateByInterviewResultQueryService;
+import ru.itmo.cs.app.interviewing.candidate.domain.Candidate;
 import ru.itmo.cs.app.interviewing.feedback.domain.Feedback;
 import ru.itmo.cs.app.interviewing.feedback.domain.FeedbackRepository;
 import ru.itmo.cs.app.interviewing.interview.domain.Interview;
@@ -16,19 +18,13 @@ import ru.itmo.cs.command_bus.CommandBus;
 @Component
 @AllArgsConstructor
 public class InterviewResultCreatedEventCandidateDomainEventConsumer implements DomainEventConsumer<InterviewResultCreatedEvent> {
-    private final InterviewResultRepository interviewResultRepository;
-    private final FeedbackRepository feedbackRepository;
-    private final InterviewRepository interviewRepository;
+    private final CandidateByInterviewResultQueryService candidateByInterviewResultQueryService;
     private final CommandBus commandBus;
 
     @Override
     public void consume(InterviewResultCreatedEvent event) {
-        InterviewResult interviewResult = interviewResultRepository.findById(event.interviewResultId());
-        Feedback feedback = feedbackRepository.findById(interviewResult.getFeedbackId());
-        Interview interview = interviewRepository.findById(feedback.getInterviewId());
-        //то, что выше надо вынести в отделньый query service, но сейчас нет времени на это
-
-        commandBus.submit(new ChageStatusToProcessedCommand(interview.getCandidateId()));
+        Candidate candidate = candidateByInterviewResultQueryService.findBy(event.interviewResultId());
+        commandBus.submit(new ChageStatusToProcessedCommand(candidate.getId()));
     }
 
 }
