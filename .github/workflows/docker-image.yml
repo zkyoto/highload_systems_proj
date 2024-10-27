@@ -21,7 +21,7 @@ jobs:
         run: |
           docker info
           ls -la /var/run/
-          docker run --rm -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest /var/run/docker.sock:/var/run/docker.sock ./mvnw test
+          docker run -ti --rm -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest /var/run/docker.sock:/var/run/docker.sock ./mvnw test
       - name: Archive JaCoCo coverage report
         run: |
           mkdir -p coverage
