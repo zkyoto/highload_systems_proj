@@ -19,6 +19,7 @@ jobs:
           docker build -t GhoulTeam/highload-systems:latest .
       - name: Run tests
         run: |
+          docker info
           docker run --rm -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest /var/run/docker.sock:/var/run/docker.sock ./mvnw test
       - name: Archive JaCoCo coverage report
         run: |
