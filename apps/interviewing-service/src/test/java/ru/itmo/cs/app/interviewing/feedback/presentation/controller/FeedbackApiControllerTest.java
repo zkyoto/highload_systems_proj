@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
+import ru.itmo.cs.app.interviewing.configuration.TurnOffAllDomainEventConsumers;
 import ru.itmo.cs.app.interviewing.feedback.application.command.SaveCommentFeedbackCommand;
 import ru.itmo.cs.app.interviewing.feedback.application.command.SaveGradeFeedbackCommand;
 import ru.itmo.cs.app.interviewing.feedback.application.query.FeedbackByInterviewQueryService;
@@ -27,6 +29,7 @@ import ru.itmo.cs.app.interviewing.interview.domain.Interview;
 import ru.itmo.cs.app.interviewing.utils.InterviewingServiceStubFactory;
 import ru.itmo.cs.command_bus.CommandBus;
 
+@ContextConfiguration(classes = TurnOffAllDomainEventConsumers.class)
 class FeedbackApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
@@ -87,14 +90,16 @@ class FeedbackApiControllerTest extends AbstractIntegrationTest {
         Feedback stubFeedback = stubFactory.createFeedback();
         commandBus.submit(new SaveGradeFeedbackCommand(stubFeedback.getId(), Grade.of(5)));
         commandBus.submit(new SaveCommentFeedbackCommand(stubFeedback.getId(), Comment.of("comment")));
-        SubmitFeedbackRequestBodyDto requestBody = new SubmitFeedbackRequestBodyDto(stubFeedback.getId().value().toString());
+        SubmitFeedbackRequestBodyDto requestBody =
+                new SubmitFeedbackRequestBodyDto(stubFeedback.getId().value().toString());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(requestBody)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        Assertions.assertEquals(FeedbackStatus.SUBMITTED, feedbackRepository.findById(stubFeedback.getId()).getStatus());
+        Assertions.assertEquals(FeedbackStatus.SUBMITTED,
+                feedbackRepository.findById(stubFeedback.getId()).getStatus());
     }
 
     @Test

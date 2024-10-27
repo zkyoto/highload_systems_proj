@@ -1,6 +1,7 @@
 package ru.itmo.cs.app.interviewing.utils;
 
 import java.time.Instant;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ public class InterviewingServiceStubFactory {
     private InterviewResultRepository interviewResultRepository;
 
     public Interviewer createInterviewer() {
-        Interviewer stubInterviewer = Interviewer.create(UserId.of("123456"), Name.of("test name"));
+        Interviewer stubInterviewer = Interviewer.create(UserId.of(new Random().nextLong()), Name.of("test name"));
         interviewerRepository.save(stubInterviewer);
 
         return stubInterviewer;

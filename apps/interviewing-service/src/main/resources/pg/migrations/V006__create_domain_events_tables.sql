@@ -1,13 +1,15 @@
 create table domain_events
 (
-    id                    uuid      not null primary key,
+    id                    uuid      not null,
     created_at            timestamp not null,
     processed_at          timestamp,
     type                  text      not null,
     status                text      not null,
     payload               text      not null,
     retry_counter         integer   not null,
-    event_sequence_number bigserial
+    event_sequence_number bigserial,
+
+    primary key (id)
 );
 
 create table domain_event_consumption_logs

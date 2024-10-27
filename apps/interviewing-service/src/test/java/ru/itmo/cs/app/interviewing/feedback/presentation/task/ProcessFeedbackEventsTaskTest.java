@@ -5,13 +5,16 @@ import java.time.Instant;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEvent;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
+import ru.itmo.cs.app.interviewing.configuration.TurnOffAllDomainEventConsumers;
 import ru.itmo.cs.app.interviewing.feedback.domain.event.FeedbackCreatedEvent;
 import ru.itmo.cs.app.interviewing.feedback.domain.event.FeedbackEvent;
 import ru.itmo.cs.app.interviewing.feedback.domain.value.FeedbackId;
 
+@ContextConfiguration(classes = TurnOffAllDomainEventConsumers.class)
 class ProcessFeedbackEventsTaskTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -30,6 +33,7 @@ class ProcessFeedbackEventsTaskTest extends AbstractIntegrationTest {
 
     @Test
     void testStopProcessingFeedbackEventsWhenThereAreNoMoreEventsToDeliver() {
+        deliverAllSavedDomainEvents();
         StoredDomainEvent actual = storedDomainEventRepository.nextWaitedForDelivery();
         Assertions.assertNull(actual);
         processFeedbackEventsTask.execute();

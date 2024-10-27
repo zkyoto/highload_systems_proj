@@ -1,12 +1,15 @@
 create table feedbacks
 (
-    id           uuid      not null primary key,
+    id           uuid      not null,
     created_at   timestamp not null,
     updated_at   timestamp not null,
     interview_id uuid      not null,
     status       text      not null,
     grade        int,
-    comment      text
+    comment      text,
+
+    primary key (id),
+    unique (interview_id)
 );
 
 ALTER TABLE feedbacks

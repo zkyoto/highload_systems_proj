@@ -1,14 +1,14 @@
 package ru.itmo.cs.app.interviewing.interview_result.presentation.controller;
 
-import java.util.UUID;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
+import ru.itmo.cs.app.interviewing.configuration.TurnOffAllDomainEventConsumers;
 import ru.itmo.cs.app.interviewing.feedback.domain.Feedback;
 import ru.itmo.cs.app.interviewing.interview_result.application.query.InterviewResultByFeedbackQueryService;
 import ru.itmo.cs.app.interviewing.interview_result.application.query.InterviewResultPageQueryService;
@@ -21,7 +21,6 @@ import ru.itmo.cs.app.interviewing.interview_result.presentation.controller.dto.
 import ru.itmo.cs.app.interviewing.interview_result.presentation.controller.dto.response.GetInterviewResultResponseBodyDto;
 import ru.itmo.cs.app.interviewing.interview_result.presentation.controller.dto.response.InterviewResultResponseDto;
 import ru.itmo.cs.app.interviewing.utils.InterviewingServiceStubFactory;
-import ru.itmo.cs.command_bus.CommandBus;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ContextConfiguration(classes = TurnOffAllDomainEventConsumers.class)
 class InterviewResultApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
