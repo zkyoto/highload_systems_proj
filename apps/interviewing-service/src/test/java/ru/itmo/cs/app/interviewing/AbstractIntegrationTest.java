@@ -29,7 +29,7 @@ public abstract class AbstractIntegrationTest {
 
     static {
         postgreSQLContainer = new PostgreSQLContainer<>("postgres:16.0")
-                .withReuse(false)
+                .withReuse(true)
                 .withDatabaseName(DATABASE_NAME);
         postgreSQLContainer.start();
     }
