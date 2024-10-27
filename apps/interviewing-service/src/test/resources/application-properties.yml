@@ -1,0 +1,10 @@
+#Spring Boot
+spring:
+  datasource:
+      username: ${CONTAINER.USERNAME}
+      password: ${CONTAINER.PASSWORD}
+      url: ${CONTAINER.URL}
+      driver-class-name: ${CONTAINER.DRIVER-CLASS}
+  flyway:
+    enabled: true
+    locations: classpath:pg/migrations

@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.interviewer.infrastructure.pg;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -68,7 +69,7 @@ public class PgInterviewerRepository implements InterviewerRepository {
     public Interviewer findById(InterviewerId id) {
         return jdbcOperations.query(
                         FIND_BY_ID,
-                        new MapSqlParameterSource().addValue("id", id.value().toString()),
+                        new MapSqlParameterSource().addValue("id", id.value()),
                         rowMapper).stream()
                 .findAny()
                 .orElseThrow();
@@ -98,10 +99,10 @@ public class PgInterviewerRepository implements InterviewerRepository {
     private void insert(Interviewer interviewer) {
         jdbcOperations.update(
                 INSERT,
-                new MapSqlParameterSource().addValue("id", interviewer.getId().value().toString())
-                        .addValue("createdAt", interviewer.getCreatedAt())
-                        .addValue("updatedAt", interviewer.getUpdatedAt())
-                        .addValue("userId", interviewer.getUserId())
+                new MapSqlParameterSource().addValue("id", interviewer.getId().value())
+                        .addValue("createdAt", Timestamp.from(interviewer.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(interviewer.getUpdatedAt()))
+                        .addValue("userId", interviewer.getUserId().getUid())
                         .addValue("fullName", interviewer.getName().fullName())
                         .addValue("status", interviewer.getInterviewerStatus().value()));
     }
@@ -109,10 +110,10 @@ public class PgInterviewerRepository implements InterviewerRepository {
     private void update(Interviewer interviewer) {
         jdbcOperations.update(
                 UPDATE,
-                new MapSqlParameterSource().addValue("id", interviewer.getId().value().toString())
-                        .addValue("createdAt", interviewer.getCreatedAt())
-                        .addValue("updatedAt", interviewer.getUpdatedAt())
-                        .addValue("userId", interviewer.getUserId())
+                new MapSqlParameterSource().addValue("id", interviewer.getId().value())
+                        .addValue("createdAt", Timestamp.from(interviewer.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(interviewer.getUpdatedAt()))
+                        .addValue("userId", interviewer.getUserId().getUid())
                         .addValue("fullName", interviewer.getName().fullName())
                         .addValue("status", interviewer.getInterviewerStatus().value()));
     }

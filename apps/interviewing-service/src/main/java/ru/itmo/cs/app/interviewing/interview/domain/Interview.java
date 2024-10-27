@@ -1,11 +1,9 @@
 package ru.itmo.cs.app.interviewing.interview.domain;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,12 +48,12 @@ public class Interview {
             PgInterviewEntity pgInterviewEntity,
             List<PgScheduleEntity> pgScheduleEntities
     ) {
-        return new Interview(InterviewId.hydrate(pgInterviewEntity.interviewerId()),
+        return new Interview(InterviewId.hydrate(pgInterviewEntity.id()),
                              pgInterviewEntity.createdAt().toInstant(),
                              pgInterviewEntity.updated_at().toInstant(),
                              InterviewerId.hydrate(pgInterviewEntity.interviewerId()),
                              CandidateId.hydrate(pgInterviewEntity.candidateId()),
-                             pgScheduleEntities.stream().map(Schedule::hydrate).toList());
+                             new LinkedList<>(pgScheduleEntities.stream().map(Schedule::hydrate).toList()));
     }
 
     public Instant getScheduledFor() {

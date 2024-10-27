@@ -1,5 +1,7 @@
 package ru.itmo.cs.app.interviewing.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,4 +19,8 @@ import ru.itmo.cs.command_bus.impl.SpringContextSimpleCommandBusProcessor;
         DomainEventsConfiguration.class,
 })
 public class InterviewingServiceConfiguration {
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper().registerModule(new JavaTimeModule());
+    }
 }

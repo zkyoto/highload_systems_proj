@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.feedback.infrastructure.pg;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -70,7 +71,7 @@ public class PgFeedbackRepository implements FeedbackRepository {
     public Feedback findById(FeedbackId id) {
         return jdbcOperations.query(
                         FIND_BY_ID,
-                        new MapSqlParameterSource().addValue("id", id.value().toString()),
+                        new MapSqlParameterSource().addValue("id", id.value()),
                         rowMapper).stream()
                 .findAny()
                 .orElseThrow();
@@ -100,25 +101,29 @@ public class PgFeedbackRepository implements FeedbackRepository {
     public void insert(Feedback feedback) {
         jdbcOperations.update(
                 INSERT,
-                new MapSqlParameterSource().addValue("id", feedback.getId().value().toString())
-                        .addValue("createdAt", feedback.getCreatedAt())
-                        .addValue("updatedAt", feedback.getUpdatedAt())
-                        .addValue("interviewId", feedback.getInterviewId().value().toString())
+                new MapSqlParameterSource().addValue("id", feedback.getId().value())
+                        .addValue("createdAt", Timestamp.from(feedback.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(feedback.getUpdatedAt()))
+                        .addValue("interviewId", feedback.getInterviewId().value())
                         .addValue("status", feedback.getStatus().value())
-                        .addValue("grade", feedback.getGrade())
-                        .addValue("comment", feedback.getComment()));
+                        .addValue("grade", feedback.getGrade() == null ?
+                                null : feedback.getGrade().getValue())
+                        .addValue("comment", feedback.getComment() == null ?
+                                null : feedback.getComment().getValue()));
     }
 
     public void update(Feedback feedback) {
         jdbcOperations.update(
                 UPDATE,
-                new MapSqlParameterSource().addValue("id", feedback.getId().value().toString())
-                        .addValue("createdAt", feedback.getCreatedAt())
-                        .addValue("updatedAt", feedback.getUpdatedAt())
-                        .addValue("interviewId", feedback.getInterviewId().value().toString())
+                new MapSqlParameterSource().addValue("id", feedback.getId().value())
+                        .addValue("createdAt", Timestamp.from(feedback.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(feedback.getUpdatedAt()))
+                        .addValue("interviewId", feedback.getInterviewId().value())
                         .addValue("status", feedback.getStatus().value())
-                        .addValue("grade", feedback.getGrade())
-                        .addValue("comment", feedback.getComment()));
+                        .addValue("grade", feedback.getGrade() == null ?
+                                null : feedback.getGrade().getValue())
+                        .addValue("comment", feedback.getComment() == null ?
+                                null : feedback.getComment().getValue()));
     }
 
 }

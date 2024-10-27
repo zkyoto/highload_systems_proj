@@ -1,5 +1,6 @@
 package ru.itmo.cs.app.interviewing.interview_result.infrastructure.pg;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -65,7 +66,7 @@ public class PgInterviewResultRepository implements InterviewResultRepository {
     public InterviewResult findById(InterviewResultId interviewResultId) {
         return jdbcOperations.query(
                         FIND_BY_ID,
-                        new MapSqlParameterSource().addValue("id", interviewResultId.value().toString()),
+                        new MapSqlParameterSource().addValue("id", interviewResultId.value()),
                         rowMapper).stream()
                 .findAny()
                 .orElseThrow();
@@ -95,20 +96,20 @@ public class PgInterviewResultRepository implements InterviewResultRepository {
     private void insert(InterviewResult interviewResult) {
         jdbcOperations.update(
                 INSERT,
-                new MapSqlParameterSource().addValue("id", interviewResult.getId().value().toString())
-                        .addValue("createdAt", interviewResult.getCreatedAt())
-                        .addValue("updatedAt", interviewResult.getUpdatedAt())
-                        .addValue("feedbackId", interviewResult.getFeedbackId().value().toString())
+                new MapSqlParameterSource().addValue("id", interviewResult.getId().value())
+                        .addValue("createdAt", Timestamp.from(interviewResult.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(interviewResult.getUpdatedAt()))
+                        .addValue("feedbackId", interviewResult.getFeedbackId().value())
                         .addValue("verdict", interviewResult.getVerdict().value()));
     }
 
     private void update(InterviewResult interviewResult) {
         jdbcOperations.update(
                 UPDATE,
-                new MapSqlParameterSource().addValue("id", interviewResult.getId().value().toString())
-                        .addValue("createdAt", interviewResult.getCreatedAt())
-                        .addValue("updatedAt", interviewResult.getUpdatedAt())
-                        .addValue("feedbackId", interviewResult.getFeedbackId().value().toString())
+                new MapSqlParameterSource().addValue("id", interviewResult.getId().value())
+                        .addValue("createdAt", Timestamp.from(interviewResult.getCreatedAt()))
+                        .addValue("updatedAt", Timestamp.from(interviewResult.getUpdatedAt()))
+                        .addValue("feedbackId", interviewResult.getFeedbackId().value())
                         .addValue("verdict", interviewResult.getVerdict().value()));
     }
 }

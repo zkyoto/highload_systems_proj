@@ -1,5 +1,7 @@
 package ru.ifmo.cs.domain_event.infrastructure.repository.pg;
 
+import java.sql.Timestamp;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -43,7 +45,7 @@ public class PgStoredDomainEventRepository implements StoredDomainEventRepositor
              :createdAt,
              :processedAt,
              :type,
-             :status
+             :status,
              :payload,
              :retryCounter
             )
@@ -81,13 +83,13 @@ public class PgStoredDomainEventRepository implements StoredDomainEventRepositor
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
         jdbcOperations.update(
                 INSERT,
                 new MapSqlParameterSource()
                         .addValue("id", event.getEventId())
-                        .addValue("createdAt", event.getOccurredOn())
-                        .addValue("processedAt", event.getDeliveredAt())
+                        .addValue("createdAt", Timestamp.from(event.getOccurredOn()))
+                        .addValue("processedAt", event.getDeliveredAt() == null ?
+                                null : Timestamp.from(event.getDeliveredAt()))
                         .addValue("type", knownDomainEventTypeResolver.typeByClass(event.getEvent().getClass()))
                         .addValue("status", event.getStatus().value())
                         .addValue("payload", payload)
@@ -101,7 +103,7 @@ public class PgStoredDomainEventRepository implements StoredDomainEventRepositor
                 new MapSqlParameterSource()
                         .addValue("id", event.getEventId())
                         .addValue("status", event.getStatus().value())
-                        .addValue("processedAt", event.getDeliveredAt())
+                        .addValue("processedAt", Timestamp.from(event.getDeliveredAt()))
                         .addValue("retryCounter", event.getRetryCounter())
         );
     }
