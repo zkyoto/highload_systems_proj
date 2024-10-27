@@ -81,8 +81,8 @@ class InterviewApiControllerTest extends AbstractIntegrationTest {
                         .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
 
-        Assertions.assertEquals(newScheduledTime,
-                interviewRepository.findById(stubInterview.getId()).getScheduledFor());
+        Assertions.assertEquals(newScheduledTime.toEpochMilli(),
+                interviewRepository.findById(stubInterview.getId()).getScheduledFor().toEpochMilli());
     }
 
     @Test
