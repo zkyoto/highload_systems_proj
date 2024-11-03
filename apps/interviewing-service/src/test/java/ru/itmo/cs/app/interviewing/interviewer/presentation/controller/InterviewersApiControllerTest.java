@@ -8,8 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.ifmo.cs.misc.UserId;
+import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
+import ru.ifmo.cs.service_token.domain.RequestData;
+import ru.ifmo.cs.service_token.domain.ServiceId;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
 import ru.itmo.cs.app.interviewing.interviewer.application.command.ActivateInterviewerCommand;
 import ru.itmo.cs.app.interviewing.interviewer.application.command.AddInterviewerCommand;
@@ -25,6 +29,7 @@ import ru.itmo.cs.command_bus.CommandBus;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("web")
 class InterviewersApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
@@ -34,6 +39,9 @@ class InterviewersApiControllerTest extends AbstractIntegrationTest {
     private InterviewerUniqueIdentifiersQueryService interviewerUniqueIdentifiersQueryService;
     @Autowired
     CommandBus commandBus;
+    @Autowired
+    ServiceTokenResolver serviceTokenResolver;
+
     private UserId stubUserId;
 
     @BeforeEach
@@ -47,7 +55,10 @@ class InterviewersApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviewers/add")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(3))).value()))
                 .andExpect(status().isOk());
 
         Assertions.assertNotNull(interviewerUniqueIdentifiersQueryService.findBy(stubUserId));
@@ -63,7 +74,10 @@ class InterviewersApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviewers/activate")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(3))).value()))
                 .andExpect(status().isOk());
         Assertions.assertEquals(InterviewerStatus.ACTIVE,
                 interviewerRepository.findById(stubInterviewerIdentifiers.interviewerId()).getInterviewerStatus());
@@ -75,7 +89,10 @@ class InterviewersApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviewers/activate")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(3))).value()))
                 .andExpect(status().isNotFound());
     }
 
@@ -90,7 +107,10 @@ class InterviewersApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviewers/demote")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(3))).value()))
                 .andExpect(status().isOk());
         Assertions.assertEquals(InterviewerStatus.DEMOTED,
                 interviewerRepository.findById(stubInterviewerIdentifiers.interviewerId()).getInterviewerStatus());
@@ -102,7 +122,10 @@ class InterviewersApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviewers/demote")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(3))).value()))
                 .andExpect(status().isNotFound());
     }
 

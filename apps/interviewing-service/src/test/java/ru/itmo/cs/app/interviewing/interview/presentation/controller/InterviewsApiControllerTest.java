@@ -8,7 +8,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
+import ru.ifmo.cs.service_token.domain.RequestData;
+import ru.ifmo.cs.service_token.domain.ServiceId;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
 import ru.itmo.cs.app.interviewing.candidate.domain.Candidate;
 import ru.itmo.cs.app.interviewing.interview.application.query.InterviewsByInterviewerQueryService;
@@ -25,6 +29,7 @@ import ru.itmo.cs.command_bus.CommandBus;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("web")
 class InterviewsApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
@@ -36,6 +41,8 @@ class InterviewsApiControllerTest extends AbstractIntegrationTest {
     private InterviewsByInterviewerQueryService interviewsByInterviewerQueryService;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private ServiceTokenResolver serviceTokenResolver;
 
     @Test
     void testSuccessfullySchedulingInterview() throws Exception {
@@ -50,7 +57,10 @@ class InterviewsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviews/schedule")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody)))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(2))).value()))
                 .andExpect(status().isOk());
         Assertions.assertFalse(interviewsByInterviewerQueryService.findBy(stubInterviewer.getId()).interviews().isEmpty());
     }
@@ -62,7 +72,10 @@ class InterviewsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviews/schedule")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody)))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(2))).value()))
                 .andExpect(status().isBadRequest());
     }
 
@@ -76,7 +89,10 @@ class InterviewsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviews/reschedule")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody)))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(2))).value()))
                 .andExpect(status().isOk());
 
         Assertions.assertEquals(newScheduledTime.toEpochMilli(),
@@ -90,7 +106,10 @@ class InterviewsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviews/reschedule")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody)))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(2))).value()))
                 .andExpect(status().isBadRequest());
     }
 
@@ -102,7 +121,10 @@ class InterviewsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interviews/cancel")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody)))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(2))).value()))
                 .andExpect(status().isOk());
 
         Assertions.assertTrue(

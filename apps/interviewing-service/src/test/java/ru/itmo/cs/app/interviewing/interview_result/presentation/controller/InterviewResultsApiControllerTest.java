@@ -5,8 +5,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
+import ru.ifmo.cs.service_token.domain.RequestData;
+import ru.ifmo.cs.service_token.domain.ServiceId;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
 import ru.itmo.cs.app.interviewing.configuration.TurnOffAllDomainEventConsumers;
 import ru.itmo.cs.app.interviewing.feedback.domain.Feedback;
@@ -28,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("web")
 @ContextConfiguration(classes = TurnOffAllDomainEventConsumers.class)
 class InterviewResultsApiControllerTest extends AbstractIntegrationTest {
     @Autowired
@@ -40,6 +45,8 @@ class InterviewResultsApiControllerTest extends AbstractIntegrationTest {
     private InterviewResultByFeedbackQueryService interviewResultByFeedbackQueryService;
     @Autowired
     private InterviewResultPageQueryService interviewResultPageQueryService;
+    @Autowired
+    private ServiceTokenResolver serviceTokenResolver;
 
     @Test
     void testSuccessfullyCreatingInterviewResult() throws Exception {
@@ -51,7 +58,10 @@ class InterviewResultsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interview-results/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(4))).value()))
                 .andExpect(status().isOk());
 
         Assertions.assertTrue(interviewResultByFeedbackQueryService.findByFeedbackId(stubFeedback.getId()).isPresent());
@@ -64,7 +74,10 @@ class InterviewResultsApiControllerTest extends AbstractIntegrationTest {
                 new GetInterviewResultResponseBodyDto(InterviewResultResponseDto.from(stubInterviewResult));
 
         mockMvc.perform(get("/api/v1/interview-results/by-id")
-                        .param("interview_result_id", stubInterviewResult.getId().value().toString()))
+                        .param("interview_result_id", stubInterviewResult.getId().value().toString())
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(4))).value()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedResponseContent)));
     }
@@ -79,7 +92,10 @@ class InterviewResultsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(get("/api/v1/interview-results")
                         .param("page", "0")
-                        .param("size", "5"))
+                        .param("size", "5")
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(4))).value()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(
                         new GetAllInterviewResultsResponseBodyDto(
@@ -99,14 +115,20 @@ class InterviewResultsApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(post("/api/v1/interview-results/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(4))).value()))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void testRetrievingInterviewResultWithNonExistentId() throws Exception {
         mockMvc.perform(get("/api/v1/interview-results/by-id")
-                        .param("interview_result_id", InterviewResultId.generate().value().toString()))
+                        .param("interview_result_id", InterviewResultId.generate().value().toString())
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(4))).value()))
                 .andExpect(status().isNotFound());
     }
 

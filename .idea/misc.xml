@@ -14,6 +14,7 @@
         <option value="$PROJECT_DIR$/common/libs/string-enum/pom.xml" />
         <option value="$PROJECT_DIR$/common/libs/page/pom.xml" />
         <option value="$PROJECT_DIR$/common/libs/service-token/pom.xml" />
+        <option value="$PROJECT_DIR$/apps/api-gateway/pom.xml" />
       </list>
     </option>
   </component>

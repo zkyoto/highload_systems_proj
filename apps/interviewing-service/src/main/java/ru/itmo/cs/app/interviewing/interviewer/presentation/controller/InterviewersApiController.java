@@ -51,12 +51,8 @@ public class InterviewersApiController {
             @RequestBody ActivateInterviewerRequestBodyDto activateInterviewerRequestBodyDto
     ) {
         InterviewerUniqueIdentifiersDto interviewerUniqueIds;
-        try {
             interviewerUniqueIds =
                     interviewerUniqueIdentifiersQueryService.findBy(activateInterviewerRequestBodyDto.userId());
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
         commandBus.submit(new ActivateInterviewerCommand(interviewerUniqueIds.interviewerId()));
         return ResponseEntity.ok().build();
     }

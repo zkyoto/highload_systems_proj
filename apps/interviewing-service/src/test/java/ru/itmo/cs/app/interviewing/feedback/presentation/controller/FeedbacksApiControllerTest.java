@@ -5,10 +5,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
+import ru.ifmo.cs.service_token.domain.RequestData;
+import ru.ifmo.cs.service_token.domain.ServiceId;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
 import ru.itmo.cs.app.interviewing.configuration.TurnOffAllDomainEventConsumers;
 import ru.itmo.cs.app.interviewing.feedback.application.command.SaveCommentFeedbackCommand;
@@ -29,6 +33,7 @@ import ru.itmo.cs.app.interviewing.interview.domain.Interview;
 import ru.itmo.cs.app.interviewing.utils.InterviewingServiceStubFactory;
 import ru.itmo.cs.command_bus.CommandBus;
 
+@ActiveProfiles("web")
 @ContextConfiguration(classes = TurnOffAllDomainEventConsumers.class)
 class FeedbacksApiControllerTest extends AbstractIntegrationTest {
     @Autowired
@@ -41,6 +46,8 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
     private InterviewingServiceStubFactory stubFactory;
     @Autowired
     CommandBus commandBus;
+    @Autowired
+    private ServiceTokenResolver serviceTokenResolver;
 
     @Test
     void testCreatingFeedbackForInterview() throws Exception {
@@ -50,7 +57,10 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(5))).value()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         Assertions.assertTrue(feedbackByInterviewQueryService.findByInterviewId(stubInterview.getId()).isPresent());
@@ -64,7 +74,10 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/grade/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(5))).value()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         Assertions.assertEquals(4, feedbackRepository.findById(stubFeedback.getId()).getGrade().getValue());
@@ -79,7 +92,10 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/comment/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(5))).value()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         Assertions.assertEquals(comment, feedbackRepository.findById(stubFeedback.getId()).getComment().getValue());
@@ -95,7 +111,10 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/submit")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(requestBody))
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(5))).value()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         Assertions.assertEquals(FeedbackStatus.SUBMITTED,
@@ -109,7 +128,10 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
                 new GetFeedbackResponseBodyDto(FeedbackResponseDto.from(stubFeedback));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/feedbacks/by-id")
-                        .param("feedback_id", stubFeedback.getId().value().toString()))
+                        .param("feedback_id", stubFeedback.getId().value().toString())
+                        .header("X-Service-Token",
+                                serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
+                                        new ServiceId(5))).value()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(new ObjectMapper().writeValueAsString(expectedResponse)));
     }
