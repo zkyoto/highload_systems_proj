@@ -2,6 +2,7 @@ package ru.itmo.cs.app.interviewing.candidate.presentation.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import ru.itmo.cs.app.interviewing.candidate.presentation.controller.dto.respons
 import ru.itmo.cs.app.interviewing.candidate.presentation.controller.dto.response.GetCandidateResponseBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
+@Profile("web")
 @RestController
 @AllArgsConstructor
 public class CandidatesApiController {

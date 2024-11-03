@@ -2,8 +2,8 @@ package ru.itmo.cs.app.interviewing.interview_result.application.query.dto;
 
 import java.util.List;
 
+import ru.ifmo.cs.page.domain.Page;
 import ru.itmo.cs.app.interviewing.interview_result.domain.InterviewResult;
-import ru.itmo.cs.app.interviewing.libs.page.domain.Page;
 
 public record InterviewResultPage(
         List<InterviewResult> content,
