@@ -5,6 +5,8 @@ libs=(
     "./libs/string-enum"
     "./libs/misc"
     "./libs/domain_event"
+    "./libs/page"
+    "./libs/service-token"
     "./clients/passport-client"
 )
 echo "Installing libs"

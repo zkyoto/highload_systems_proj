@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Service;
+import ru.ifmo.cs.page.pg.AbstractPgPageQueryService;
 import ru.itmo.cs.app.interviewing.feedback.application.query.FeedbackPageQueryService;
 import ru.itmo.cs.app.interviewing.feedback.application.query.dto.FeedbackPage;
 import ru.itmo.cs.app.interviewing.feedback.domain.Feedback;
 import ru.itmo.cs.app.interviewing.feedback.infrastructure.pg.mapper.FeedbackRowMapper;
-import ru.itmo.cs.app.interviewing.libs.page.infrastructure.pg.AbstractPgPageQueryService;
 
 @Primary
 @Service

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.ifmo.cs.domain_event.application.service.ConsumptionLogJournalService;
 import ru.ifmo.cs.domain_event.application.service.DomainEventDelivererService;
@@ -22,6 +23,8 @@ import ru.ifmo.cs.domain_event.infrastructure.repository.in_memory.InMemoryStubS
 import ru.ifmo.cs.domain_event.infrastructure.repository.pg.PgConsumptionLogJournalService;
 import ru.ifmo.cs.domain_event.infrastructure.repository.pg.PgStoredDomainEventRepository;
 import ru.ifmo.cs.domain_event.infrastructure.repository.pg.mapper.StoredDomainEventRowMapper;
+import ru.ifmo.cs.domain_event.presentation.job.ProcessDomainEventsTaskScheduler;
+import ru.ifmo.cs.domain_event.presentation.task.ProcessDomainEventsTask;
 
 @Configuration
 public class DomainEventsConfiguration {
@@ -117,4 +120,21 @@ public class DomainEventsConfiguration {
     ) {
         return new PgConsumptionLogJournalService(jdbcOperations);
     }
+
+    @Profile("worker")
+    @Bean
+    public ProcessDomainEventsTask processDomainEventsTask(
+            DomainEventFanoutDelivererService domainEventFanoutDelivererService
+    ) {
+        return new ProcessDomainEventsTask(domainEventFanoutDelivererService);
+    }
+
+    @Profile("worker")
+    @Bean
+    public ProcessDomainEventsTaskScheduler processDomainEventsTaskScheduler(
+            ProcessDomainEventsTask processDomainEventsTask
+    ) {
+        return new ProcessDomainEventsTaskScheduler(processDomainEventsTask);
+    }
+
 }

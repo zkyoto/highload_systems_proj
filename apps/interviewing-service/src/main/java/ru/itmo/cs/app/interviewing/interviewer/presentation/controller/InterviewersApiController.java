@@ -1,10 +1,10 @@
 package ru.itmo.cs.app.interviewing.interviewer.presentation.controller;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +29,7 @@ import ru.itmo.cs.app.interviewing.interviewer.presentation.controller.dto.respo
 import ru.itmo.cs.app.interviewing.interviewer.presentation.controller.dto.response.InterviewerResponseDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
+@Profile("web")
 @RestController
 @AllArgsConstructor
 public class InterviewersApiController {

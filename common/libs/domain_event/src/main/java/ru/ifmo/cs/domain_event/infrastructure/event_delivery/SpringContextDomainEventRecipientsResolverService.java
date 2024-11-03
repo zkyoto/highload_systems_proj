@@ -11,13 +11,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.ResolvableType;
-import org.springframework.stereotype.Service;
 import ru.ifmo.cs.domain_event.application.service.DomainEventConsumer;
 import ru.ifmo.cs.domain_event.application.service.DomainEventRecipientsResolverService;
 import ru.ifmo.cs.domain_event.domain.DomainEvent;
 import ru.ifmo.cs.domain_event.domain.SubscriberReferenceId;
 
-@Service
 public class SpringContextDomainEventRecipientsResolverService implements DomainEventRecipientsResolverService,
         ApplicationListener<ContextRefreshedEvent> {
     private Map<Class<?>, List<SubscriberReferenceId>> domainEventSubscribers;

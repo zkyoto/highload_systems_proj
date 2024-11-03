@@ -2,8 +2,8 @@ package ru.itmo.cs.app.interviewing.interviewer.application.query.dto;
 
 import java.util.List;
 
+import ru.ifmo.cs.page.domain.Page;
 import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
-import ru.itmo.cs.app.interviewing.libs.page.domain.Page;
 
 public record InterviewersPage(
         List<Interviewer> content,
