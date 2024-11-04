@@ -1,7 +1,7 @@
 services:
   interviewing-service:
     build: ./
-#    image: highload_systems_proj-interviewing-service:latest
+    image: highload_systems_proj-interviewing-service:latest
     ports:
       - "8080:8080"
     environment:

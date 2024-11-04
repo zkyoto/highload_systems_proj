@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.ifmo.cs</groupId>
-    <artifactId>passport-client</artifactId>
+    <artifactId>jwt-auth</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -15,21 +15,39 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>6.4.0-RC1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>ru.ifmo.cs</groupId>
-            <artifactId>misc</artifactId>
+            <artifactId>passport-client</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>6.1.13</version>
+            <artifactId>spring-web</artifactId>
+            <version>6.2.0-RC3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ru.ifmo.cs.string-enum</groupId>
-            <artifactId>string-enum</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>10.1.31</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -15,7 +15,7 @@ public class AddInterviewerCommandHandler implements CommandHandler<AddInterview
     private final PassportClient passportClient;
     @Override
     public void handle(AddInterviewerCommand command) {
-        Name nameByUserId = passportClient.getNameByUserId(command.userId);
+        Name nameByUserId = passportClient.findPassportUser(command.userId).name();
         Interviewer interviewer = Interviewer.create(command.userId, nameByUserId);
         repository.save(interviewer);
     }
