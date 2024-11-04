@@ -36,7 +36,7 @@ public class InterviewResultsApiController {
     ) {
         commandBus.submit(
                 new CreateInterviewResultCommand(FeedbackId.hydrate(createInterviewResultRequestBodyDto.feedbackId()),
-                                                 createInterviewResultRequestBodyDto.verdict())
+                        createInterviewResultRequestBodyDto.verdict())
         );
         return ResponseEntity.ok().build();
     }
@@ -48,22 +48,22 @@ public class InterviewResultsApiController {
         InterviewResult interviewResult =
                 interviewResultRepository.findById(InterviewResultId.hydrate(interviewResultId));
         return ResponseEntity.ok()
-                             .body(new GetInterviewResultResponseBodyDto(InterviewResultResponseDto.from(interviewResult)));
+                .body(new GetInterviewResultResponseBodyDto(InterviewResultResponseDto.from(interviewResult)));
     }
 
     @GetMapping("/api/v1/interview-results")
     public ResponseEntity<?> getAllInterviewers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "50") int size,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size,
             HttpServletResponse response
     ) {
         InterviewResultPage interviewResultPage = interviewResultPageQueryService.findFor(page, size);
         response.setHeader("X-Total-Count", String.valueOf(interviewResultPage.totalElements()));
         return ResponseEntity.ok(
                 new GetAllInterviewResultsResponseBodyDto(interviewResultPage.content()
-                                                                             .stream()
-                                                                             .map(InterviewResultResponseDto::from)
-                                                                             .toList()));
+                        .stream()
+                        .map(InterviewResultResponseDto::from)
+                        .toList()));
     }
 
 }

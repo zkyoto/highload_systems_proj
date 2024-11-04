@@ -1,13 +1,17 @@
 package ru.itmo.cs.app.interviewing.interviewer.application.command;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.PassportClient;
+import ru.ifmo.cs.passport.api.domain.PassportUser;
 import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.InterviewerRepository;
 
@@ -39,7 +43,7 @@ class AddInterviewerCommandHandlerTest {
     @Test
     void testHandleSavesInterviewer() {
         Name name = Name.of("John", "Doe");
-        when(passportClient.getNameByUserId(userId)).thenReturn(name);
+        when(passportClient.findPassportUser(userId)).thenReturn(new PassportUser(Mockito.mock(UserId.class), name, List.of()));
 
         commandHandler.handle(command);
 
@@ -53,7 +57,9 @@ class AddInterviewerCommandHandlerTest {
 
     @Test
     void testGetUserNameFromPassportClient() {
+        Name name = Name.of("John", "Doe");
+        when(passportClient.findPassportUser(userId)).thenReturn(new PassportUser(Mockito.mock(UserId.class), name, List.of()));
         commandHandler.handle(command);
-        verify(passportClient, times(1)).getNameByUserId(userId);
+        verify(passportClient, times(1)).findPassportUser(userId);
     }
 }

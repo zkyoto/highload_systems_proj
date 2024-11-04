@@ -40,22 +40,22 @@ public class CandidatesApiController {
     }
 
     @GetMapping("/api/v1/candidates/by-id")
-    public ResponseEntity<?> getCandidateById(@RequestParam String candidateId) {
+    public ResponseEntity<?> getCandidateById(@RequestParam(name = "candidate_id") String candidateId) {
         Candidate candidate = candidateRepository.findById(CandidateId.hydrate(candidateId));
         return ResponseEntity.ok(new GetCandidateResponseBodyDto(CandidateResponseDto.from(candidate)));
     }
 
     @GetMapping("/api/v1/candidates")
     public ResponseEntity<?> getAllCandidates(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "50") int size,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size,
             HttpServletResponse response
     ) {
         CandidatePage candidatePage = candidatePageQueryService.findFor(page, size);
         response.setHeader("X-Total-Count", String.valueOf(candidatePage.totalElements()));
         return ResponseEntity.ok(new GetAllCandidatesResponseBodyDto(candidatePage.content()
-                                                                                  .stream()
-                                                                                  .map(CandidateResponseDto::from)
-                                                                                  .toList()));
+                .stream()
+                .map(CandidateResponseDto::from)
+                .toList()));
     }
 }

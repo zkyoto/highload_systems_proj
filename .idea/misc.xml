@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/common/libs/page/pom.xml" />
         <option value="$PROJECT_DIR$/common/libs/service-token/pom.xml" />
         <option value="$PROJECT_DIR$/apps/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/common/libs/jwt-auth/pom.xml" />
       </list>
     </option>
   </component>

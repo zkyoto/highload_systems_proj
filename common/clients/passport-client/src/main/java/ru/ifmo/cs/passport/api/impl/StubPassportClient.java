@@ -10,20 +10,33 @@ import org.springframework.stereotype.Service;
 import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.PassportClient;
+import ru.ifmo.cs.passport.api.domain.PassportUser;
+import ru.ifmo.cs.passport.api.domain.value.Role;
 
 @Service
 public class StubPassportClient implements PassportClient {
 
-    private final Map<UserId, Name> cachedKnownUsers = new HashMap<>();
+    private final Map<UserId, PassportUser> cachedKnownUsers;
+
+    public StubPassportClient() {
+        this.cachedKnownUsers = new HashMap<>();
+        createUserInCache(1, Role.SUPERVISOR);
+    }
+
+    private void createUserInCache(long userId, Role role) {
+        UserId uid = UserId.of(userId);
+        PassportUser passportUser = new PassportUser(uid, generateRandomName(), List.of(role));
+        cachedKnownUsers.put(uid, passportUser);
+    }
 
     @Override
-    public Name getNameByUserId(UserId userId) {
+    public PassportUser findPassportUser(UserId userId) {
         if (cachedKnownUsers.containsKey(userId)) {
             return cachedKnownUsers.get(userId);
         } else {
-            Name randomName = generateRandomName();
-            cachedKnownUsers.put(userId, randomName);
-            return randomName;
+            PassportUser passportUser = new PassportUser(userId, generateRandomName(), List.of());
+            cachedKnownUsers.put(userId, passportUser);
+            return passportUser;
         }
     }
 

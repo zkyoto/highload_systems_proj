@@ -6,13 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.ifmo.cs.domain_event.application.service.ConsumptionLogJournalService;
 import ru.ifmo.cs.domain_event.application.service.DomainEventDelivererService;
 import ru.ifmo.cs.domain_event.application.service.DomainEventFanoutDelivererService;
 import ru.ifmo.cs.domain_event.application.service.DomainEventRecipientsResolverService;
-import ru.ifmo.cs.domain_event.application.service.KnownEventProvider;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 import ru.ifmo.cs.domain_event.infrastructure.event_delivery.IdempotentDomainEventDelivererService;
 import ru.ifmo.cs.domain_event.infrastructure.event_delivery.SpringContextDomainEventRecipientsResolverService;
@@ -25,6 +25,11 @@ import ru.ifmo.cs.domain_event.infrastructure.repository.pg.PgStoredDomainEventR
 import ru.ifmo.cs.domain_event.infrastructure.repository.pg.mapper.StoredDomainEventRowMapper;
 import ru.ifmo.cs.domain_event.presentation.job.ProcessDomainEventsTaskScheduler;
 import ru.ifmo.cs.domain_event.presentation.task.ProcessDomainEventsTask;
+import ru.itmo.cs.app.interviewing.candidate.application.service.event.CandidateEventsKnownEventProvider;
+import ru.itmo.cs.app.interviewing.feedback.application.service.event.FeedbackEventsKnownEventProvider;
+import ru.itmo.cs.app.interviewing.interview.application.service.event.InterviewEventsKnownEventProvider;
+import ru.itmo.cs.app.interviewing.interview_result.application.service.event.InterviewResultEventsKnownEventProvider;
+import ru.itmo.cs.app.interviewing.interviewer.application.service.event.InterviewerEventsKnownEventProvider;
 
 @Configuration
 public class DomainEventsConfiguration {
@@ -33,7 +38,7 @@ public class DomainEventsConfiguration {
     public DomainEventFanoutDelivererService domainEventFanoutDelivererService(
             StoredDomainEventRepository storedDomainEventRepository,
             DomainEventRecipientsResolverService recipientsResolverService,
-            DomainEventDelivererService idempotentDomainEventDelivererService
+            IdempotentDomainEventDelivererService idempotentDomainEventDelivererService
     ) {
         return new DomainEventFanoutDelivererService(
                 storedDomainEventRepository,
@@ -43,9 +48,9 @@ public class DomainEventsConfiguration {
     }
 
     @Bean
-    public DomainEventDelivererService idempotentDomainEventDelivererService(
-            DomainEventDelivererService springContextEventDelivererService,
-            ConsumptionLogJournalService consumptionLogJournalService,
+    public IdempotentDomainEventDelivererService idempotentDomainEventDelivererService(
+            SpringContextEventDelivererService springContextEventDelivererService,
+            PgConsumptionLogJournalService consumptionLogJournalService,
             KnownDomainEventTypeResolver knownDomainEventTypeResolver
     ) {
         return new IdempotentDomainEventDelivererService(
@@ -57,11 +62,11 @@ public class DomainEventsConfiguration {
 
     @Bean
     public KnownDomainEventTypeResolver knownDomainEventTypeResolver(
-            KnownEventProvider candidateEventsKnownEventProvider,
-            KnownEventProvider feedbackEventsKnownEventProvider,
-            KnownEventProvider interviewEventsKnownEventProvider,
-            KnownEventProvider interviewerEventsKnownEventProvider,
-            KnownEventProvider interviewResultEventsKnownEventProvider
+            CandidateEventsKnownEventProvider candidateEventsKnownEventProvider,
+            FeedbackEventsKnownEventProvider feedbackEventsKnownEventProvider,
+            InterviewEventsKnownEventProvider interviewEventsKnownEventProvider,
+            InterviewerEventsKnownEventProvider interviewerEventsKnownEventProvider,
+            InterviewResultEventsKnownEventProvider interviewResultEventsKnownEventProvider
     ) {
         return new KnownDomainEventTypeResolver(
                 List.of(candidateEventsKnownEventProvider,
@@ -80,10 +85,11 @@ public class DomainEventsConfiguration {
     }
 
     @Bean
-    public DomainEventDelivererService springContextEventDelivererService(ApplicationContext applicationContext) {
+    public SpringContextEventDelivererService springContextEventDelivererService(ApplicationContext applicationContext) {
         return new SpringContextEventDelivererService(applicationContext);
     }
 
+    @Primary
     @Bean
     public StoredDomainEventRepository storedDomainEventRepository(
             NamedParameterJdbcOperations jdbcOperations,
@@ -115,7 +121,7 @@ public class DomainEventsConfiguration {
     }
 
     @Bean
-    public ConsumptionLogJournalService consumptionLogJournalService(
+    public PgConsumptionLogJournalService consumptionLogJournalService(
             NamedParameterJdbcOperations jdbcOperations
     ) {
         return new PgConsumptionLogJournalService(jdbcOperations);

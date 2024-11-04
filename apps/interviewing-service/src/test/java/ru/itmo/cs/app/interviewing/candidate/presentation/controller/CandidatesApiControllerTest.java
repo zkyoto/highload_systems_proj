@@ -76,7 +76,7 @@ class CandidatesApiControllerTest extends AbstractIntegrationTest {
         Candidate createdCandidate = candidateRepository.findAll().stream().findAny().orElseThrow();
 
         mockMvc.perform(get("/api/v1/candidates/by-id")
-                        .param("candidateId", createdCandidate.getId().value().toString())
+                        .param("candidate_id", createdCandidate.getId().value().toString())
                         .header("X-Service-Token",
                                 serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
                                         new ServiceId(6))).value()))
@@ -89,7 +89,7 @@ class CandidatesApiControllerTest extends AbstractIntegrationTest {
     @Test
     void testRetrievingCandidateByInvalidId() throws Exception {
         mockMvc.perform(get("/api/v1/candidates/by-id")
-                        .param("candidateId", CandidateId.generate().value().toString())
+                        .param("candidate_id", CandidateId.generate().value().toString())
                         .header("X-Service-Token",
                                 serviceTokenResolver.resolveServiceTokenFor(new RequestData(new ServiceId(1),
                                         new ServiceId(6))).value()))
