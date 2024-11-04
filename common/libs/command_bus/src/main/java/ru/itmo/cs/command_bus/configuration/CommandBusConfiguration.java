@@ -1,4 +1,4 @@
-package ru.itmo.cs.app.interviewing.configuration;
+package ru.itmo.cs.command_bus.configuration;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;

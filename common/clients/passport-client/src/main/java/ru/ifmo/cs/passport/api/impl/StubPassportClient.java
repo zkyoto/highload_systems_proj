@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import ru.ifmo.cs.misc.Name;
@@ -15,7 +16,7 @@ import ru.ifmo.cs.passport.api.domain.value.Role;
 
 @Service
 public class StubPassportClient implements PassportClient {
-
+    private final Random uidGenerator = new Random();
     private final Map<UserId, PassportUser> cachedKnownUsers;
 
     public StubPassportClient() {
@@ -38,6 +39,33 @@ public class StubPassportClient implements PassportClient {
             cachedKnownUsers.put(userId, passportUser);
             return passportUser;
         }
+    }
+
+    @Override
+    public UserId createUser(Name name, String roleSlug) {
+        Role role = Role.R.fromValue(roleSlug);
+        UserId randomUid = UserId.of(uidGenerator.nextLong());
+        while (cachedKnownUsers.containsKey(randomUid)) {
+            randomUid = UserId.of(uidGenerator.nextLong());
+        }
+        PassportUser passportUser = new PassportUser(randomUid, name, List.of(role));
+        cachedKnownUsers.put(randomUid, passportUser);
+        return randomUid;
+    }
+
+    @Override
+    public UserId createUser(String fullName, String roleSlug) {
+        return createUser(Name.of(fullName), roleSlug);
+    }
+
+    @Override
+    public UserId createUser(String firstName, String lastName, String role) {
+        return createUser(Name.of(firstName, lastName), role);
+    }
+
+    @Override
+    public UserId createUser(String roleSlug) {
+        return createUser(generateRandomName(), roleSlug);
     }
 
     private Name generateRandomName() {
