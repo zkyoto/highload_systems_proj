@@ -1,12 +1,9 @@
 package ru.ifmo.cs.api_gateway.auth.Controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ifmo.cs.api_gateway.jwt.application.service.JwtService;
-import ru.ifmo.cs.misc.UserId;
 
 @RestController
 @RequestMapping("test/")
