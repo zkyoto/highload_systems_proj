@@ -1,4 +1,4 @@
-package ru.ifmo.cs.authorizator.presentation.controller.dto.response;
+package ru.ifmo.cs.authorizator.contracts.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

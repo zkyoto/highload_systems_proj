@@ -19,6 +19,8 @@
         <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/config-server/pom.xml" />
         <option value="$PROJECT_DIR$/config-client/pom.xml" />
+        <option value="$PROJECT_DIR$/common/contracts/authorizator-contracts/pom.xml" />
+        <option value="$PROJECT_DIR$/common/clients/authorizator-client/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

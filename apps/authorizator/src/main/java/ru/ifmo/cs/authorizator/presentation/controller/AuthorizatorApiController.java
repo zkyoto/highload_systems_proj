@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ifmo.cs.authorizator.application.command.RegisterUserCommand;
 import ru.ifmo.cs.authorizator.application.service.AuthorizationProcessor;
-import ru.ifmo.cs.authorizator.presentation.controller.dto.request.AuthorizeUserRequestDto;
-import ru.ifmo.cs.authorizator.presentation.controller.dto.request.RegisterUserRequestBodyDto;
-import ru.ifmo.cs.authorizator.presentation.controller.dto.response.AuthorizedUserTokenResponseBodyDto;
+import ru.ifmo.cs.authorizator.contracts.request.AuthorizeUserRequestDto;
+import ru.ifmo.cs.authorizator.contracts.request.RegisterUserRequestBodyDto;
+import ru.ifmo.cs.authorizator.contracts.response.AuthorizedUserTokenResponseBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
 @RestController
