@@ -20,6 +20,9 @@
     <file url="file://$PROJECT_DIR$/common/libs/service-token/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/libs/string-enum/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/libs/string-enum/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/config-client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/config-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

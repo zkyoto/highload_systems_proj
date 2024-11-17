@@ -22,7 +22,7 @@ import ru.itmo.cs.app.interviewing.candidate.presentation.controller.dto.respons
 import ru.itmo.cs.app.interviewing.candidate.presentation.controller.dto.response.GetCandidateResponseBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@Profile("web")
+@Profile("candidate-web")
 @RestController
 @AllArgsConstructor
 public class CandidatesApiController {

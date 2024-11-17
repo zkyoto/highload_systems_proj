@@ -37,7 +37,7 @@ import ru.itmo.cs.app.interviewing.feedback.presentation.controller.dto.response
 import ru.itmo.cs.app.interviewing.interview.domain.value.InterviewId;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@Profile("web")
+@Profile("feedback-web")
 @RestController
 @AllArgsConstructor
 public class FeedbacksApiController {

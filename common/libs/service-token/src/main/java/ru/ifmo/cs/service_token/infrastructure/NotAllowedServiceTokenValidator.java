@@ -14,8 +14,8 @@ public class NotAllowedServiceTokenValidator extends AbstractServiceTokenValidat
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-        response.getWriter().write("Not acceptable");
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.getWriter().write("Forbidden");
         return false;
     }
 }

@@ -10,14 +10,7 @@ import ru.ifmo.cs.jwt_auth.infrastructure.request_filter.JwtTokenAuthenticationF
 import ru.ifmo.cs.passport.api.PassportClient;
 
 @Configuration
-public class JwtAuthConfiguration {
-
-    @Bean
-    public JwtImpl jwtImpl(
-            @Value("${security.jwt.secret-word}") String secret
-    ) {
-        return new JwtImpl(secret);
-    }
+public class JwtAuthRequestFilterConfiguration {
 
     @Bean
     public JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter(

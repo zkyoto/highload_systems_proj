@@ -16,7 +16,15 @@
         <option value="$PROJECT_DIR$/common/libs/page/pom.xml" />
         <option value="$PROJECT_DIR$/common/libs/command_bus/pom.xml" />
         <option value="$PROJECT_DIR$/common/libs/misc/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/config-server/pom.xml" />
+        <option value="$PROJECT_DIR$/config-client/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/config-client/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="temurin-17" project-jdk-type="JavaSDK">

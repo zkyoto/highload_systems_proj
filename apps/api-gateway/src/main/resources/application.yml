@@ -1,0 +1,10 @@
+#spring:
+#  cloud:
+#    gateway:
+#      globalcors:
+#        add-to-same-origin: true
+#        allowed-headers: "*"
+#        allowed-origins: "*"
+#        allowed-methods:
+#          - GET
+#          - POST
