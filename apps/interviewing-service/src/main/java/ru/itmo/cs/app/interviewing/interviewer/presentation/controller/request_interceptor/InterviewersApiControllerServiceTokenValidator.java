@@ -2,11 +2,13 @@ package ru.itmo.cs.app.interviewing.interviewer.presentation.controller.request_
 
 import java.util.stream.IntStream;
 
+import org.springframework.context.annotation.Profile;
 import ru.ifmo.cs.service_token.application.AbstractServiceTokenValidator;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Profile("interviewer-web")
 @Component
 public class InterviewersApiControllerServiceTokenValidator extends AbstractServiceTokenValidator {
 

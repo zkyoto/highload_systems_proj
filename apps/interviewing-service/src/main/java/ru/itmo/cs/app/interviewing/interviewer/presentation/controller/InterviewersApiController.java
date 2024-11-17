@@ -29,7 +29,7 @@ import ru.itmo.cs.app.interviewing.interviewer.presentation.controller.dto.respo
 import ru.itmo.cs.app.interviewing.interviewer.presentation.controller.dto.response.InterviewerResponseDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@Profile("web")
+@Profile("interviewer-web")
 @RestController
 @AllArgsConstructor
 public class InterviewersApiController {

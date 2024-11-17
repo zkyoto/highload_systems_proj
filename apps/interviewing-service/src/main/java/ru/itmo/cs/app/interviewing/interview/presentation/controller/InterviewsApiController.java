@@ -27,7 +27,7 @@ import ru.itmo.cs.app.interviewing.interview.presentation.controller.dto.respons
 import ru.itmo.cs.app.interviewing.interviewer.domain.value.InterviewerId;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@Profile("web")
+@Profile("interview-web")
 @RestController
 @AllArgsConstructor
 public class InterviewsApiController {

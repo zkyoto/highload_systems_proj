@@ -3,10 +3,12 @@ package ru.itmo.cs.app.interviewing.feedback.presentation.controller.request_int
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.ifmo.cs.service_token.application.AbstractServiceTokenValidator;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 
+@Profile("feedback-web")
 @Component
 public class FeedbacksApiControllerServiceTokenValidator extends AbstractServiceTokenValidator {
     public FeedbacksApiControllerServiceTokenValidator(
