@@ -8,6 +8,8 @@ libs=(
     "./libs/page"
     "./libs/service-token"
     "./clients/passport-client"
+    "./libs/jwt-auth"
+    "./contracts/authorizator-contracts"
 )
 echo "Installing libs"
 for dir in "${libs[@]}"; do

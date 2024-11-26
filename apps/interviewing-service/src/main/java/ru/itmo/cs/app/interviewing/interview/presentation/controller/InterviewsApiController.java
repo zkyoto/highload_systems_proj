@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.cs.app.interviewing.candidate.domain.value.CandidateId;
+import ru.itmo.cs.app.interviewing.feedback.application.command.RewriteFeedbackCommandHandler;
 import ru.itmo.cs.app.interviewing.interview.application.command.CancelInterviewCommand;
 import ru.itmo.cs.app.interviewing.interview.application.command.RescheduleInterviewCommand;
 import ru.itmo.cs.app.interviewing.interview.application.command.ScheduleInterviewCommand;
@@ -34,6 +35,7 @@ public class InterviewsApiController {
     private final CommandBus commandBus;
     private final InterviewRepository interviewRepository;
     private final InterviewPageQueryService interviewPageQueryService;
+    private final RewriteFeedbackCommandHandler rewriteFeedbackCommandHandler;
 
     @PostMapping("/api/v1/interviews/schedule")
     public ResponseEntity<?> scheduleInterview(
