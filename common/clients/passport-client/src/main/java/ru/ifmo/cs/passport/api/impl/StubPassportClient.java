@@ -12,7 +12,7 @@ import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.PassportClient;
 import ru.ifmo.cs.passport.api.domain.PassportUser;
-import ru.ifmo.cs.passport.api.domain.value.Role;
+import ru.ifmo.cs.passport.domain.value.Role;
 
 @Service
 public class StubPassportClient implements PassportClient {

@@ -1,10 +1,10 @@
 package ru.ifmo.cs.jwt_auth.infrastructure.request_filter;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -19,7 +19,9 @@ import ru.ifmo.cs.jwt_auth.application.JwtValidator;
 import ru.ifmo.cs.jwt_auth.infrastructure.authentication.PassportUserAuthenticationAdapter;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.PassportClient;
+import ru.ifmo.cs.passport.api.domain.PassportUser;
 
+@Slf4j
 @AllArgsConstructor
 public class JwtTokenAuthenticationFilter implements WebFilter {
     private final JwtResolver jwtResolver;
@@ -41,8 +43,13 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
             String jwt = extractJwtTokenFromHeaders(exchange.getRequest());
             if (jwtValidator.isValid(jwt)) {
                 UserId userId = jwtResolver.resolveFor(jwt);
+                log.info("Token resolved for uid: {}", userId);
+                PassportUser passportUser = passportClient.findPassportUser(userId);
+                log.info("Passport user: {}", passportUser);
+                PassportUserAuthenticationAdapter authentication = PassportUserAuthenticationAdapter.of(passportUser);
+                log.info("Authorities: {}", authentication.getAuthorities());
                 SecurityContextHolder.getContext()
-                        .setAuthentication(PassportUserAuthenticationAdapter.of(passportClient.findPassportUser(userId)));
+                        .setAuthentication(authentication);
             }
         }
 

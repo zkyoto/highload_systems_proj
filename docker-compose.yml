@@ -2,15 +2,92 @@ include:
   - c-network.yaml
 
 services:
-  interviewing-service:
+  interview-api:
     extends:
       file: c-services.yaml
-      service: interviewing-service
+      service: interview-api
     depends_on:
-      postgres:
+      api-gateway:
+        condition: service_healthy
+      interviewing-service-postgres:
+        condition: service_healthy
+  interviewer-api:
+    extends:
+      file: c-services.yaml
+      service: interviewer-api
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      interviewing-service-postgres:
+        condition: service_healthy
+  candidate-api:
+    extends:
+      file: c-services.yaml
+      service: candidate-api
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      interviewing-service-postgres:
+        condition: service_healthy
+  feedback-api:
+    extends:
+      file: c-services.yaml
+      service: feedback-api
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      interviewing-service-postgres:
+        condition: service_healthy
+  interview-result-api:
+    extends:
+      file: c-services.yaml
+      service: interview-result-api
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      interviewing-service-postgres:
+        condition: service_healthy
+  worker:
+    extends:
+      file: c-services.yaml
+      service: worker
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      interviewing-service-postgres:
+        condition: service_healthy
+  authorizator:
+    extends:
+      file: c-services.yaml
+      service: authorizator
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+  api-gateway:
+    extends:
+      file: c-services.yaml
+      service: api-gateway
+    depends_on:
+      config-server:
+        condition: service_healthy
+  eureka-server:
+    extends:
+      file: c-services.yaml
+      service: eureka-server
+  config-server:
+    extends:
+      file: c-services.yaml
+      service: config-server
+    depends_on:
+      eureka-server:
         condition: service_healthy
 
-  postgres:
+  interviewing-service-postgres:
     extends:
       file: c-services.yaml
-      service: postgres
+      service: interviewing-service-postgres
+
+  passport-postgres:
+    extends:
+      file: c-services.yaml
+      service: passport-postgres

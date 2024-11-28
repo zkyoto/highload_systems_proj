@@ -14,34 +14,26 @@ import ru.ifmo.cs.jwt_auth.infrastructure.request_filter.JwtTokenAuthenticationF
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(ServerHttpSecurity http, JwtTokenAuthenticationFilter authFilter) throws Exception {
-//        return  http
-//                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-//                .cors(ServerHttpSecurity.CorsSpec::disable)
-//                .addFilterBefore(authxFilter, UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll()
-//                        )
-//                .build();
-//    }
-
-    // ...
     @Bean
         public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http, JwtTokenAuthenticationFilter authFilter) throws Exception {
         http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .cors(ServerHttpSecurity.CorsSpec::disable)
                 .addFilterAt(authFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .authorizeExchange((authorize) -> authorize
-                        .pathMatchers("/**").permitAll()
-//                        .pathMatchers("/authorizator/get-token").permitAll()
-//                        .pathMatchers("/authorizator/create-user").hasRole("supervisor")
-//                        .pathMatchers("/admin/**").hasRole("ADMIN")
-//                        .pathMatchers("/db/**")
-//                        .access((authentication, context) ->
-//                                hasRole("ADMIN").check(authentication, context)
-//                                        .filter(decision -> !decision.isGranted())
-//                                        .switchIfEmpty(hasRole("DBA").check(authentication, context))
-//                        )
-//                        .anyExchange().denyAll()
+//                                .pathMatchers("**").permitAll()
+                        .pathMatchers("/actuator/**").permitAll()
+                        .pathMatchers("/api/v*/users/authorized-token").permitAll()
+                        .pathMatchers("/api/v*/users/register").hasRole("supervisor")
+                        .pathMatchers("/api/v*/interview-results, /api/v*/interview-results/**").hasRole("staff")
+                        .pathMatchers("/api/v*/candidates/add").hasRole("hr")
+                        .pathMatchers("/api/v*/candidates, /api/v*/candidates/by-id").hasAnyRole("hr", "interviewer")
+                        .pathMatchers("/api/v*/feedbacks/pending-result").hasRole("staff")
+                        .pathMatchers("/api/v*/feedbacks, /api/v*/feedbacks/**").hasRole("interviewer")
+                        .pathMatchers("/api/v*/interviews/cancel").hasAnyRole("hr", "interviewer")
+                        .pathMatchers("/api/v*/interviews, /api/v*/interviews/**").hasRole("interviewer")
+                        .pathMatchers("/api/v*/interviewers, /api/v1/interviewers/**").hasAnyRole("hr", "staff")
+                        .anyExchange().denyAll()
                 );
         return http.build();
     }
