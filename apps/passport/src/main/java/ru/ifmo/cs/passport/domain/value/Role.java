@@ -1,4 +1,4 @@
-package ru.ifmo.cs.passport.api.domain.value;
+package ru.ifmo.cs.passport.domain.value;
 
 import ru.ifmo.cs.string_enum.StringEnum;
 import ru.ifmo.cs.string_enum.StringEnumResolver;

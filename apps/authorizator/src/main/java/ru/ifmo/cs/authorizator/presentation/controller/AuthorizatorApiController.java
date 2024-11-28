@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ifmo.cs.authorizator.application.command.RegisterUserCommand;
 import ru.ifmo.cs.authorizator.application.service.AuthorizationProcessor;
-import ru.ifmo.cs.authorizator.contracts.request.AuthorizeUserRequestDto;
 import ru.ifmo.cs.authorizator.contracts.request.RegisterUserRequestBodyDto;
 import ru.ifmo.cs.authorizator.contracts.response.AuthorizedUserTokenResponseBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
@@ -33,11 +32,11 @@ public class AuthorizatorApiController {
     }
 
     @GetMapping("/api/v1/users/authorized-token")
-    public ResponseEntity<?> authorize(@RequestParam("authorization_credentials") AuthorizeUserRequestDto authorizeUserRequestDto) {
-        String jwt = authorizationProcessor.authorize(
-                authorizeUserRequestDto.username(),
-                authorizeUserRequestDto.password()
-        );
+    public ResponseEntity<?> authorize(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password
+    ) {
+        String jwt = authorizationProcessor.authorize(username, password);
         return ResponseEntity.ok().body(new AuthorizedUserTokenResponseBodyDto(jwt));
     }
 }

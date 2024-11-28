@@ -1,6 +1,8 @@
 package ru.ifmo.cs.authorizator.application.command;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.ifmo.cs.authorizator.domain.UserInfoAggregate;
@@ -9,6 +11,7 @@ import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.PassportClient;
 import ru.itmo.cs.command_bus.CommandHandler;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class RegisterUserCommandHandler implements CommandHandler<RegisterUserCommand> {
@@ -23,6 +26,19 @@ public class RegisterUserCommandHandler implements CommandHandler<RegisterUserCo
                 userId,
                 command.username,
                 command.password,
+                passwordEncoder
+        );
+        userInfoRepository.save(userInfoAggregate);
+    }
+
+    @PostConstruct
+    public void initAdmin() {
+        UserId userId = passportClient.createUser("supervisor");
+        log.info("Created user id: {}", userId);
+        UserInfoAggregate userInfoAggregate = UserInfoAggregate.create(
+                userId,
+                "z",
+                "z",
                 passwordEncoder
         );
         userInfoRepository.save(userInfoAggregate);

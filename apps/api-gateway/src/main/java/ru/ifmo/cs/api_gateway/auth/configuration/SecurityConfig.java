@@ -17,11 +17,14 @@ public class SecurityConfig {
     @Bean
         public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http, JwtTokenAuthenticationFilter authFilter) throws Exception {
         http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .cors(ServerHttpSecurity.CorsSpec::disable)
                 .addFilterAt(authFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .authorizeExchange((authorize) -> authorize
+//                                .pathMatchers("**").permitAll()
                         .pathMatchers("/actuator/**").permitAll()
-                        .pathMatchers("/api/v*/authorizator/register").hasRole("supervisor")
-                        .pathMatchers("/api/v*/authorizator/**").permitAll()
+                        .pathMatchers("/api/v*/users/authorized-token").permitAll()
+                        .pathMatchers("/api/v*/users/register").hasRole("supervisor")
                         .pathMatchers("/api/v*/interview-results, /api/v*/interview-results/**").hasRole("staff")
                         .pathMatchers("/api/v*/candidates/add").hasRole("hr")
                         .pathMatchers("/api/v*/candidates, /api/v*/candidates/by-id").hasAnyRole("hr", "interviewer")

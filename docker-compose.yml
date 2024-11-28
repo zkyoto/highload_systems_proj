@@ -86,3 +86,8 @@ services:
     extends:
       file: c-services.yaml
       service: interviewing-service-postgres
+
+  passport-postgres:
+    extends:
+      file: c-services.yaml
+      service: passport-postgres

@@ -23,6 +23,7 @@
         <option value="$PROJECT_DIR$/common/clients/authorizator-client/pom.xml" />
         <option value="$PROJECT_DIR$/service-discovery/eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/service-discovery/config-server/pom.xml" />
+        <option value="$PROJECT_DIR$/apps/passport/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

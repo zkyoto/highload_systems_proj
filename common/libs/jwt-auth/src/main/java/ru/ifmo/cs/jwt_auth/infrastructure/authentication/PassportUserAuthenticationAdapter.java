@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.ifmo.cs.passport.api.domain.PassportUser;
-import ru.ifmo.cs.passport.api.domain.value.Role;
+import ru.ifmo.cs.passport.domain.value.Role;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class PassportUserAuthenticationAdapter implements Authentication {

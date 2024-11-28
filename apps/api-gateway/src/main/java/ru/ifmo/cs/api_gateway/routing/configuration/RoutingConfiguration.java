@@ -40,7 +40,7 @@ public class RoutingConfiguration {
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(p -> p
-                        .path("/api/v*/interviews/**")
+                        .path("/api/v*/interviews/**", "/api/v*/interviews")
                         .filters(f -> f
                                 .addRequestHeader(
                                         "X-Service-Token",
@@ -62,7 +62,7 @@ public class RoutingConfiguration {
                         .uri(interviewApiServiceUrl)
                 )
                 .route(p -> p
-                        .path("/api/v*/interviewers/**")
+                        .path("/api/v*/interviewers/**", "/api/v*/interviewers")
                         .filters(f -> f
                                 .addRequestHeader(
                                         "X-Service-Token",
@@ -84,7 +84,7 @@ public class RoutingConfiguration {
                         .uri(interviewerApiServiceUrl)
                 )
                 .route(p -> p
-                        .path("/api/v*/interview-results/**")
+                        .path("/api/v*/interview-results/**", "/api/v*/interview-results")
                         .filters(f -> f
                                 .addRequestHeader(
                                         "X-Service-Token",
@@ -106,7 +106,7 @@ public class RoutingConfiguration {
                         .uri(interviewResultApiServiceUrl)
                 )
                 .route(p -> p
-                        .path("/api/v*/candidates/**")
+                        .path("/api/v*/candidates/**", "/api/v*/candidates")
                         .filters(f -> f
                                 .addRequestHeader(
                                         "X-Service-Token",
@@ -128,7 +128,7 @@ public class RoutingConfiguration {
                         .uri(candidateApiServiceUrl)
                 )
                 .route(p -> p
-                        .path("/api/v*/feedbacks/**")
+                        .path("/api/v*/feedbacks/**", "/api/v*/feedbacks")
                         .filters(f -> f
                                 .addRequestHeader(
                                         "X-Service-Token",
