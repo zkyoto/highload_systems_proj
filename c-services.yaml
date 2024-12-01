@@ -39,6 +39,18 @@ services:
     build: apps/authorizator
     image: highload_systems_proj-authorizator:latest
 
+  passport:
+    build: apps/passport
+    image: highload_systems_proj-passport:latest
+    ports:
+      - "81:81"
+    healthcheck:
+      test: curl --fail http://passport:81/ping || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
   api-gateway:
     build: apps/api-gateway
     image: highload_systems_proj-api-gateway:latest

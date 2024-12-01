@@ -1,46 +1,61 @@
 package ru.ifmo.cs.passport.presentation;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.ifmo.cs.misc.UserId;
-import ru.ifmo.cs.passport.application.CreatePassportUserCommand;
+import ru.ifmo.cs.passport.application.service.UserWithUniqueUserIdCreator;
 import ru.ifmo.cs.passport.domain.PassportUser;
 import ru.ifmo.cs.passport.domain.PassportUserRepository;
 import ru.ifmo.cs.passport.domain.value.Role;
-import ru.itmo.cs.command_bus.CommandBus;
+import ru.ifmo.cs.passport_contracts.PassportUserResponseDto;
 
+@Slf4j
 @RestController
-@RequestMapping()
 @AllArgsConstructor
 public class PassportUsersApiController {
-    private final CommandBus commandBus;
+    private final UserWithUniqueUserIdCreator userWithUniqueUserIdCreator;
     private final PassportUserRepository passportUserRepository;
 
     @GetMapping("/api/v1/users/{userId}")
-    public Mono<ResponseEntity> getUser(@PathVariable Long userId) {
-        return Mono.just(this.passportUserRepository.findByUserId(UserId.of(userId)))
-                .map(ResponseEntity::ok);
+    public Mono<PassportUserResponseDto> getUser(@PathVariable("userId") Long userId) {
+        return passportUserRepository.findByUserId(UserId.of(userId)).map(this::toResponseDto);
     }
 
     @PostMapping("/api/v1/users/create")
-    public Mono<ResponseEntity> create(
+    public Mono<UserId> create(
             @RequestBody String role
     ) {
-        commandBus.submit(new CreatePassportUserCommand(Role.R.fromValue(role)));
-        return Mono.just(ResponseEntity.ok().build());
+        log.info("Create user request with role: {}", role);
+        return userWithUniqueUserIdCreator.createUserWithUniqueUserIdGuarantee(Role.R.fromValue(role));
     }
 
     @GetMapping("/api/v1/users")
-    public Flux<PassportUser> getAll() {
-        return passportUserRepository.findAll();
+    public Flux<PassportUserResponseDto> getAll() {
+        return passportUserRepository.findAll().map(this::toResponseDto);
+    }
+
+    private PassportUserResponseDto toResponseDto(PassportUser passportUser) {
+        return new PassportUserResponseDto(
+                passportUser.getUid(),
+                passportUser.getName(),
+                passportUser.getRoles()
+                        .stream()
+                        .map(Role::value)
+                        .toList()
+        );
+    }
+
+    @GetMapping("/ping")
+    public Mono<ResponseEntity<String>> ping() {
+        return Mono.just(ResponseEntity.ok("pong"));
     }
 
 }

@@ -9,7 +9,7 @@ import ru.ifmo.cs.passport.domain.value.Role;
 
 public record R2dbcPassportUserEntity(
         UUID id,
-        long userId,
+        long uid,
         String fullName,
         Instant createdAt,
         Instant updatedAt,

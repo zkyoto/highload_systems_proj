@@ -5,6 +5,7 @@ import java.util.Date;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
+import org.springframework.util.StringUtils;
 import ru.ifmo.cs.jwt_auth.application.JwtGenerator;
 import ru.ifmo.cs.jwt_auth.application.JwtResolver;
 import ru.ifmo.cs.jwt_auth.application.JwtValidator;
@@ -16,6 +17,7 @@ public class JwtImpl implements JwtGenerator, JwtResolver, JwtValidator {
 
     public boolean isValid(String authToken) {
         try {
+            StringUtils.hasText(authToken);
             Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
             return true;
         } catch (Exception e) {

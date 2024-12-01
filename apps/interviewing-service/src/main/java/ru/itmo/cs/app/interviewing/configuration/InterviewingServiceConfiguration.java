@@ -2,7 +2,6 @@ package ru.itmo.cs.app.interviewing.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import ru.ifmo.cs.passport.api.config.StubPassportClientConfiguration;
 import ru.ifmo.cs.service_token.configuration.TokenizerConfiguration;
 import ru.itmo.cs.app.interviewing.configuration.service_token.validator.CandidatesServiceTokenValidatorsConfigurer;
 import ru.itmo.cs.app.interviewing.configuration.service_token.validator.DefaultServiceTokenValidatorsConfigurer;
@@ -14,7 +13,6 @@ import ru.itmo.cs.command_bus.configuration.CommandBusConfiguration;
 
 @Configuration
 @Import({
-        StubPassportClientConfiguration.class,
         CommandBusConfiguration.class,
         DomainEventsConfiguration.class,
         TokenizerConfiguration.class,
