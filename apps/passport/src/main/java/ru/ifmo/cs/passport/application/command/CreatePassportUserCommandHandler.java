@@ -1,4 +1,4 @@
-package ru.ifmo.cs.passport.application;
+package ru.ifmo.cs.passport.application.command;
 
 import java.util.Arrays;
 
@@ -20,18 +20,5 @@ public class CreatePassportUserCommandHandler implements CommandHandler<CreatePa
 
     @Override
     public void handle(CreatePassportUserCommand command) {
-        boolean isSucceeded = false;
-        while (!isSucceeded) {
-            isSucceeded = true;
-            Name randomName = RandomNameGenerator.generateRandomName();
-            UserId randomUid = RandomUserIdGenerator.generateRandomUserId();
-            PassportUser user = PassportUser.create(randomUid, randomName, Arrays.asList(command.role));
-            try {
-                passportRepository.save(user);
-            } catch (DuplicateUserIdException e) {
-                isSucceeded = false;
-            }
-        }
     }
-
 }

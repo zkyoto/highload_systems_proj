@@ -11,5 +11,5 @@ public interface PassportUserRepository {
     Mono<PassportUser> findById(PassportUserId userId);
     Mono<PassportUser> findByUserId(UserId userId);
     Flux<PassportUser> findAll();
-    Mono<Void> save(PassportUser user);
+    Mono<PassportUser> save(PassportUser user);
 }

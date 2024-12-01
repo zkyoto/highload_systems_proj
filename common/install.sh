@@ -7,6 +7,7 @@ libs=(
     "./libs/domain_event"
     "./libs/page"
     "./libs/service-token"
+    "./contracts/passport-contracts"
     "./clients/passport-client"
     "./libs/jwt-auth"
     "./contracts/authorizator-contracts"

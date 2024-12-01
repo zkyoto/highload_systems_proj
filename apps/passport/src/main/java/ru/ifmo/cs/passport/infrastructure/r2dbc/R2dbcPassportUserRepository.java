@@ -45,7 +45,7 @@ public class R2dbcPassportUserRepository implements PassportUserRepository {
     }
 
     @Override
-    public Mono<Void> save(PassportUser user) {
+    public Mono<PassportUser> save(PassportUser user) {
         boolean isNew = user.releaseEvents().stream().anyMatch(event -> event instanceof PassportUserCreatedEvent);
         if (isNew) {
             return insert(user);
@@ -54,11 +54,11 @@ public class R2dbcPassportUserRepository implements PassportUserRepository {
         }
     }
 
-    private Mono<Void> insert(PassportUser user) {
-        return template.insert(R2dbcPassportUserEntity.from(user)).then();
+    private Mono<PassportUser> insert(PassportUser user) {
+        return template.insert(R2dbcPassportUserEntity.from(user)).map(PassportUser::hydrate);
     }
 
-    private Mono<Void> update(PassportUser user) {
-        return template.update(R2dbcPassportUserEntity.from(user)).then();
+    private Mono<PassportUser> update(PassportUser user) {
+        return template.update(R2dbcPassportUserEntity.from(user)).map(PassportUser::hydrate);
     }
 }

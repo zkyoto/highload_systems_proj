@@ -3,25 +3,26 @@ package ru.ifmo.cs.authorizator.application.command;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.ifmo.cs.authorizator.domain.UserInfoAggregate;
 import ru.ifmo.cs.authorizator.domain.UserInfoRepository;
 import ru.ifmo.cs.misc.UserId;
-import ru.ifmo.cs.passport.api.PassportClient;
+import ru.ifmo.cs.passport.api.PassportFeignClient;
 import ru.itmo.cs.command_bus.CommandHandler;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class RegisterUserCommandHandler implements CommandHandler<RegisterUserCommand> {
-    private final PassportClient passportClient;
+    private final PassportFeignClient passportClient;
     private final PasswordEncoder passwordEncoder;
     private final UserInfoRepository userInfoRepository;
 
     @Override
     public void handle(RegisterUserCommand command) {
-        UserId userId = passportClient.createUser(command.roleSlug);
+        UserId userId = passportClient.create(command.roleSlug);
         UserInfoAggregate userInfoAggregate = UserInfoAggregate.create(
                 userId,
                 command.username,
@@ -33,7 +34,7 @@ public class RegisterUserCommandHandler implements CommandHandler<RegisterUserCo
 
     @PostConstruct
     public void initAdmin() {
-        UserId userId = passportClient.createUser("supervisor");
+        UserId userId = passportClient.create("supervisor");
         log.info("Created user id: {}", userId);
         UserInfoAggregate userInfoAggregate = UserInfoAggregate.create(
                 userId,

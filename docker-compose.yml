@@ -2,6 +2,7 @@ include:
   - c-network.yaml
 
 services:
+
   interview-api:
     extends:
       file: c-services.yaml
@@ -11,6 +12,7 @@ services:
         condition: service_healthy
       interviewing-service-postgres:
         condition: service_healthy
+
   interviewer-api:
     extends:
       file: c-services.yaml
@@ -20,6 +22,7 @@ services:
         condition: service_healthy
       interviewing-service-postgres:
         condition: service_healthy
+
   candidate-api:
     extends:
       file: c-services.yaml
@@ -29,6 +32,7 @@ services:
         condition: service_healthy
       interviewing-service-postgres:
         condition: service_healthy
+
   feedback-api:
     extends:
       file: c-services.yaml
@@ -38,6 +42,7 @@ services:
         condition: service_healthy
       interviewing-service-postgres:
         condition: service_healthy
+
   interview-result-api:
     extends:
       file: c-services.yaml
@@ -47,6 +52,7 @@ services:
         condition: service_healthy
       interviewing-service-postgres:
         condition: service_healthy
+
   worker:
     extends:
       file: c-services.yaml
@@ -56,6 +62,7 @@ services:
         condition: service_healthy
       interviewing-service-postgres:
         condition: service_healthy
+
   authorizator:
     extends:
       file: c-services.yaml
@@ -63,6 +70,7 @@ services:
     depends_on:
       api-gateway:
         condition: service_healthy
+
   api-gateway:
     extends:
       file: c-services.yaml
@@ -70,16 +78,32 @@ services:
     depends_on:
       config-server:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      passport:
+        condition: service_healthy
+
   eureka-server:
     extends:
       file: c-services.yaml
       service: eureka-server
+
   config-server:
     extends:
       file: c-services.yaml
       service: config-server
     depends_on:
       eureka-server:
+        condition: service_healthy
+
+  passport:
+    extends:
+      file: c-services.yaml
+      service: passport
+    depends_on:
+      config-server:
+        condition: service_healthy
+      passport-postgres:
         condition: service_healthy
 
   interviewing-service-postgres:

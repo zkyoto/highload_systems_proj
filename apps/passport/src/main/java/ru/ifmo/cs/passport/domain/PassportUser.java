@@ -46,7 +46,7 @@ public class PassportUser {
                 new PassportUserId(r2dbcPassportUserEntity.id()),
                 r2dbcPassportUserEntity.createdAt(),
                 r2dbcPassportUserEntity.updatedAt(),
-                UserId.of(r2dbcPassportUserEntity.userId()),
+                UserId.of(r2dbcPassportUserEntity.uid()),
                 Name.of(r2dbcPassportUserEntity.fullName()),
                 r2dbcPassportUserEntity.roles().stream().map(Role.R::fromValue).toList()
         );

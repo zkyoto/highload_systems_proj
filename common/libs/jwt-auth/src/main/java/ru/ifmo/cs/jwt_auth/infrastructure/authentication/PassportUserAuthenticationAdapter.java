@@ -1,32 +1,41 @@
 package ru.ifmo.cs.jwt_auth.infrastructure.authentication;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import ru.ifmo.cs.passport.api.domain.PassportUser;
-import ru.ifmo.cs.passport.domain.value.Role;
+import ru.ifmo.cs.passport_contracts.PassportUserResponseDto;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class PassportUserAuthenticationAdapter implements Authentication {
-    private final PassportUser user;
-    private boolean isAuthenticated = false;
+    private final List<SimpleGrantedAuthority> authorities;
+    private final String name;
+    private boolean isAuthenticated;
 
-    public static PassportUserAuthenticationAdapter of(PassportUser user) {
-        return new PassportUserAuthenticationAdapter(user);
+    private PassportUserAuthenticationAdapter(List<SimpleGrantedAuthority> authorities, String name) {
+        this.authorities = authorities;
+        this.name = name;
+        this.isAuthenticated = true;
+    }
+
+    public static PassportUserAuthenticationAdapter of(PassportUserResponseDto user) {
+        return new PassportUserAuthenticationAdapter(
+                user.roles()
+                        .stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .toList(),
+                user.name()
+                        .fullName());
     }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.roles().stream()
-                .map(Role::value)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        log.info("Get authorities: {}", authorities);
+        return authorities;
     }
 
     @Override
@@ -41,7 +50,7 @@ public class PassportUserAuthenticationAdapter implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return user.uid();
+        return null;
     }
 
     @Override
@@ -56,6 +65,6 @@ public class PassportUserAuthenticationAdapter implements Authentication {
 
     @Override
     public String getName() {
-        return user.name().fullName();
+        return name;
     }
 }

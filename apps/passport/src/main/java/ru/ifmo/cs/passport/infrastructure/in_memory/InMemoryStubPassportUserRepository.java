@@ -40,7 +40,7 @@ public class InMemoryStubPassportUserRepository implements PassportUserRepositor
     }
 
     @Override
-    public Mono<Void> save(PassportUser user) {
+    public Mono<PassportUser> save(PassportUser user) {
         boolean update = users.removeIf(passportUser -> passportUser.getId().equals(user.getId()));
         if (update) {
             users.add(user);

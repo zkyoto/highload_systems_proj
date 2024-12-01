@@ -19,7 +19,7 @@ public class AuthorizatorApiController {
     private final CommandBus commandBus;
     private final AuthorizationProcessor authorizationProcessor;
 
-    @PostMapping("/api/v1/users/register")
+    @PostMapping("/api/v1/auth/register")
     public ResponseEntity<?> registerUser(
             @RequestBody RegisterUserRequestBodyDto registerUserRequestBodyDto
     ) {
@@ -31,7 +31,7 @@ public class AuthorizatorApiController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/api/v1/users/authorized-token")
+    @GetMapping("/api/v1/auth/authorized-token")
     public ResponseEntity<?> authorize(
             @RequestParam("username") String username,
             @RequestParam("password") String password

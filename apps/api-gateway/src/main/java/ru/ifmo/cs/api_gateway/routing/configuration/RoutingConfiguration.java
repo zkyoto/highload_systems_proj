@@ -150,7 +150,7 @@ public class RoutingConfiguration {
                         .uri(feedbackApiServiceUrl)
                 )
                 .route(p -> p
-                        .path("/api/v*/users/**")
+                        .path("/api/v*/auth/**")
                         .filters(f -> f
                                 .addRequestHeader(
                                         "X-Service-Token",
