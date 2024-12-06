@@ -2,10 +2,6 @@ package ru.ifmo.cs.api_gateway.routing.configuration;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -13,6 +9,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import ru.ifmo.cs.api_gateway.tracing.RequestInterceptor;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import ru.ifmo.cs.service_token.configuration.TokenizerConfiguration;
 import ru.ifmo.cs.service_token.domain.RequestData;
@@ -23,18 +20,15 @@ import ru.ifmo.cs.service_token.domain.ServiceId;
 @Import(TokenizerConfiguration.class)
 @AllArgsConstructor
 public class RoutingConfiguration {
+    private static final String authorizatorServiceUrl = "lb://authorizator";
+    private static final String interviewApiServiceUrl = "lb://interviewing-service.interview-web";
+    private static final String interviewerApiServiceUrl = "lb://interviewing-service.interviewer-web";
+    private static final String interviewResultApiServiceUrl = "lb://interviewing-service.interview-result-web";
+    private static final String candidateApiServiceUrl = "lb://interviewing-service.candidate-web";
+    private static final String feedbackApiServiceUrl = "lb://interviewing-service.feedback-web";
     private final ServiceTokenResolver serviceTokenResolver;
-    private final String authorizatorServiceUrl = "lb://authorizator";
-    private final String interviewApiServiceUrl = "lb://interviewing-service.interview-web";
-    private final String interviewerApiServiceUrl = "lb://interviewing-service.interviewer-web";
-    private final String interviewResultApiServiceUrl = "lb://interviewing-service.interview-result-web";
-    private final String candidateApiServiceUrl = "lb://interviewing-service.candidate-web";
-    private final String feedbackApiServiceUrl = "lb://interviewing-service.feedback-web";
+    private final RequestInterceptor requestInterceptor;
 
-    @Bean
-    public RouteLocator defaultRoutes(RouteLocatorBuilder builder) {
-        return builder.routes().build();
-    }
 
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
@@ -168,6 +162,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(authorizatorServiceUrl)
                 )

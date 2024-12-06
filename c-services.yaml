@@ -125,3 +125,21 @@ services:
       timeout: 5s
       interval: 30s
       retries: 50
+
+  api-gateway-postgres:
+    build: ./pg
+    image: highload_systems_proj-api-gateway-postgres:latest
+    ports:
+      - '5253:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=api-gateway-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
