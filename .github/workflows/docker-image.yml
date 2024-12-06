@@ -23,7 +23,6 @@ jobs:
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
       - name: Archive JaCoCo coverage report
         run: |
-          mkdir -p coverage
           ls -lR | grep "jacoco"
           cp -r apps/interviewing-service/target/site/jacoco/ coverage/
       - name: Upload coverage report
