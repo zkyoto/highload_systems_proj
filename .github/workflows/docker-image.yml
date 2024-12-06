@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Build Docker image
         run: |
-          docker build -t GhoulTeam/highload_systems_proj-base-image:latest .
+          docker build -t highload_systems_proj-base-image:latest .
           docker build -t GhoulTeam/highload-systems_api-gateway:latest ./apps/api-gateway
           docker build -t GhoulTeam/highload-systems_authorizator:latest ./apps/authorizator
           docker build -t GhoulTeam/highload-systems_interviewing-service:latest ./apps/interviewing-service
