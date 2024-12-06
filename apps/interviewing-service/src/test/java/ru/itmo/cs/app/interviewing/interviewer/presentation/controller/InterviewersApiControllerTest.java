@@ -29,7 +29,7 @@ import ru.itmo.cs.command_bus.CommandBus;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("web")
+@ActiveProfiles("interviewer-web")
 class InterviewersApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;

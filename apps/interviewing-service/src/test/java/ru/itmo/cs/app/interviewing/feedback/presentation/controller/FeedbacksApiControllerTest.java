@@ -33,7 +33,7 @@ import ru.itmo.cs.app.interviewing.interview.domain.Interview;
 import ru.itmo.cs.app.interviewing.utils.InterviewingServiceStubFactory;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@ActiveProfiles("web")
+@ActiveProfiles("feedback-web")
 @ContextConfiguration(classes = TurnOffAllDomainEventConsumers.class)
 class FeedbacksApiControllerTest extends AbstractIntegrationTest {
     @Autowired
