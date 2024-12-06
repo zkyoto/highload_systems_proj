@@ -82,6 +82,8 @@ services:
         condition: service_healthy
       passport:
         condition: service_healthy
+      api-gateway-postgres:
+        condition: service_healthy
 
   eureka-server:
     extends:
@@ -115,3 +117,8 @@ services:
     extends:
       file: c-services.yaml
       service: passport-postgres
+
+  api-gateway-postgres:
+    extends:
+      file: c-services.yaml
+      service: api-gateway-postgres
