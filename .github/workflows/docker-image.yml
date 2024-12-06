@@ -16,11 +16,18 @@ jobs:
         uses: actions/checkout@v3
       - name: Build Docker image
         run: |
-          docker build -t GhoulTeam/highload-systems:latest .
+          docker build -t GhoulTeam/highload_systems_proj-base-image:latest .
+          docker build -t GhoulTeam/highload-systems_api-gateway:latest ./apps/api-gateway
+          docker build -t GhoulTeam/highload-systems_authorizator:latest ./apps/authorizator
+          docker build -t GhoulTeam/highload-systems_interviewing-service:latest ./apps/interviewing-service
+          docker build -t GhoulTeam/highload-systems_passport:latest ./apps/passport
       - name: Run tests
         run: |
           pwd
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems_interviewing-service:latest ./mvnw test
+#          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
+#          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
+#          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
 #      - name: Archive JaCoCo coverage report
 #        run: |
 #          mkdir -p coverage
