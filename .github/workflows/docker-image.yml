@@ -25,7 +25,7 @@ jobs:
         run: |
           pwd
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems_interviewing-service:latest ./mvnw test
-#          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/api-gateway/target GhoulTeam/highload-systems_api-gateway:latest ./mvnw test
 #          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
 #          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems:latest ./apps/interviewing-service/mvnw test
       - name: Archive JaCoCo coverage report
