@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("web")
+@ActiveProfiles("candidate-web")
 class CandidatesApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;

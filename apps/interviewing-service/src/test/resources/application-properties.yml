@@ -8,6 +8,11 @@ spring:
   flyway:
     enabled: true
     locations: classpath:pg/migrations
+  cloud:
+    config:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
 
 security:
   interviews:
@@ -25,3 +30,7 @@ security:
   candidates:
     service-id: 6
     allowed-service-ids: 1
+
+eureka:
+  client:
+    enabled: false

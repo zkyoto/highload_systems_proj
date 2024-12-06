@@ -1,22 +1,36 @@
 package ru.itmo.cs.app.interviewing.interviewer.presentation.controller;
 
+import java.util.List;
 import java.util.Random;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
+import ru.ifmo.cs.passport.api.PassportFeignClient;
+import ru.ifmo.cs.passport.api.stub.PassportFeignClientStub;
+import ru.ifmo.cs.passport_contracts.PassportUserResponseDto;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import ru.ifmo.cs.service_token.domain.RequestData;
 import ru.ifmo.cs.service_token.domain.ServiceId;
 import ru.itmo.cs.app.interviewing.AbstractIntegrationTest;
+import ru.itmo.cs.app.interviewing.configuration.TurnOffAllDomainEventConsumers;
 import ru.itmo.cs.app.interviewing.interviewer.application.command.ActivateInterviewerCommand;
 import ru.itmo.cs.app.interviewing.interviewer.application.command.AddInterviewerCommand;
+import ru.itmo.cs.app.interviewing.interviewer.application.command.AddInterviewerCommandHandler;
 import ru.itmo.cs.app.interviewing.interviewer.application.query.InterviewerUniqueIdentifiersQueryService;
 import ru.itmo.cs.app.interviewing.interviewer.application.query.dto.InterviewerUniqueIdentifiersDto;
 import ru.itmo.cs.app.interviewing.interviewer.domain.InterviewerRepository;
@@ -29,7 +43,8 @@ import ru.itmo.cs.command_bus.CommandBus;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("web")
+@ActiveProfiles("interviewer-web")
+@ContextConfiguration(classes = InterviewersApiControllerTest.MockConfig.class)
 class InterviewersApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
@@ -131,5 +146,16 @@ class InterviewersApiControllerTest extends AbstractIntegrationTest {
 
     private void generateUniqueUserId() {
         stubUserId = UserId.of(new Random().nextLong());
+    }
+
+    @TestConfiguration
+    static class MockConfig{
+        @Primary
+        @Bean
+        public AddInterviewerCommandHandler addInterviewerCommandHandler(
+                InterviewerRepository repository
+        ) {
+            return new AddInterviewerCommandHandler(repository, new PassportFeignClientStub());
+        }
     }
 }
