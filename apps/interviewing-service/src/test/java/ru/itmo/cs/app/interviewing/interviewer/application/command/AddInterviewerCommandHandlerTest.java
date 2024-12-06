@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.PassportFeignClient;
+import ru.ifmo.cs.passport_contracts.PassportUserResponseDto;
 import ru.itmo.cs.app.interviewing.interviewer.domain.Interviewer;
 import ru.itmo.cs.app.interviewing.interviewer.domain.InterviewerRepository;
 
@@ -42,7 +43,8 @@ class AddInterviewerCommandHandlerTest {
     @Test
     void testHandleSavesInterviewer() {
         Name name = Name.of("John", "Doe");
-//        when(passportClient.getUser(userId.getUid())).thenReturn(new PassportUser(Mockito.mock(UserId.class), name, List.of()));
+        when(passportClient.getUser(userId.getUid()))
+                .thenReturn(new PassportUserResponseDto(Mockito.mock(UserId.class), name, List.of()));
 
         commandHandler.handle(command);
 
@@ -57,8 +59,10 @@ class AddInterviewerCommandHandlerTest {
     @Test
     void testGetUserNameFromPassportClient() {
         Name name = Name.of("John", "Doe");
-//        when(passportClient.findPassportUser(userId)).thenReturn(new PassportUser(Mockito.mock(UserId.class), name, List.of()));
+        when(passportClient.getUser(userId.getUid()))
+                .thenReturn(new PassportUserResponseDto(Mockito.mock(UserId.class), name, List.of()));
+
         commandHandler.handle(command);
-//        verify(passportClient, times(1)).findPassportUser(userId);
+        verify(passportClient, times(1)).getUser(userId.getUid());
     }
 }
