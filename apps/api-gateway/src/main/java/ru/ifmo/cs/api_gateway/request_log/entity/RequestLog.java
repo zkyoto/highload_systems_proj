@@ -1,5 +1,6 @@
 package ru.ifmo.cs.api_gateway.request_log.entity;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -23,4 +24,5 @@ public class RequestLog {
     private String url;
     private String headers;
     private UUID traceId;
+    private Instant timestamp;
 }

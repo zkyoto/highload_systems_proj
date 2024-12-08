@@ -14,6 +14,10 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+eureka:
+  client:
+    enabled: false
+
 security:
   interviews:
     service-id: 2
@@ -30,7 +34,3 @@ security:
   candidates:
     service-id: 6
     allowed-service-ids: 1
-
-eureka:
-  client:
-    enabled: false

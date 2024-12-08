@@ -1,5 +1,6 @@
 package ru.ifmo.cs.api_gateway.response_log.entity;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -21,4 +22,5 @@ public class ResponseLog {
     private int statusCode;
     private String headers;
     private UUID traceId;
+    private Instant timestamp;
 }
