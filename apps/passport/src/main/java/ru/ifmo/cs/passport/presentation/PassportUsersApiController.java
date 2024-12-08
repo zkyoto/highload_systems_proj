@@ -53,9 +53,4 @@ public class PassportUsersApiController {
         );
     }
 
-    @GetMapping("/ping")
-    public Mono<ResponseEntity<String>> ping() {
-        return Mono.just(ResponseEntity.ok("pong"));
-    }
-
 }
