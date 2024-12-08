@@ -19,9 +19,7 @@ public class UserWithUniqueUserIdCreator {
     private final PassportUserRepository passportUserRepository;
 
     public Mono<UserId> createUserWithUniqueUserIdGuarantee(Role userRole) {
-        boolean created = false;
-        while (!created) {
-            created = true;
+        while (true) {
             try {
                 PassportUser user = PassportUser.create(
                         RandomUserIdGenerator.generateRandomUserId(),
@@ -29,9 +27,8 @@ public class UserWithUniqueUserIdCreator {
                         Arrays.asList(userRole));
                 return passportUserRepository.save(user).map(PassportUser::getUid);
             } catch (DataIntegrityViolationException e) {
-                created = false;
+                //just try again
             }
         }
-        return null;
     }
 }

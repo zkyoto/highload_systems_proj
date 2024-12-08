@@ -1,5 +1,6 @@
 package ru.ifmo.cs.api_gateway.tracing;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class RequestInterceptor implements GatewayFilter {
         requestLog.setUrl(request.getURI().toString());
         requestLog.setHeaders(request.getHeaders().toString());
         requestLog.setTraceId(traceId);
+        requestLog.setTimestamp(Instant.now());
 
         log.info("Logging request: {}", request);
 
@@ -41,6 +43,7 @@ public class RequestInterceptor implements GatewayFilter {
             responseLog.setStatusCode(response.getStatusCode().value());
             responseLog.setHeaders(response.getHeaders().toString());
             responseLog.setTraceId(traceId);
+            responseLog.setTimestamp(Instant.now());
 
             log.info("Logging response: {}", response);
 

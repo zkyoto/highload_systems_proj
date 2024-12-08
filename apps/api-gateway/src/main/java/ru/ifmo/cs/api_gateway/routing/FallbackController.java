@@ -9,7 +9,7 @@ public class FallbackController {
 
     @RequestMapping("/fallback")
     public ResponseEntity<String> fallback() {
-        return ResponseEntity.ok("sosal?");
+        return ResponseEntity.ok("This is simple fallback implementation.");
     }
 
 }

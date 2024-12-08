@@ -20,6 +20,7 @@ public class UserInfoAggregate {
     @NonNull
     private Instant updatedAt;
     private final UserId userId;
+    @Getter(AccessLevel.NONE)
     private final UserAuthorizationCredentials authCreds;
 
     public static UserInfoAggregate create(
