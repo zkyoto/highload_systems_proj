@@ -29,12 +29,19 @@ jobs:
         run: |
           pwd
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/candidates/target GhoulTeam/highload-systems_candidates:latest ./mvnw test
+          rm -rf ./target
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/feedbacks/target GhoulTeam/highload-systems_feedbacks:latest ./mvnw test
+          rm -rf ./target
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/interviews/target GhoulTeam/highload-systems_interviews:latest ./mvnw test
+          rm -rf ./target
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/interviewers/target GhoulTeam/highload-systems_interviewers:latest ./mvnw test
+          rm -rf ./target
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/interview-results/target GhoulTeam/highload-systems_interview-results:latest ./mvnw test
+          rm -rf ./target
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/api-gateway/target GhoulTeam/highload-systems_api-gateway:latest ./mvnw test
+          rm -rf ./target
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/authorizator/target GhoulTeam/highload-systems_authorizator:latest ./mvnw test
+          rm -rf ./target
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/passport/target GhoulTeam/highload-systems_passport:latest ./mvnw test
       - name: Archive JaCoCo coverage report
         run: |
