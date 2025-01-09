@@ -76,7 +76,7 @@ services:
 
   interviews-postgres:
     build: ./pg
-    image: highload_systems_proj-interviewing-service-postgres:latest
+    image: highload_systems_proj-interviews-postgres:latest
     ports:
       - '5252:5432'
     environment:
@@ -86,7 +86,7 @@ services:
       POSTGRESQL_PASSWORD_ENCRYPTION: md5
       POSTGRESQL_PGAUDIT_LOG: all, -misc
     healthcheck:
-      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      test: psql 'host=interviews-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
       start_period: 180s
       timeout: 5s
       interval: 30s
@@ -94,7 +94,7 @@ services:
 
   interviewers-postgres:
     build: ./pg
-    image: highload_systems_proj-interviewing-service-postgres:latest
+    image: highload_systems_proj-interviewers-postgres:latest
     ports:
       - '5253:5432'
     environment:
@@ -104,7 +104,7 @@ services:
       POSTGRESQL_PASSWORD_ENCRYPTION: md5
       POSTGRESQL_PGAUDIT_LOG: all, -misc
     healthcheck:
-      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      test: psql 'host=interviewers-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
       start_period: 180s
       timeout: 5s
       interval: 30s
@@ -112,7 +112,7 @@ services:
 
   interview-results-postgres:
     build: ./pg
-    image: highload_systems_proj-interviewing-service-postgres:latest
+    image: highload_systems_proj-interview-results-postgres:latest
     ports:
       - '5254:5432'
     environment:
@@ -122,7 +122,7 @@ services:
       POSTGRESQL_PASSWORD_ENCRYPTION: md5
       POSTGRESQL_PGAUDIT_LOG: all, -misc
     healthcheck:
-      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      test: psql 'host=interview-results-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
       start_period: 180s
       timeout: 5s
       interval: 30s
@@ -130,7 +130,7 @@ services:
 
   feedbacks-postgres:
     build: ./pg
-    image: highload_systems_proj-interviewing-service-postgres:latest
+    image: highload_systems_proj-feedbacks-postgres:latest
     ports:
       - '5255:5432'
     environment:
@@ -140,7 +140,7 @@ services:
       POSTGRESQL_PASSWORD_ENCRYPTION: md5
       POSTGRESQL_PGAUDIT_LOG: all, -misc
     healthcheck:
-      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      test: psql 'host=feedbacks-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
       start_period: 180s
       timeout: 5s
       interval: 30s
@@ -148,7 +148,7 @@ services:
 
   candidates-postgres:
     build: ./pg
-    image: highload_systems_proj-interviewing-service-postgres:latest
+    image: highload_systems_proj-candidates-postgres:latest
     ports:
       - '5256:5432'
     environment:
@@ -158,7 +158,7 @@ services:
       POSTGRESQL_PASSWORD_ENCRYPTION: md5
       POSTGRESQL_PGAUDIT_LOG: all, -misc
     healthcheck:
-      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      test: psql 'host=candidates-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
       start_period: 180s
       timeout: 5s
       interval: 30s
