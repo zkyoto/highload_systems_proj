@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.ifmo.cs.AbstractIntegrationTest;
 import ru.ifmo.cs.configuration.KafkaConsumerConfig;
+import ru.ifmo.cs.consumer.KafkaConsumerProperties;
+import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.feedbacks.application.command.SaveCommentFeedbackCommand;
 import ru.ifmo.cs.feedbacks.application.command.SaveGradeFeedbackCommand;
 import ru.ifmo.cs.feedbacks.application.query.FeedbackByInterviewQueryService;
@@ -32,7 +34,7 @@ import ru.ifmo.cs.service_token.domain.RequestData;
 import ru.ifmo.cs.service_token.domain.ServiceId;
 import ru.itmo.cs.command_bus.CommandBus;
 
-@MockBean(KafkaConsumerConfig.class)
+@MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
 class FeedbacksApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;

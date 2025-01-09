@@ -1,6 +1,5 @@
 package ru.ifmo.cs.candidates.configuration;
 
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.ifmo.cs.configuration.KafkaConsumerConfig;

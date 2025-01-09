@@ -19,16 +19,18 @@ import ru.ifmo.cs.integration_event.event_delivery.KnownIntegrationEventTypeReso
 @Service
 @AllArgsConstructor
 public class KafkaEventsConsumer {
-    private static final String topics = "${kafka-topic.consume}";
-    private static final String kafkaConsumerGroupId = "${spring.kafka.consumer.group-id}";
     private static final String EVENT_TYPE_JSON_KEY = "event_type";
     private final IntegrationEventFanoutDelivererService integrationEventFanoutDelivererService;
     private final KnownIntegrationEventTypeResolver knownIntegrationEventTypeResolver;
+    private final KafkaConsumerProperties kafkaConsumerProperties;
     private final ObjectMapper objectMapper;
 
     @SneakyThrows
     @Transactional
-    @KafkaListener(topics = topics, groupId = kafkaConsumerGroupId)
+    @KafkaListener(
+            topics = "#{kafkaConsumerProperties.topicsForConsume()}",
+            groupId = "#{kafkaConsumerProperties.consumerGroupId()}"
+    )
     public void consume(String message) {
         log.info("Message consumed {}", message);
         message = clearSpecialChars(message);

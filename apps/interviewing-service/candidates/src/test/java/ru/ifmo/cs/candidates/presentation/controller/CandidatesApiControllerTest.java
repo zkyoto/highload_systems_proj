@@ -15,7 +15,8 @@ import ru.ifmo.cs.candidates.domain.Candidate;
 import ru.ifmo.cs.candidates.domain.CandidateRepository;
 import ru.ifmo.cs.candidates.domain.value.CandidateId;
 import ru.ifmo.cs.candidates.presentation.controller.dto.request.AddCandidateRequestBodyDto;
-import ru.ifmo.cs.configuration.KafkaConsumerConfig;
+import ru.ifmo.cs.consumer.KafkaConsumerProperties;
+import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.misc.Name;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import ru.ifmo.cs.service_token.domain.RequestData;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@MockBean(KafkaConsumerConfig.class)
+@MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
 class CandidatesApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;

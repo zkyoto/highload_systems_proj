@@ -13,12 +13,13 @@ import ru.ifmo.cs.candidates.domain.CandidateRepository;
 import ru.ifmo.cs.candidates.domain.event.CandidateCancelledEvent;
 import ru.ifmo.cs.candidates.domain.value.CandidateStatus;
 import ru.ifmo.cs.candidates.presentation.integration_event.consumer.InterviewCancelledIntegrationEventConsumer;
-import ru.ifmo.cs.configuration.KafkaConsumerConfig;
+import ru.ifmo.cs.consumer.KafkaConsumerProperties;
+import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.contracts.interviewing_service.interviews.integration_event.InterviewCancelledIntegrationEvent;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 import ru.ifmo.cs.misc.Name;
 
-@MockBean(KafkaConsumerConfig.class)
+@MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
 class InterviewCancelledIntegrationEventConsumerTest extends AbstractIntegrationTest {
     @Autowired
     private InterviewCancelledIntegrationEventConsumer consumer;

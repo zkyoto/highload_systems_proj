@@ -41,4 +41,5 @@
         <module>service-discovery/config-server</module>
         <module>service-discovery/eureka-server</module>
     </modules>
+
 </project>
