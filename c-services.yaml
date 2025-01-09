@@ -1,39 +1,23 @@
 services:
-  interview-api:
-    build: apps/interviewing-service/
+  interviews:
+    build: apps/interviewing-service/interviews
     image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: interview-web
 
-  interviewer-api:
-    build: apps/interviewing-service/
+  interviewers:
+    build: apps/interviewing-service/interviewers
     image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: interviewer-web
 
-  interview-result-api:
-    build: apps/interviewing-service/
+  interview-results:
+    build: apps/interviewing-service/interview-results
     image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: interview-result-web
 
-  candidate-api:
-    build: apps/interviewing-service/
+  candidates:
+    build: apps/interviewing-service/candidates
     image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: candidate-web
 
-  feedback-api:
-    build: apps/interviewing-service/
+  feedbacks:
+    build: apps/interviewing-service/feedbacks
     image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: feedback-web
-
-  worker:
-    build: apps/interviewing-service/
-    image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: worker
 
   authorizator:
     build: apps/authorizator
@@ -90,11 +74,83 @@ services:
       interval: 30s
       retries: 50
 
-  interviewing-service-postgres:
+  interviews-postgres:
     build: ./pg
     image: highload_systems_proj-interviewing-service-postgres:latest
     ports:
       - '5252:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  interviewers-postgres:
+    build: ./pg
+    image: highload_systems_proj-interviewing-service-postgres:latest
+    ports:
+      - '5253:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  interview-results-postgres:
+    build: ./pg
+    image: highload_systems_proj-interviewing-service-postgres:latest
+    ports:
+      - '5254:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  feedbacks-postgres:
+    build: ./pg
+    image: highload_systems_proj-interviewing-service-postgres:latest
+    ports:
+      - '5255:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  candidates-postgres:
+    build: ./pg
+    image: highload_systems_proj-interviewing-service-postgres:latest
+    ports:
+      - '5256:5432'
     environment:
       POSTGRESQL_POSTGRES_PASSWORD: pwd
       POSTGRESQL_USERNAME: postgres
@@ -130,7 +186,7 @@ services:
     build: ./pg
     image: highload_systems_proj-api-gateway-postgres:latest
     ports:
-      - '5253:5432'
+      - '5353:5432'
     environment:
       POSTGRESQL_POSTGRES_PASSWORD: pwd
       POSTGRESQL_USERNAME: postgres

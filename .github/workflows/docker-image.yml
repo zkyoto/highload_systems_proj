@@ -19,12 +19,20 @@ jobs:
           docker build -t highload_systems_proj-base-image:latest .
           docker build -t GhoulTeam/highload-systems_api-gateway:latest ./apps/api-gateway
           docker build -t GhoulTeam/highload-systems_authorizator:latest ./apps/authorizator
-          docker build -t GhoulTeam/highload-systems_interviewing-service:latest ./apps/interviewing-service
+          docker build -t GhoulTeam/highload-systems_candidates:latest ./apps/interviewing-service/candidates
+          docker build -t GhoulTeam/highload-systems_feedbacks:latest ./apps/interviewing-service/feedbacks
+          docker build -t GhoulTeam/highload-systems_interviews:latest ./apps/interviewing-service/interviews
+          docker build -t GhoulTeam/highload-systems_interviewers:latest ./apps/interviewing-service/interviewers
+          docker build -t GhoulTeam/highload-systems_interview-results:latest ./apps/interviewing-service/interview-results
           docker build -t GhoulTeam/highload-systems_passport:latest ./apps/passport
       - name: Run tests
         run: |
           pwd
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/target GhoulTeam/highload-systems_interviewing-service:latest ./mvnw test
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/candidates/target GhoulTeam/highload-systems_candidates:latest ./mvnw test
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/feedbacks/target GhoulTeam/highload-systems_feedbacks:latest ./mvnw test
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/interviews/target GhoulTeam/highload-systems_interviews:latest ./mvnw test
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/interviewers/target GhoulTeam/highload-systems_interviewers:latest ./mvnw test
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/interviewing-service/interview-results/target GhoulTeam/highload-systems_interview-results:latest ./mvnw test
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/api-gateway/target GhoulTeam/highload-systems_api-gateway:latest ./mvnw test
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/authorizator/target GhoulTeam/highload-systems_authorizator:latest ./mvnw test
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./target:/app/apps/passport/target GhoulTeam/highload-systems_passport:latest ./mvnw test

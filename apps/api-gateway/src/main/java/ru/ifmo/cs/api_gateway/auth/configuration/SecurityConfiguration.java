@@ -40,9 +40,9 @@ public class SecurityConfiguration {
                                 .pathMatchers("/api/v*/interviews/cancel")
                                     .hasAnyAuthority("hr", "interviewer")
                                 .pathMatchers("/api/v*/interviews", "/api/v*/interviews/**")
-                                    .hasAuthority("interviewer")
+                                    .hasAnyAuthority("interviewer")
                                 .pathMatchers("/api/v*/interviewers", "/api/v1/interviewers/**")
-                                    .hasAnyAuthority("hr", "staff")
+                                    .hasAnyAuthority("hr", "staff", "interviewer")
                 );
         return http.build();
     }

@@ -52,6 +52,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(interviewApiServiceUrl)
                 )
@@ -74,6 +75,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(interviewerApiServiceUrl)
                 )
@@ -96,6 +98,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(interviewResultApiServiceUrl)
                 )
@@ -118,6 +121,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(candidateApiServiceUrl)
                 )
@@ -140,6 +144,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(feedbackApiServiceUrl)
                 )

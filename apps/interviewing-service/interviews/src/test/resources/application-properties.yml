@@ -1,0 +1,28 @@
+#Spring Boot
+spring:
+  datasource:
+      username: ${CONTAINER.USERNAME}
+      password: ${CONTAINER.PASSWORD}
+      url: ${CONTAINER.URL}
+      driver-class-name: ${CONTAINER.DRIVER-CLASS}
+  flyway:
+    enabled: true
+    locations: classpath:pg/migrations
+  cloud:
+    config:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+
+kafka-topic:
+  produce:
+  consume:
+
+eureka:
+  client:
+    enabled: false
+
+security:
+  interviews:
+    service-id: 2
+    allowed-service-ids: 1

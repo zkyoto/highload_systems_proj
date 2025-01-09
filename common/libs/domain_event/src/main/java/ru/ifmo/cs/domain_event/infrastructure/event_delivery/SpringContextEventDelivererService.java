@@ -23,6 +23,6 @@ public class SpringContextEventDelivererService implements DomainEventDelivererS
         DomainEventConsumer<DomainEvent> domainEventConsumer =
                 (DomainEventConsumer<DomainEvent>) applicationContext.getBean(referenceId.id());
 
-        domainEventConsumer.consume(domainEvent);
+        domainEventConsumer.consume(eventId.toString(), domainEvent);
     }
 }
