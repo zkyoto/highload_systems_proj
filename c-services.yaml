@@ -1,23 +1,23 @@
 services:
   interviews:
     build: apps/interviewing-service/interviews
-    image: highload_systems_proj-interviewing-service:latest
+    image: highload_systems_proj-interviews:latest
 
   interviewers:
     build: apps/interviewing-service/interviewers
-    image: highload_systems_proj-interviewing-service:latest
+    image: highload_systems_proj-interviewers:latest
 
   interview-results:
     build: apps/interviewing-service/interview-results
-    image: highload_systems_proj-interviewing-service:latest
+    image: highload_systems_proj-interview-results:latest
 
   candidates:
     build: apps/interviewing-service/candidates
-    image: highload_systems_proj-interviewing-service:latest
+    image: highload_systems_proj-candidates:latest
 
   feedbacks:
     build: apps/interviewing-service/feedbacks
-    image: highload_systems_proj-interviewing-service:latest
+    image: highload_systems_proj-feedbacks:latest
 
   authorizator:
     build: apps/authorizator
