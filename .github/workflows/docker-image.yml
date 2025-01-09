@@ -39,14 +39,14 @@ jobs:
       - name: Archive JaCoCo coverage report
         run: |
           mkdir -p coverage
-          cp -r candidates/site/jacoco/ coverage/
-          cp -r feedbacks/site/jacoco/ coverage/
-          cp -r interviews/site/jacoco/ coverage/
-          cp -r interviewers/site/jacoco/ coverage/
-          cp -r interview-results/site/jacoco/ coverage/
-          cp -r api-gateway/site/jacoco/ coverage/
-          cp -r authorizator/site/jacoco/ coverage/
-          cp -r passport/site/jacoco/ coverage/
+          cp -r candidates/site/jacoco/ coverage/candidates
+          cp -r feedbacks/site/jacoco/ coverage/feedbacks
+          cp -r interviews/site/jacoco/ coverage/interviews
+          cp -r interviewers/site/jacoco/ coverage/interviewers
+          cp -r interview-results/site/jacoco/ coverage/interview-results
+          cp -r api-gateway/site/jacoco/ coverage/api-gateway
+          cp -r authorizator/site/jacoco/ coverage/authorizator
+          cp -r passport/site/jacoco/ coverage/passport
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
