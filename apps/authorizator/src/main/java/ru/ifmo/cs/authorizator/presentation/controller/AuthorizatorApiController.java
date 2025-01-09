@@ -1,6 +1,9 @@
 package ru.ifmo.cs.authorizator.presentation.controller;
 
+import java.time.Instant;
+
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +16,7 @@ import ru.ifmo.cs.authorizator.contracts.request.RegisterUserRequestBodyDto;
 import ru.ifmo.cs.authorizator.contracts.response.AuthorizedUserTokenResponseBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 public class AuthorizatorApiController {
@@ -28,6 +32,7 @@ public class AuthorizatorApiController {
                 registerUserRequestBodyDto.password(),
                 registerUserRequestBodyDto.roleSlug()
         ));
+        log.info(Instant.now().toString());
         return ResponseEntity.ok().build();
     }
 

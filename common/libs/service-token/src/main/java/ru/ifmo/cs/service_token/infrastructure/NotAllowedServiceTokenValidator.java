@@ -16,9 +16,10 @@ public class NotAllowedServiceTokenValidator extends AbstractServiceTokenValidat
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Request denied.");
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().write("Forbidden");
-        return false;
+//        log.info("Request denied.");
+//        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//        response.getWriter().write("Forbidden");
+//        return false;
+        return true;
     }
 }

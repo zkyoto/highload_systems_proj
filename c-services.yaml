@@ -1,39 +1,23 @@
 services:
-  interview-api:
-    build: apps/interviewing-service/
-    image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: interview-web
+  interviews:
+    build: apps/interviewing-service/interviews
+    image: highload_systems_proj-interviews:latest
 
-  interviewer-api:
-    build: apps/interviewing-service/
-    image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: interviewer-web
+  interviewers:
+    build: apps/interviewing-service/interviewers
+    image: highload_systems_proj-interviewers:latest
 
-  interview-result-api:
-    build: apps/interviewing-service/
-    image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: interview-result-web
+  interview-results:
+    build: apps/interviewing-service/interview-results
+    image: highload_systems_proj-interview-results:latest
 
-  candidate-api:
-    build: apps/interviewing-service/
-    image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: candidate-web
+  candidates:
+    build: apps/interviewing-service/candidates
+    image: highload_systems_proj-candidates:latest
 
-  feedback-api:
-    build: apps/interviewing-service/
-    image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: feedback-web
-
-  worker:
-    build: apps/interviewing-service/
-    image: highload_systems_proj-interviewing-service:latest
-    environment:
-      APPLICATION_PROFILE: worker
+  feedbacks:
+    build: apps/interviewing-service/feedbacks
+    image: highload_systems_proj-feedbacks:latest
 
   authorizator:
     build: apps/authorizator
@@ -90,9 +74,9 @@ services:
       interval: 30s
       retries: 50
 
-  interviewing-service-postgres:
+  interviews-postgres:
     build: ./pg
-    image: highload_systems_proj-interviewing-service-postgres:latest
+    image: highload_systems_proj-interviews-postgres:latest
     ports:
       - '5252:5432'
     environment:
@@ -102,7 +86,79 @@ services:
       POSTGRESQL_PASSWORD_ENCRYPTION: md5
       POSTGRESQL_PGAUDIT_LOG: all, -misc
     healthcheck:
-      test: psql 'host=interviewing-service-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      test: psql 'host=interviews-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  interviewers-postgres:
+    build: ./pg
+    image: highload_systems_proj-interviewers-postgres:latest
+    ports:
+      - '5253:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interviewers-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  interview-results-postgres:
+    build: ./pg
+    image: highload_systems_proj-interview-results-postgres:latest
+    ports:
+      - '5254:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interview-results-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  feedbacks-postgres:
+    build: ./pg
+    image: highload_systems_proj-feedbacks-postgres:latest
+    ports:
+      - '5255:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=feedbacks-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  candidates-postgres:
+    build: ./pg
+    image: highload_systems_proj-candidates-postgres:latest
+    ports:
+      - '5256:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=candidates-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
       start_period: 180s
       timeout: 5s
       interval: 30s
@@ -130,7 +186,7 @@ services:
     build: ./pg
     image: highload_systems_proj-api-gateway-postgres:latest
     ports:
-      - '5253:5432'
+      - '5353:5432'
     environment:
       POSTGRESQL_POSTGRES_PASSWORD: pwd
       POSTGRESQL_USERNAME: postgres

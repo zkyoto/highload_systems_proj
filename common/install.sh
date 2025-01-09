@@ -7,10 +7,15 @@ libs=(
     "./libs/domain_event"
     "./libs/page"
     "./libs/service-token"
+    "./libs/kafka/kafka-producer"
+    "./libs/integration-event"
+    "./libs/kafka/kafka-consumer"
     "./contracts/passport-contracts"
     "./clients/passport-client"
     "./libs/jwt-auth"
+    "./libs/exception-handling"
     "./contracts/authorizator-contracts"
+    "./contracts/interviewing-service-contracts"
 )
 echo "Installing libs"
 for dir in "${libs[@]}"; do

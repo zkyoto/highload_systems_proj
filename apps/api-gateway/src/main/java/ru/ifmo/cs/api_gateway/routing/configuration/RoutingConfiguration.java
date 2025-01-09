@@ -21,11 +21,11 @@ import ru.ifmo.cs.service_token.domain.ServiceId;
 @AllArgsConstructor
 public class RoutingConfiguration {
     private static final String authorizatorServiceUrl = "lb://authorizator";
-    private static final String interviewApiServiceUrl = "lb://interviewing-service.interview-web";
-    private static final String interviewerApiServiceUrl = "lb://interviewing-service.interviewer-web";
-    private static final String interviewResultApiServiceUrl = "lb://interviewing-service.interview-result-web";
-    private static final String candidateApiServiceUrl = "lb://interviewing-service.candidate-web";
-    private static final String feedbackApiServiceUrl = "lb://interviewing-service.feedback-web";
+    private static final String interviewApiServiceUrl = "lb://interviews";
+    private static final String interviewerApiServiceUrl = "lb://interviewers";
+    private static final String interviewResultApiServiceUrl = "lb://interview-results";
+    private static final String candidateApiServiceUrl = "lb://candidates";
+    private static final String feedbackApiServiceUrl = "lb://feedbacks";
     private final ServiceTokenResolver serviceTokenResolver;
     private final RequestInterceptor requestInterceptor;
 
@@ -52,6 +52,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(interviewApiServiceUrl)
                 )
@@ -74,6 +75,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(interviewerApiServiceUrl)
                 )
@@ -96,6 +98,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(interviewResultApiServiceUrl)
                 )
@@ -118,6 +121,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(candidateApiServiceUrl)
                 )
@@ -140,6 +144,7 @@ public class RoutingConfiguration {
                                 .circuitBreaker(c -> c
                                         .setName("exampleCircuitBreaker")
                                         .setFallbackUri("forward:/fallback"))
+                                .filter(requestInterceptor)
                         )
                         .uri(feedbackApiServiceUrl)
                 )

@@ -104,8 +104,6 @@ public class PassportUsersApiControllerTest {
                 .hasSize(1)
                 .value(users -> {
                     assertEquals(1, users.size());
-
-
                     PassportUserResponseDto user = users.get(0);
                     assertEquals(passportUser.getUid(), user.uid());
                     assertEquals(passportUser.getName(), user.name());

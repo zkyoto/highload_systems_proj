@@ -3,19 +3,43 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.6</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <groupId>ru.ifmo.cs</groupId>
     <artifactId>highload_systems_proj</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>apps/interviewing-service/candidates</module>
+        <module>apps/interviewing-service/feedbacks</module>
+        <module>apps/interviewing-service/interviews</module>
+        <module>apps/interviewing-service/interviewers</module>
+        <module>apps/interviewing-service/interview-results</module>
+        <module>apps/api-gateway</module>
+        <module>apps/authorizator</module>
+        <module>apps/passport</module>
+        <module>common/clients/passport-client</module>
         <module>common/contracts/passport-contracts</module>
+        <module>common/contracts/interviewing-service-contracts</module>
+        <module>common/contracts/authorizator-contracts</module>
+        <module>common/libs/command_bus</module>
+        <module>common/libs/domain_event</module>
+        <module>common/libs/exception-handling</module>
+        <module>common/libs/integration-event</module>
+        <module>common/libs/jwt-auth</module>
+        <module>common/libs/kafka/kafka-producer</module>
+        <module>common/libs/kafka/kafka-consumer</module>
+        <module>common/libs/misc</module>
+        <module>common/libs/page</module>
+        <module>common/libs/service-token</module>
+        <module>common/libs/string-enum</module>
+        <module>service-discovery/config-server</module>
+        <module>service-discovery/eureka-server</module>
     </modules>
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
 </project>

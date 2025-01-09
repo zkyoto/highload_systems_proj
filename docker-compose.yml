@@ -3,65 +3,80 @@ include:
 
 services:
 
-  interview-api:
+  interviews:
     extends:
       file: c-services.yaml
-      service: interview-api
+      service: interviews
     depends_on:
       api-gateway:
         condition: service_healthy
-      interviewing-service-postgres:
+      interviews-postgres:
         condition: service_healthy
 
-  interviewer-api:
+  interviews-postgres:
     extends:
       file: c-services.yaml
-      service: interviewer-api
+      service: interviews-postgres
+
+  interviewers:
+    extends:
+      file: c-services.yaml
+      service: interviewers
     depends_on:
       api-gateway:
         condition: service_healthy
-      interviewing-service-postgres:
+      interviewers-postgres:
         condition: service_healthy
 
-  candidate-api:
+  interviewers-postgres:
     extends:
       file: c-services.yaml
-      service: candidate-api
+      service: interviewers-postgres
+
+  candidates:
+    extends:
+      file: c-services.yaml
+      service: candidates
     depends_on:
       api-gateway:
         condition: service_healthy
-      interviewing-service-postgres:
+      candidates-postgres:
         condition: service_healthy
 
-  feedback-api:
+  candidates-postgres:
     extends:
       file: c-services.yaml
-      service: feedback-api
+      service: candidates-postgres
+
+  feedbacks:
+    extends:
+      file: c-services.yaml
+      service: feedbacks
     depends_on:
       api-gateway:
         condition: service_healthy
-      interviewing-service-postgres:
+      feedbacks-postgres:
         condition: service_healthy
 
-  interview-result-api:
+  feedbacks-postgres:
     extends:
       file: c-services.yaml
-      service: interview-result-api
+      service: feedbacks-postgres
+
+  interview-results:
+    extends:
+      file: c-services.yaml
+      service: interview-results
     depends_on:
       api-gateway:
         condition: service_healthy
-      interviewing-service-postgres:
+      interview-results-postgres:
         condition: service_healthy
 
-  worker:
+  interview-results-postgres:
     extends:
       file: c-services.yaml
-      service: worker
-    depends_on:
-      api-gateway:
-        condition: service_healthy
-      interviewing-service-postgres:
-        condition: service_healthy
+      service: interview-results-postgres
 
   authorizator:
     extends:
@@ -108,11 +123,6 @@ services:
       passport-postgres:
         condition: service_healthy
 
-  interviewing-service-postgres:
-    extends:
-      file: c-services.yaml
-      service: interviewing-service-postgres
-
   passport-postgres:
     extends:
       file: c-services.yaml
@@ -122,3 +132,77 @@ services:
     extends:
       file: c-services.yaml
       service: api-gateway-postgres
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22181:2181"
+
+  kafka1:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: OUTSIDE://:29092,INTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:29092,INTERNAL://kafka1:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka2:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "39092:39092"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: OUTSIDE://:39092,INTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:39092,INTERNAL://kafka2:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka3:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "49092:49092"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: OUTSIDE://:49092,INTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:49092,INTERNAL://kafka3:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - 8090:8080
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka1:9092,kafka2:9092,kafka3:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+      - zookeeper
+    links:
+      - kafka1
+      - kafka2
+      - kafka3
+      - zookeeper
