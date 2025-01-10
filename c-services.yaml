@@ -1,4 +1,10 @@
 services:
+  file-manager:
+    build: apps/file-manager
+    image: highload_systems_proj-file-manager:latest
+    ports:
+      - "8887:8080"
+
   interviews:
     build: apps/interviewing-service/interviews
     image: highload_systems_proj-interviews:latest
