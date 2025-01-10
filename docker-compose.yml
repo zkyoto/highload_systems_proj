@@ -3,6 +3,11 @@ include:
 
 services:
 
+  file-manager:
+    extends:
+      file: c-services.yaml
+      service: file-manager
+
   interviews:
     extends:
       file: c-services.yaml
