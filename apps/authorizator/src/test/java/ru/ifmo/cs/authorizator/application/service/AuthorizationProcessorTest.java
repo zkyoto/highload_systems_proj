@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ru.ifmo.cs.authorizator.domain.UserInfoAggregate;
 import ru.ifmo.cs.authorizator.domain.UserInfoRepository;
-import ru.ifmo.cs.jwt_auth.application.JwtGenerator;
+import ru.ifmo.cs.jwt_token.application.JwtGenerator;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.PassportFeignClient;
 import ru.ifmo.cs.passport_contracts.PassportUserResponseDto;
