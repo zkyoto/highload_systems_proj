@@ -1,0 +1,26 @@
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    urls:
+      - url: /v3/api-docs/interviews
+        name: interviews-service
+      - url: /v3/api-docs/interviewers
+        name: interviewers-service
+      - url: /v3/api-docs/interview-results
+        name: interview-results-service
+      - url: /v3/api-docs/feedbacks
+        name: feedbacks-service
+      - url: /v3/api-docs/candidates
+        name: candidates-service
+      - url: /v3/api-docs/authorizator
+        name: authorizator-service
+    disable-swagger-default-url: true
+    path: /swagger-ui
+  security-scheme:
+    jwt:
+      type: http
+      scheme: bearer
+      bearer-format: JWT

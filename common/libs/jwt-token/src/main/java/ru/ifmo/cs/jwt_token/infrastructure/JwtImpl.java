@@ -1,4 +1,4 @@
-package ru.ifmo.cs.jwt_auth.infrastructure.jwt;
+package ru.ifmo.cs.jwt_token.infrastructure;
 
 import java.util.Date;
 
@@ -6,9 +6,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
 import org.springframework.util.StringUtils;
-import ru.ifmo.cs.jwt_auth.application.JwtGenerator;
-import ru.ifmo.cs.jwt_auth.application.JwtResolver;
-import ru.ifmo.cs.jwt_auth.application.JwtValidator;
+import ru.ifmo.cs.jwt_token.application.JwtGenerator;
+import ru.ifmo.cs.jwt_token.application.JwtResolver;
+import ru.ifmo.cs.jwt_token.application.JwtValidator;
 import ru.ifmo.cs.misc.UserId;
 
 @AllArgsConstructor

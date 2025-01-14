@@ -28,6 +28,8 @@ services:
   authorizator:
     build: apps/authorizator
     image: highload_systems_proj-authorizator:latest
+    ports:
+      - "8877:8080"
 
   passport:
     build: apps/passport

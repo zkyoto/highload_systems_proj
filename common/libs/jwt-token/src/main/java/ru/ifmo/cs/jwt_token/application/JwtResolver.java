@@ -1,4 +1,4 @@
-package ru.ifmo.cs.jwt_auth.application;
+package ru.ifmo.cs.jwt_token.application;
 
 import ru.ifmo.cs.misc.UserId;
 

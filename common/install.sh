@@ -12,9 +12,9 @@ libs=(
     "./libs/kafka/kafka-consumer"
     "./contracts/passport-contracts"
     "./clients/passport-client"
+    "./libs/jwt-token"
     "./libs/jwt-auth"
     "./libs/exception-handling"
-    "./contracts/authorizator-contracts"
     "./contracts/interviewing-service-contracts"
 )
 echo "Installing libs"

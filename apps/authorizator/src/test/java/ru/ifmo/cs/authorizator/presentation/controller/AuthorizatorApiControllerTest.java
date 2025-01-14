@@ -10,13 +10,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import ru.ifmo.cs.authorizator.application.command.RegisterUserCommand;
 import ru.ifmo.cs.authorizator.application.service.AuthorizationProcessor;
-import ru.ifmo.cs.authorizator.contracts.request.RegisterUserRequestBodyDto;
-import ru.ifmo.cs.authorizator.contracts.response.AuthorizedUserTokenResponseBodyDto;
+import ru.ifmo.cs.authorizator.presentation.controller.dto.AuthorizedUserTokenResponseBodyDto;
+import ru.ifmo.cs.authorizator.presentation.controller.dto.RegisterUserRequestBodyDto;
 import ru.itmo.cs.command_bus.CommandBus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class AuthorizatorApiControllerTest {

@@ -1,4 +1,4 @@
-package ru.ifmo.cs.configuration;
+package ru.ifmo.cs.jwt_token.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
