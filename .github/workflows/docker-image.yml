@@ -17,11 +17,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker tags
+      - name: Set up Images and Tags
         id: vars
         run: |
           echo "IMAGE_TAG=${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
           echo "::set-output name=image_tag::${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}"
+          images=("api-gateway" "authorizator" "passport" "interviewing-service/candidates" "interviewing-service/feedbacks" "interviewing-service/interviews" "interviewing-service/interviewers" "interviewing-service/interview-results")
+          echo "IMAGES=${images[*]}" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -34,18 +36,10 @@ jobs:
         run: |
           docker build -t kyoto67/highload/base:${{ env.IMAGE_TAG }} .
 
-          images=(
-            "api-gateway"
-            "authorizator"
-            "passport"
-            "interviewing-service/candidates"
-            "interviewing-service/feedbacks"
-            "interviewing-service/interviews"
-            "interviewing-service/interviewers"
-            "interviewing-service/interview-results"
-          )
+          IFS=' ' read -r -a images <<< "${IMAGES}"
 
           for image in "${images[@]}"; do
+            echo "Building and pushing image: $image with tag: ${{ env.IMAGE_TAG }}"
             docker build --build-arg BASE_IMAGE_VERSION=${{ env.IMAGE_TAG }} -t ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./apps/$image
             docker push ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }}
           done
@@ -66,32 +60,13 @@ jobs:
 
       - name: Run Dockerized tests
         run: |
-          images=(
-            "api-gateway"
-            "authorizator"
-            "passport"
-            "interviewing-service/candidates"
-            "interviewing-service/feedbacks"
-            "interviewing-service/interviews"
-            "interviewing-service/interviewers"
-            "interviewing-service/interview-results"
-          )
+          IFS=' ' read -r -a images <<< "${IMAGES}"
 
           for image in "${images[@]}"; do
-            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./candidates:/app/apps/interviewing-service/candidates/target ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw test
+            echo "Testing image: $image"
+            docker run --rm ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw test
+            cp -r $image/site/jacoco/ coverage/$image
           done
-
-      - name: Archive JaCoCo coverage report
-        run: |
-          mkdir -p coverage
-          cp -r candidates/site/jacoco/ coverage/candidates
-          cp -r feedbacks/site/jacoco/ coverage/feedbacks
-          cp -r interviews/site/jacoco/ coverage/interviews
-          cp -r interviewers/site/jacoco/ coverage/interviewers
-          cp -r interview-results/site/jacoco/ coverage/interview-results
-          cp -r api-gateway/site/jacoco/ coverage/api-gateway
-          cp -r authorizator/site/jacoco/ coverage/authorizator
-          cp -r passport/site/jacoco/ coverage/passport
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
