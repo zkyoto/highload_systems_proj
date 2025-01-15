@@ -28,22 +28,22 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          docker build -t kyoto67/highload-systems_base:${{ env.IMAGE_TAG }} .
+          docker build -t kyoto67/highload/base:${{ env.IMAGE_TAG }} .
 
           images=(
-            "highload-systems_api-gateway"
-            "highload-systems_authorizator"
-            "highload-systems_candidates"
-            "highload-systems_feedbacks"
-            "highload-systems_interviews"
-            "highload-systems_interviewers"
-            "highload-systems_interview-results"
-            "highload-systems_passport"
+            "api-gateway"
+            "authorizator"
+            "passport"
+            "interviewing-service/candidates"
+            "interviewing-service/feedbacks"
+            "interviewing-service/interviews"
+            "interviewing-service/interviewers"
+            "interviewing-service/interview-results"
           )
 
           for image in "${images[@]}"; do
-            docker build -t ghcr.io/kyoto67/$image:${{ env.IMAGE_TAG }} ./apps/$image
-            docker push ghcr.io/kyoto67/$image:${{ env.IMAGE_TAG }}
+            docker build -t ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./apps/$image
+            docker push ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }}
           done
 
   test:
@@ -60,18 +60,18 @@ jobs:
       - name: Run Dockerized tests
         run: |
           images=(
-            "highload-systems_candidates"
-            "highload-systems_feedbacks"
-            "highload-systems_interviews"
-            "highload-systems_interviewers"
-            "highload-systems_interview-results"
-            "highload-systems_api-gateway"
-            "highload-systems_authorizator"
-            "highload-systems_passport"
+            "api-gateway"
+            "authorizator"
+            "passport"
+            "interviewing-service/candidates"
+            "interviewing-service/feedbacks"
+            "interviewing-service/interviews"
+            "interviewing-service/interviewers"
+            "interviewing-service/interview-results"
           )
 
           for image in "${images[@]}"; do
-            docker run --rm ghcr.io/kyoto67/$image:${{ env.IMAGE_TAG }} ./mvnw test
+            docker run --rm ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw test
           done
 
       - name: Archive JaCoCo coverage report
