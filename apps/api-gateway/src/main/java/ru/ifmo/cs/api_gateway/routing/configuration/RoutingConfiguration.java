@@ -56,6 +56,65 @@ public class RoutingConfiguration {
                         )
                         .uri(interviewApiServiceUrl)
                 )
+                // Маршрут для точного совпадения /swagger/interviews
+                .route("swagger_interviews_exact_route",
+                        r -> r
+                                .path("/v3/api-docs/interviews")
+                                .filters(f -> f
+                                        .rewritePath("/v3/api-docs/interviews", "/v3/api-docs")
+                                )
+                                .uri(interviewApiServiceUrl)
+                )
+                .route("swagger_interviewers_exact_route",
+                        r -> r
+                                .path("/v3/api-docs/interviewers")
+                                .filters(f -> f
+                                        .rewritePath("/v3/api-docs/interviewers", "/v3/api-docs")
+                                )
+                                .uri(interviewerApiServiceUrl)
+                )
+                .route("swagger_interview-results_exact_route",
+                        r -> r
+                                .path("/v3/api-docs/interview-results")
+                                .filters(f -> f
+                                        .rewritePath("/v3/api-docs/interview-results", "/v3/api-docs")
+                                )
+                                .uri(interviewResultApiServiceUrl)
+                )
+                .route("swagger_candidates_exact_route",
+                        r -> r
+                                .path("/v3/api-docs/candidates")
+                                .filters(f -> f
+                                        .rewritePath("/v3/api-docs/candidates", "/v3/api-docs")
+                                )
+                                .uri(candidateApiServiceUrl)
+                )
+                .route("swagger_feedbacks_exact_route",
+                        r -> r
+                                .path("/v3/api-docs/feedbacks")
+                                .filters(f -> f
+                                        .rewritePath("/v3/api-docs/feedbacks", "/v3/api-docs")
+                                )
+                                .uri(feedbackApiServiceUrl)
+                )
+                .route("swagger_authorizator_exact_route",
+                        r -> r
+                                .path("/v3/api-docs/authorizator")
+                                .filters(f -> f
+                                        .rewritePath("/v3/api-docs/authorizator", "/v3/api-docs")
+                                )
+                                .uri(authorizatorServiceUrl)
+                )
+                // Маршрут для /swagger/interviews/<some>
+//                .route("swagger_interviews_wildcard_route",
+//                        r -> r
+//                                .path("/swagger/interviews/{segment}")
+//                                .filters(f -> f
+//                                        .rewritePath("/swagger/interviews/(?<segment>.*)", "/swagger-ui/$\\{segment}")
+//                                )
+//                                .uri("lb://interviews")
+//                )
+
                 .route(p -> p
                         .path("/api/v*/interviewers/**", "/api/v*/interviewers")
                         .filters(f -> f

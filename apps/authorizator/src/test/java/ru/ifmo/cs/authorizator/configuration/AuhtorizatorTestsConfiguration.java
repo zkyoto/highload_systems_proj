@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.ifmo.cs.authorizator.application.command.RegisterUserCommandHandler;
 import ru.ifmo.cs.authorizator.application.service.AuthorizationProcessor;
 import ru.ifmo.cs.authorizator.domain.UserInfoRepository;
-import ru.ifmo.cs.jwt_auth.application.JwtGenerator;
+import ru.ifmo.cs.jwt_token.application.JwtGenerator;
 import ru.ifmo.cs.passport.api.stub.PassportFeignClientStub;
 
 @TestConfiguration

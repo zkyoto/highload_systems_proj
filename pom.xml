@@ -26,7 +26,6 @@
         <module>common/clients/passport-client</module>
         <module>common/contracts/passport-contracts</module>
         <module>common/contracts/interviewing-service-contracts</module>
-        <module>common/contracts/authorizator-contracts</module>
         <module>common/libs/command_bus</module>
         <module>common/libs/domain_event</module>
         <module>common/libs/exception-handling</module>
@@ -40,6 +39,7 @@
         <module>common/libs/string-enum</module>
         <module>service-discovery/config-server</module>
         <module>service-discovery/eureka-server</module>
+        <module>common/libs/jwt-token</module>
     </modules>
 
 </project>

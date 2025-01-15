@@ -13,7 +13,6 @@ import ru.ifmo.cs.candidates.domain.CandidateRepository;
 import ru.ifmo.cs.candidates.domain.event.CandidateScheduledForInterviewEvent;
 import ru.ifmo.cs.candidates.domain.value.CandidateStatus;
 import ru.ifmo.cs.candidates.presentation.integration_event.consumer.InterviewScheduledIntegrationEventConsumer;
-import ru.ifmo.cs.configuration.KafkaConsumerConfig;
 import ru.ifmo.cs.consumer.KafkaConsumerProperties;
 import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.contracts.interviewing_service.interviews.integration_event.InterviewScheduledIntegrationEvent;

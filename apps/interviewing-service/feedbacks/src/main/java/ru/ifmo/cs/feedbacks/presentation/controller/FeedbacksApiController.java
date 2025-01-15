@@ -1,20 +1,18 @@
 package ru.ifmo.cs.feedbacks.presentation.controller;
 
-import java.util.List;
-
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import ru.ifmo.cs.feedbacks.application.command.CreateFeedbackForInterviewCommand;
-import ru.ifmo.cs.feedbacks.application.command.RewriteFeedbackCommand;
-import ru.ifmo.cs.feedbacks.application.command.SaveCommentFeedbackCommand;
-import ru.ifmo.cs.feedbacks.application.command.SaveGradeFeedbackCommand;
-import ru.ifmo.cs.feedbacks.application.command.SubmitFeedbackCommand;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import ru.ifmo.cs.feedbacks.application.command.*;
 import ru.ifmo.cs.feedbacks.application.query.FeedbackPageQueryService;
 import ru.ifmo.cs.feedbacks.application.query.FeedbacksPendingResultQueryService;
 import ru.ifmo.cs.feedbacks.application.query.dto.FeedbackPage;
@@ -23,27 +21,38 @@ import ru.ifmo.cs.feedbacks.domain.FeedbackRepository;
 import ru.ifmo.cs.feedbacks.domain.value.Comment;
 import ru.ifmo.cs.feedbacks.domain.value.FeedbackId;
 import ru.ifmo.cs.feedbacks.domain.value.Grade;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.CreateFeedbackRequestBodyDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.RewriteFeedbackRequestBodyDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.SaveCommentFeedbackRequestBodyDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.SaveGradeFeedbackRequestBodyDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.SubmitFeedbackRequestBodyDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.FeedbackPendingResultDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.FeedbackResponseDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.FeedbacksPendingResultResponseBodyDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.GetAllFeedbacksResponseBodyDto;
-import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.GetFeedbackResponseBodyDto;
+import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.*;
+import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.*;
 import ru.itmo.cs.command_bus.CommandBus;
 
+import java.util.List;
+
+@SecurityScheme(
+        name = "Bearer Authentication",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
+
+@OpenAPIDefinition(
+        security = @SecurityRequirement(name = "Bearer Authentication"),
+        servers = {
+                @Server(url = "/", description = "Gateway server")
+        }
+)
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
+@Tag(name = "Feedbacks API", description = "API для управления отзывами")
 public class FeedbacksApiController {
+
     private final CommandBus commandBus;
     private final FeedbacksPendingResultQueryService feedbacksPendingResultQueryService;
     private final FeedbackRepository feedbackRepository;
     private final FeedbackPageQueryService feedbackPageQueryService;
 
     @PostMapping("/api/v1/feedbacks/create")
+    @Operation(summary = "Создать отзыв", description = "Создает отзыв для определенного собеседования")
     public ResponseEntity<?> createFeedback(
             @RequestBody CreateFeedbackRequestBodyDto createFeedbackRequestBodyDto
     ) {
@@ -56,74 +65,86 @@ public class FeedbacksApiController {
     }
 
     @PostMapping("/api/v1/feedbacks/grade/save")
+    @Operation(summary = "Сохранить оценку", description = "Сохраняет оценку для отзыва")
     public ResponseEntity<?> saveGrade(
             @RequestBody SaveGradeFeedbackRequestBodyDto saveGradeFeedbackRequestBodyDto
     ) {
-        commandBus.submit(new SaveGradeFeedbackCommand(FeedbackId.hydrate(saveGradeFeedbackRequestBodyDto.feedbackId()),
+        commandBus.submit(new SaveGradeFeedbackCommand(
+                FeedbackId.hydrate(saveGradeFeedbackRequestBodyDto.feedbackId()),
                 Grade.of(saveGradeFeedbackRequestBodyDto.grade())));
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/api/v1/feedbacks/comment/save")
+    @Operation(summary = "Сохранить комментарий", description = "Сохраняет комментарий для отзыва")
     public ResponseEntity<?> saveComment(
             @RequestBody SaveCommentFeedbackRequestBodyDto saveCommentFeedbackRequestBodyDto
     ) {
         commandBus.submit(
-                new SaveCommentFeedbackCommand(FeedbackId.hydrate(saveCommentFeedbackRequestBodyDto.feedbackId()),
+                new SaveCommentFeedbackCommand(
+                        FeedbackId.hydrate(saveCommentFeedbackRequestBodyDto.feedbackId()),
                         Comment.of(saveCommentFeedbackRequestBodyDto.comment()))
         );
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/api/v1/feedbacks/rewrite")
+    @Operation(summary = "Переписать отзыв", description = "Обновляет оценку и комментарий для отзыва")
     public ResponseEntity<?> rewriteFeedback(
             @RequestBody RewriteFeedbackRequestBodyDto rewriteFeedbackRequestBodyDto
     ) {
-        commandBus.submit(new RewriteFeedbackCommand(FeedbackId.hydrate(rewriteFeedbackRequestBodyDto.feedbackId()),
+        commandBus.submit(new RewriteFeedbackCommand(
+                FeedbackId.hydrate(rewriteFeedbackRequestBodyDto.feedbackId()),
+
+
                 Grade.of(rewriteFeedbackRequestBodyDto.grade()),
                 Comment.of(rewriteFeedbackRequestBodyDto.comment())));
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/api/v1/feedbacks/submit")
+    @Operation(summary = "Отправить отзыв", description = "Отправляет отзыв на рассмотрение")
     public ResponseEntity<?> submitFeedback(
             @RequestBody SubmitFeedbackRequestBodyDto submitFeedbackRequestBodyDto
     ) {
-        commandBus.submit(new SubmitFeedbackCommand(FeedbackId.hydrate(submitFeedbackRequestBodyDto.feedbackId())));
+        commandBus.submit(new SubmitFeedbackCommand(
+                FeedbackId.hydrate(submitFeedbackRequestBodyDto.feedbackId())));
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/v1/feedbacks/pending-result")
+    @Operation(summary = "Получить ожидающие отзывы", description = "Возвращает список отзывов, ожидающих результата")
     public ResponseEntity<?> getFeedbacksPendingResult() {
         List<FeedbackPendingResultDto> feedbackPendingResultDtoList =
                 feedbacksPendingResultQueryService.findAll()
-                                                  .stream()
-                                                  .map(FeedbackPendingResultDto::from)
-                                                  .toList();
+                        .stream()
+                        .map(FeedbackPendingResultDto::from)
+                        .toList();
 
         return ResponseEntity.ok(new FeedbacksPendingResultResponseBodyDto(feedbackPendingResultDtoList));
     }
 
     @GetMapping("/api/v1/feedbacks/by-id")
+    @Operation(summary = "Получить отзыв по ID", description = "Возвращает детальную информацию об отзыве по его ID")
     public ResponseEntity<?> getFeedbackById(
-            @RequestParam("feedback_id") String feedbackId
+            @Parameter(description = "Идентификатор отзыва") @RequestParam("feedback_id") String feedbackId
     ) {
         Feedback feedback = feedbackRepository.findById(FeedbackId.hydrate(feedbackId));
         return ResponseEntity.ok(new GetFeedbackResponseBodyDto(FeedbackResponseDto.from(feedback)));
     }
 
     @GetMapping("/api/v1/feedbacks")
+    @Operation(summary = "Получить отзывы с пагинацией", description = "Возвращает страницу с отзывами")
     public ResponseEntity<?> getFeedbacks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "50") int size,
+            @Parameter(description = "Номер страницы") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Размер страницы") @RequestParam(defaultValue = "50") int size,
             HttpServletResponse response
     ) {
         FeedbackPage feedbackPage = feedbackPageQueryService.findFor(page, size);
         response.setHeader("X-Total-Count", String.valueOf(feedbackPage.totalElements()));
         return ResponseEntity.ok(new GetAllFeedbacksResponseBodyDto(feedbackPage.content()
-                                                                                .stream()
-                                                                                .map(FeedbackResponseDto::from)
-                                                                                .toList()));
+                .stream()
+                .map(FeedbackResponseDto::from)
+                .toList()));
     }
-
 }

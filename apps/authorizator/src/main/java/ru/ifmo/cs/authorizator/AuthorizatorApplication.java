@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.context.annotation.Bean;
 
 @EnableFeignClients(basePackageClasses = ru.ifmo.cs.passport.api.PassportFeignClient.class)
-@SpringBootApplication(exclude = GsonAutoConfiguration.class)
+@SpringBootApplication
 public class AuthorizatorApplication {
 
     public static void main(String[] args) {

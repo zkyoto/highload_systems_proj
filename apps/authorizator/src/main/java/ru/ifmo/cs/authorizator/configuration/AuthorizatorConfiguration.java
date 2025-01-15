@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.ifmo.cs.jwt_auth.configuration.JwtAuthServiceConfiguration;
+import ru.ifmo.cs.jwt_token.configuration.JwtAuthServiceConfiguration;
 import ru.ifmo.cs.passport.api.FeignConfig;
 import ru.itmo.cs.command_bus.configuration.CommandBusConfiguration;
 
