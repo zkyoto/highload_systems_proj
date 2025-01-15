@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build and Test Docker Images
 
 on:
   push:
@@ -14,28 +14,64 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Build Docker image
+
+      - name: Set up Docker tags
+        id: vars
+        run: echo "IMAGE_TAG=${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker images
         run: |
-          docker build -t highload_systems_proj-base-image:latest .
-          docker build -t GhoulTeam/highload-systems_api-gateway:latest ./apps/api-gateway
-          docker build -t GhoulTeam/highload-systems_authorizator:latest ./apps/authorizator
-          docker build -t GhoulTeam/highload-systems_candidates:latest ./apps/interviewing-service/candidates
-          docker build -t GhoulTeam/highload-systems_feedbacks:latest ./apps/interviewing-service/feedbacks
-          docker build -t GhoulTeam/highload-systems_interviews:latest ./apps/interviewing-service/interviews
-          docker build -t GhoulTeam/highload-systems_interviewers:latest ./apps/interviewing-service/interviewers
-          docker build -t GhoulTeam/highload-systems_interview-results:latest ./apps/interviewing-service/interview-results
-          docker build -t GhoulTeam/highload-systems_passport:latest ./apps/passport
-      - name: Run tests
+          docker build -t kyoto67/highload-systems_base:${{ env.IMAGE_TAG }} .
+
+          images=(
+            "highload-systems_api-gateway"
+            "highload-systems_authorizator"
+            "highload-systems_candidates"
+            "highload-systems_feedbacks"
+            "highload-systems_interviews"
+            "highload-systems_interviewers"
+            "highload-systems_interview-results"
+            "highload-systems_passport"
+          )
+
+          for image in "${images[@]}"; do
+            docker build -t ghcr.io/kyoto67/$image:${{ env.IMAGE_TAG }} ./apps/$image
+            docker push ghcr.io/kyoto67/$image:${{ env.IMAGE_TAG }}
+          done
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Run Dockerized tests
         run: |
-          pwd
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./candidates:/app/apps/interviewing-service/candidates/target GhoulTeam/highload-systems_candidates:latest ./mvnw test
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./feedbacks:/app/apps/interviewing-service/feedbacks/target GhoulTeam/highload-systems_feedbacks:latest ./mvnw test
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./interviews:/app/apps/interviewing-service/interviews/target GhoulTeam/highload-systems_interviews:latest ./mvnw test
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./interviewers:/app/apps/interviewing-service/interviewers/target GhoulTeam/highload-systems_interviewers:latest ./mvnw test
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./interview-results:/app/apps/interviewing-service/interview-results/target GhoulTeam/highload-systems_interview-results:latest ./mvnw test
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./api-gateway:/app/apps/api-gateway/target GhoulTeam/highload-systems_api-gateway:latest ./mvnw test
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./authorizator:/app/apps/authorizator/target GhoulTeam/highload-systems_authorizator:latest ./mvnw test
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ./passport:/app/apps/passport/target GhoulTeam/highload-systems_passport:latest ./mvnw test
+          images=(
+            "highload-systems_candidates"
+            "highload-systems_feedbacks"
+            "highload-systems_interviews"
+            "highload-systems_interviewers"
+            "highload-systems_interview-results"
+            "highload-systems_api-gateway"
+            "highload-systems_authorizator"
+            "highload-systems_passport"
+          )
+
+          for image in "${images[@]}"; do
+            docker run --rm ghcr.io/kyoto67/$image:${{ env.IMAGE_TAG }} ./mvnw test
+          done
+
       - name: Archive JaCoCo coverage report
         run: |
           mkdir -p coverage
@@ -47,6 +83,7 @@ jobs:
           cp -r api-gateway/site/jacoco/ coverage/api-gateway
           cp -r authorizator/site/jacoco/ coverage/authorizator
           cp -r passport/site/jacoco/ coverage/passport
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
