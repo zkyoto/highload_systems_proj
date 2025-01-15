@@ -1,2 +1,2 @@
-docker build -t highload_systems_proj-base-image:latest .
+docker build -t kyoto67/highload/base:latest .
 docker-compose -f docker-compose.yml build
