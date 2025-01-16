@@ -146,20 +146,20 @@ services:
       file: c-kafka.yaml
       service: zookeeper
 
-  kafka-1:
+  kafka1:
     extends:
       file: c-kafka.yaml
-      service: kafka-1
+      service: kafka1
 
-  kafka-2:
+  kafka2:
     extends:
       file: c-kafka.yaml
-      service: kafka-2
+      service: kafka2
 
-  kafka-3:
+  kafka3:
     extends:
       file: c-kafka.yaml
-      service: kafka-3
+      service: kafka3
 
   kafka-ui:
     extends:
