@@ -1,0 +1,126 @@
+services:
+  interviews-postgres:
+    build: ./pg
+    image: kyoto67/highload/interviews-postgres:latest
+    ports:
+      - '5252:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interviews-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  interviewers-postgres:
+    build: ./pg
+    image: kyoto67/highload/interviewers-postgres:latest
+    ports:
+      - '5253:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interviewers-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  interview-results-postgres:
+    build: ./pg
+    image: kyoto67/highload/interview-results-postgres:latest
+    ports:
+      - '5254:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=interview-results-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  feedbacks-postgres:
+    build: ./pg
+    image: kyoto67/highload/feedbacks-postgres:latest
+    ports:
+      - '5255:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=feedbacks-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  candidates-postgres:
+    build: ./pg
+    image: kyoto67/highload/candidates-postgres:latest
+    ports:
+      - '5256:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=candidates-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  passport-postgres:
+    build: ./pg
+    image: kyoto67/highload/passport-postgres:latest
+    ports:
+      - '5251:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=passport-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50
+
+  api-gateway-postgres:
+    build: ./pg
+    image: kyoto67/highload/api-gateway-postgres:latest
+    ports:
+      - '5353:5432'
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: pwd
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: pwd
+      POSTGRESQL_PASSWORD_ENCRYPTION: md5
+      POSTGRESQL_PGAUDIT_LOG: all, -misc
+    healthcheck:
+      test: psql 'host=api-gateway-postgres port=5432 user=postgres password=pwd dbname=postgres' -c 'select 1' || exit 1
+      start_period: 180s
+      timeout: 5s
+      interval: 30s
+      retries: 50

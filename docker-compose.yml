@@ -7,6 +7,9 @@ services:
     extends:
       file: c-services.yaml
       service: file-manager
+    depends_on:
+      api-gateway:
+        condition: service_healthy
 
   interviews:
     extends:
@@ -20,7 +23,7 @@ services:
 
   interviews-postgres:
     extends:
-      file: c-services.yaml
+      file: c-storages.yaml
       service: interviews-postgres
 
   interviewers:
@@ -35,7 +38,7 @@ services:
 
   interviewers-postgres:
     extends:
-      file: c-services.yaml
+      file: c-storages.yaml
       service: interviewers-postgres
 
   candidates:
@@ -50,7 +53,7 @@ services:
 
   candidates-postgres:
     extends:
-      file: c-services.yaml
+      file: c-storages.yaml
       service: candidates-postgres
 
   feedbacks:
@@ -65,7 +68,7 @@ services:
 
   feedbacks-postgres:
     extends:
-      file: c-services.yaml
+      file: c-storages.yaml
       service: feedbacks-postgres
 
   interview-results:
@@ -80,7 +83,7 @@ services:
 
   interview-results-postgres:
     extends:
-      file: c-services.yaml
+      file: c-storages.yaml
       service: interview-results-postgres
 
   authorizator:
@@ -130,84 +133,35 @@ services:
 
   passport-postgres:
     extends:
-      file: c-services.yaml
+      file: c-storages.yaml
       service: passport-postgres
 
   api-gateway-postgres:
     extends:
-      file: c-services.yaml
+      file: c-storages.yaml
       service: api-gateway-postgres
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "22181:2181"
+    extends:
+      file: c-kafka.yaml
+      service: zookeeper
 
   kafka1:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
-    ports:
-      - "29092:29092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: OUTSIDE://:29092,INTERNAL://:9092
-      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:29092,INTERNAL://kafka1:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    extends:
+      file: c-kafka.yaml
+      service: kafka1
 
   kafka2:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
-    ports:
-      - "39092:39092"
-    environment:
-      KAFKA_BROKER_ID: 2
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: OUTSIDE://:39092,INTERNAL://:9092
-      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:39092,INTERNAL://kafka2:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    extends:
+      file: c-kafka.yaml
+      service: kafka2
 
   kafka3:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
-    ports:
-      - "49092:49092"
-    environment:
-      KAFKA_BROKER_ID: 3
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: OUTSIDE://:49092,INTERNAL://:9092
-      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:49092,INTERNAL://kafka3:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    extends:
+      file: c-kafka.yaml
+      service: kafka3
 
   kafka-ui:
-    image: provectuslabs/kafka-ui
-    container_name: kafka-ui
-    ports:
-      - 8090:8080
-    restart: always
-    environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka1:9092,kafka2:9092,kafka3:9092
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-    depends_on:
-      - kafka1
-      - kafka2
-      - kafka3
-      - zookeeper
-    links:
-      - kafka1
-      - kafka2
-      - kafka3
-      - zookeeper
+    extends:
+      file: c-kafka.yaml
+      service: kafka-ui

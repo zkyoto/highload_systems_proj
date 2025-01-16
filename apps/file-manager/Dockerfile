@@ -1,6 +1,5 @@
-FROM maven:3.8.3-openjdk-17
+ARG BASE_IMAGE_VERSION=latest
+FROM kyoto67/highload/base:${BASE_IMAGE_VERSION}
 
-WORKDIR /app
-COPY . .
-RUN cd /app && ./mvnw dependency:go-offline
+WORKDIR /app/apps/file-manager
 CMD ["./mvnw", "spring-boot:run"]

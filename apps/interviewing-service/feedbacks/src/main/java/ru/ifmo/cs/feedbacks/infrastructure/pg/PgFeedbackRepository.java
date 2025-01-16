@@ -44,7 +44,8 @@ public class PgFeedbackRepository implements FeedbackRepository {
             interview_id,
             status,
             grade,
-            comment
+            comment,
+            source_code_file_id
             ) VALUES (
             :id,
             :createdAt,
@@ -52,7 +53,8 @@ public class PgFeedbackRepository implements FeedbackRepository {
             :interviewId,
             :status,
             :grade,
-            :comment
+            :comment,
+            :sourceCodeFileId
             )
             """;
 
@@ -63,7 +65,8 @@ public class PgFeedbackRepository implements FeedbackRepository {
             interview_id=:interviewId,
             status=:status,
             grade=:grade,
-            comment=:comment
+            comment=:comment,
+            source_code_file_id=:sourceCodeFileId
             where id=:id
             """;
 
@@ -109,7 +112,8 @@ public class PgFeedbackRepository implements FeedbackRepository {
                         .addValue("grade", feedback.getGrade() == null ?
                                 null : feedback.getGrade().getValue())
                         .addValue("comment", feedback.getComment() == null ?
-                                null : feedback.getComment().getValue()));
+                                null : feedback.getComment().getValue())
+                        .addValue("sourceCodeFileId", feedback.getSourceCodeFileId()));
     }
 
     public void update(Feedback feedback) {
@@ -123,7 +127,8 @@ public class PgFeedbackRepository implements FeedbackRepository {
                         .addValue("grade", feedback.getGrade() == null ?
                                 null : feedback.getGrade().getValue())
                         .addValue("comment", feedback.getComment() == null ?
-                                null : feedback.getComment().getValue()));
+                                null : feedback.getComment().getValue())
+                        .addValue("sourceCodeFileId", feedback.getSourceCodeFileId()));
     }
 
 }

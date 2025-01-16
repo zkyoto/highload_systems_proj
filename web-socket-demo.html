@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket File Manager Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+<body>
+<h2>File Upload and Download Using WebSockets</h2>
+
+<div>
+    <label for="fileInput">Upload a file:</label>
+    <input type="file" id="fileInput">
+</div>
+<button onclick="uploadFile()">Upload File</button>
+
+<h3>Download File</h3>
+<div>
+    <label for="downloadFileExternalId">File External ID:</label>
+    <input type="text" id="downloadFileExternalId" placeholder="Enter file external ID">
+</div>
+<button onclick="downloadFile()">Download File</button>
+
+<h3>File Details</h3>
+<pre id="fileDetails"></pre>
+
+<script>
+    let stompClient = null;
+
+    function connect() {
+        // Connects to SockJS at the specified address
+        const socket = new SockJS('http://localhost:8111/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // Subscribe to the '/topic/ids' to get the external ID after file upload
+            stompClient.subscribe('/topic/ids', function (message) {
+                alert('File uploaded successfully with External ID: ' + message.body);
+            });
+
+            // Subscribe to the '/topic/file-content' to receive the file content from the server
+            stompClient.subscribe('/topic/file-content', function (message) {
+                const fileDetails = JSON.parse(message.body);
+                document.getElementById('fileDetails').textContent = JSON.stringify(fileDetails, null, 2);
+
+                const fileName = fileDetails.filename;
+                const fileContentBase64 = fileDetails.content;
+                saveFile(fileName, fileContentBase64);
+            });
+        });
+    }
+
+    function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please select a file to upload.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const fileContentBase64 = event.target.result.split(',')[1];
+            const fileName = file.name;
+
+            // Send file data to server
+            stompClient.send("/app/upload-file", {}, JSON.stringify({
+                fileName: fileName,
+                fileContentBase64: fileContentBase64
+            }));
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function downloadFile() {
+        const fileExternalId = document.getElementById('downloadFileExternalId').value;
+        stompClient.send("/app/download-file", {}, fileExternalId);
+    }
+
+    function saveFile(fileName, fileContentBase64) {
+        const link = document.createElement('a');
+        link.href = `data:application/octet-stream;base64,${fileContentBase64}`;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    connect();
+</script>
+</body>
+</html>

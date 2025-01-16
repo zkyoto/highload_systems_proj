@@ -56,7 +56,6 @@ public class RoutingConfiguration {
                         )
                         .uri(interviewApiServiceUrl)
                 )
-                // Маршрут для точного совпадения /swagger/interviews
                 .route("swagger_interviews_exact_route",
                         r -> r
                                 .path("/v3/api-docs/interviews")
@@ -105,16 +104,6 @@ public class RoutingConfiguration {
                                 )
                                 .uri(authorizatorServiceUrl)
                 )
-                // Маршрут для /swagger/interviews/<some>
-//                .route("swagger_interviews_wildcard_route",
-//                        r -> r
-//                                .path("/swagger/interviews/{segment}")
-//                                .filters(f -> f
-//                                        .rewritePath("/swagger/interviews/(?<segment>.*)", "/swagger-ui/$\\{segment}")
-//                                )
-//                                .uri("lb://interviews")
-//                )
-
                 .route(p -> p
                         .path("/api/v*/interviewers/**", "/api/v*/interviewers")
                         .filters(f -> f

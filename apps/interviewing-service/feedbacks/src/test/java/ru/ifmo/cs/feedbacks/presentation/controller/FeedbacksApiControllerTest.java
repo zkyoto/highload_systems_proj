@@ -68,7 +68,7 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
         SaveGradeFeedbackRequestBodyDto requestBody =
                 new SaveGradeFeedbackRequestBodyDto(stubFeedback.getId().value().toString(), 4);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/grade/save")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/grade")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(requestBody))
                         .header("X-Service-Token",
@@ -86,7 +86,7 @@ class FeedbacksApiControllerTest extends AbstractIntegrationTest {
         SaveCommentFeedbackRequestBodyDto requestBody =
                 new SaveCommentFeedbackRequestBodyDto(stubFeedback.getId().value().toString(), comment);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/comment/save")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/feedbacks/comment")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(requestBody))
                         .header("X-Service-Token",

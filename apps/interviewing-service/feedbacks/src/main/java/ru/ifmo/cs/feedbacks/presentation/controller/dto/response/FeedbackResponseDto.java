@@ -8,6 +8,7 @@ import ru.ifmo.cs.feedbacks.domain.value.Comment;
 import ru.ifmo.cs.feedbacks.domain.value.FeedbackId;
 import ru.ifmo.cs.feedbacks.domain.value.FeedbackStatus;
 import ru.ifmo.cs.feedbacks.domain.value.Grade;
+import ru.ifmo.cs.feedbacks.domain.value.SourceCodeFileId;
 
 @Schema(description = "DTO, представляющий подробную информацию об отзыве")
 public record FeedbackResponseDto(
@@ -33,13 +34,19 @@ public record FeedbackResponseDto(
         @JsonProperty("comment")
         @Schema(description = "Комментарий к отзыву", example = "Ожидается подтверждение от менеджера.", nullable =
                 true)
-        @Nullable Comment comment
+        @Nullable Comment comment,
+
+        @JsonProperty("source_code_file_id")
+        @Schema(description = "Id файла с исходным кодом кандидата, загруженного в file-manager",
+                example = "987e6543-e21b-12d3-a456-426614174001")
+        SourceCodeFileId sourceCodeFileId
 ) {
     public static FeedbackResponseDto from(Feedback feedback) {
         return new FeedbackResponseDto(feedback.getId(),
                 feedback.getInterviewId(),
                 feedback.getStatus(),
                 feedback.getGrade(),
-                feedback.getComment());
+                feedback.getComment(),
+                feedback.getSourceCodeFileId());
     }
 }
