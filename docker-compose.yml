@@ -7,6 +7,9 @@ services:
     extends:
       file: c-services.yaml
       service: file-manager
+    depends_on:
+      api-gateway:
+        condition: service_healthy
 
   interviews:
     extends:

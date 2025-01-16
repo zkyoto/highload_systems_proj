@@ -21,6 +21,7 @@ import ru.ifmo.cs.feedbacks.domain.FeedbackRepository;
 import ru.ifmo.cs.feedbacks.domain.value.Comment;
 import ru.ifmo.cs.feedbacks.domain.value.FeedbackId;
 import ru.ifmo.cs.feedbacks.domain.value.Grade;
+import ru.ifmo.cs.feedbacks.domain.value.SourceCodeFileId;
 import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.*;
 import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.*;
 import ru.itmo.cs.command_bus.CommandBus;
@@ -64,7 +65,7 @@ public class FeedbacksApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/api/v1/feedbacks/grade/save")
+    @PostMapping("/api/v1/feedbacks/grade")
     @Operation(summary = "Сохранить оценку", description = "Сохраняет оценку для отзыва")
     public ResponseEntity<?> saveGrade(
             @RequestBody SaveGradeFeedbackRequestBodyDto saveGradeFeedbackRequestBodyDto
@@ -75,7 +76,7 @@ public class FeedbacksApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/api/v1/feedbacks/comment/save")
+    @PostMapping("/api/v1/feedbacks/comment")
     @Operation(summary = "Сохранить комментарий", description = "Сохраняет комментарий для отзыва")
     public ResponseEntity<?> saveComment(
             @RequestBody SaveCommentFeedbackRequestBodyDto saveCommentFeedbackRequestBodyDto
@@ -84,6 +85,19 @@ public class FeedbacksApiController {
                 new SaveCommentFeedbackCommand(
                         FeedbackId.hydrate(saveCommentFeedbackRequestBodyDto.feedbackId()),
                         Comment.of(saveCommentFeedbackRequestBodyDto.comment()))
+        );
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/api/v1/feedbacks/source-coude-file-id")
+    @Operation(summary = "Сохранить id файла с исходным кодом", description = "Сохраняет id загруженного в file-manager файла")
+    public ResponseEntity<?> saveSourceCodeFileId(
+            @RequestBody SaveSourceCodeIdFeedbackRequestBodyDto saveCommentFeedbackRequestBodyDto
+    ) {
+        commandBus.submit(
+                new SaveSourceCodeFeedbackCommand(
+                        FeedbackId.hydrate(saveCommentFeedbackRequestBodyDto.feedbackId()),
+                        new SourceCodeFileId(saveCommentFeedbackRequestBodyDto.sourceCodeId()))
         );
         return ResponseEntity.ok().build();
     }

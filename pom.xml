@@ -23,6 +23,7 @@
         <module>apps/api-gateway</module>
         <module>apps/authorizator</module>
         <module>apps/passport</module>
+        <module>apps/file-manager</module>
         <module>common/clients/passport-client</module>
         <module>common/contracts/passport-contracts</module>
         <module>common/contracts/interviewing-service-contracts</module>

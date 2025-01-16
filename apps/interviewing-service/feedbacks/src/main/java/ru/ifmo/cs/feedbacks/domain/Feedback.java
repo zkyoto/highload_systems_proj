@@ -17,6 +17,7 @@ import ru.ifmo.cs.feedbacks.domain.value.Comment;
 import ru.ifmo.cs.feedbacks.domain.value.FeedbackId;
 import ru.ifmo.cs.feedbacks.domain.value.FeedbackStatus;
 import ru.ifmo.cs.feedbacks.domain.value.Grade;
+import ru.ifmo.cs.feedbacks.domain.value.SourceCodeFileId;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -28,6 +29,7 @@ public class Feedback {
     @NonNull private FeedbackStatus status;
     private Grade grade;
     private Comment comment;
+    private SourceCodeFileId sourceCodeFileId;
     private List<FeedbackEvent> events = new LinkedList<>();
 
     public static Feedback create(String interviewId) {
@@ -48,7 +50,8 @@ public class Feedback {
             String interviewId,
             String status,
             @Nullable Integer grade,
-            @Nullable String comment
+            @Nullable String comment,
+            @Nullable String sourceCodeFile
     ) {
         Feedback feedback = new Feedback(
                 FeedbackId.hydrate(id),
@@ -63,6 +66,9 @@ public class Feedback {
         if (comment != null) {
             feedback.comment = Comment.of(comment);
         }
+        if (sourceCodeFile != null) {
+            feedback.sourceCodeFileId = new SourceCodeFileId(sourceCodeFile);
+        }
         return feedback;
     }
 
@@ -75,6 +81,12 @@ public class Feedback {
     public void setComment(Comment comment) {
         ensureCommentShouldNotBeAlreadySet();
         this.comment = comment;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setSourceCodeFileId(SourceCodeFileId sourceCodeFileId) {
+        ensureSourceCodeFileShouldNotBeSet();
+        this.sourceCodeFileId = sourceCodeFileId;
         this.updatedAt = Instant.now();
     }
 
@@ -116,6 +128,12 @@ public class Feedback {
     private void ensureCommentShouldNotBeAlreadySet() {
         if (this.comment != null) {
             throw new IllegalStateException("Comment is already set");
+        }
+    }
+
+    private void ensureSourceCodeFileShouldNotBeSet() {
+        if (this.sourceCodeFileId != null) {
+            throw new IllegalStateException("SourceCodeFileId is already set");
         }
     }
 

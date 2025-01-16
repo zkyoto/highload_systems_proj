@@ -23,7 +23,8 @@ public class FeedbackRowMapper implements RowMapper<Feedback> {
                 rs.getString("interview_id"),
                 rs.getString("status"),
                 nullableGrade,
-                rs.getString("comment")
+                rs.getString("comment"),
+                rs.getString("source_code_file_id")
         );
     }
 
