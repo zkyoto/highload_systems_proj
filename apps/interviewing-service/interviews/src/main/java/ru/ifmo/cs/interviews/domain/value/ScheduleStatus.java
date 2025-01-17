@@ -7,6 +7,7 @@ import ru.ifmo.cs.string_enum.StringEnumResolver;
 public enum ScheduleStatus implements StringEnum {
     ACTUAL("actual"),
     CANCELLED("cancelled"),
+    FAILED("failed"),
     ;
 
     @JsonValue private final String value;

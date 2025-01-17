@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ifmo.cs.integration_event.IntegrationEvent;
@@ -25,29 +27,38 @@ public class KafkaEventsConsumer {
     private final KafkaConsumerProperties kafkaConsumerProperties;
     private final ObjectMapper objectMapper;
 
-    @SneakyThrows
     @Transactional
     @KafkaListener(
             topics = "#{kafkaConsumerProperties.topicsForConsume()}",
             groupId = "#{kafkaConsumerProperties.consumerGroupId()}"
     )
-    public void consume(String message) {
+    public void consume(@Payload String message, Acknowledgment ack) {
         log.info("Message consumed {}", message);
         message = clearSpecialChars(message);
         Optional<? extends Class<? extends IntegrationEvent>> knownEventClass = resolveEventClassFromMessage(message);
         if (knownEventClass.isPresent()) {
-            IntegrationEvent event = objectMapper.readValue(message, knownEventClass.get());
+            IntegrationEvent event = extractEvent(message, knownEventClass);
             log.info("Event parsed: {}", event);
             integrationEventFanoutDelivererService.deliverEvent(event);
             log.info("Message delivered");
         } else {
             log.info("Unknown event");
         }
+        ack.acknowledge();
     }
 
+    @SneakyThrows
+    private IntegrationEvent extractEvent(
+            String message,
+            Optional<? extends Class<? extends IntegrationEvent>> knownEventClass
+    ) {
+        return objectMapper.readValue(message, knownEventClass.orElseThrow());
+    }
+
+    @SneakyThrows
     private Optional<? extends Class<? extends IntegrationEvent>> resolveEventClassFromMessage(
             String message
-    ) throws JsonProcessingException {
+    ) {
         JsonNode json = objectMapper.readTree(message);
 
         String event_type = json.get(EVENT_TYPE_JSON_KEY).textValue();

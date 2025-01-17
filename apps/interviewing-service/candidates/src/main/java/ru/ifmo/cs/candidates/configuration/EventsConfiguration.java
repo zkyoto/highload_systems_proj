@@ -12,13 +12,15 @@ import ru.ifmo.cs.contracts.interviewing_service.interviews.integration_event.In
 import ru.ifmo.cs.domain_event.configuration.DomainEventsConfiguration;
 import ru.ifmo.cs.domain_event.infrastructure.repository.KnownDomainEventTypeResolver;
 import ru.ifmo.cs.integration_event.configuration.IntegrationEventDeliveryConfiguration;
+import ru.ifmo.cs.integration_event.configuration.IntegrationEventPublishingConfiguration;
 import ru.ifmo.cs.integration_event.event_delivery.KnownIntegrationEvent;
 import ru.ifmo.cs.integration_event.event_delivery.KnownIntegrationEventTypeResolver;
 
 @Configuration
 @Import({
         DomainEventsConfiguration.class,
-        IntegrationEventDeliveryConfiguration.class
+        IntegrationEventDeliveryConfiguration.class,
+        IntegrationEventPublishingConfiguration.class,
 })
 public class EventsConfiguration {
     @Bean

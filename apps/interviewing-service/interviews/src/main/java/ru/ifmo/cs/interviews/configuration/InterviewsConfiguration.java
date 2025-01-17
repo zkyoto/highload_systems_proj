@@ -3,6 +3,7 @@ package ru.ifmo.cs.interviews.configuration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.ifmo.cs.configration.KafkaProducerConfig;
+import ru.ifmo.cs.configuration.KafkaIntegrationEventConsumerConfig;
 import ru.ifmo.cs.exception_handling.configration.ExceptionHandlingConfiguration;
 import ru.ifmo.cs.service_token.configuration.TokenizerConfiguration;
 import ru.itmo.cs.command_bus.configuration.CommandBusConfiguration;
@@ -15,6 +16,7 @@ import ru.itmo.cs.command_bus.configuration.CommandBusConfiguration;
         EventsConfiguration.class,
         ServiceTokenValidatorsConfigurer.class,
         KafkaProducerConfig.class,
+        KafkaIntegrationEventConsumerConfig.class,
         ExceptionHandlingConfiguration.class,
 })
 public class InterviewsConfiguration {

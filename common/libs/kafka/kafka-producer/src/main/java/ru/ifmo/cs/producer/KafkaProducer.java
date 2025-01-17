@@ -9,9 +9,13 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
-    private final String topic;
+    private final String defaultTopic;
 
     public void write(String key, String value) {
+        write(this.defaultTopic, key, value);
+    }
+
+    public void write(String topic, String key, String value) {
         CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, key, value);
         future.whenComplete((result, ex) -> {
             if (ex == null) {

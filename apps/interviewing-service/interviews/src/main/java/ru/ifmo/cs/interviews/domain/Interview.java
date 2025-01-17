@@ -13,6 +13,7 @@ import ru.ifmo.cs.interviews.domain.event.InterviewEvent;
 import ru.ifmo.cs.interviews.domain.event.InterviewRescheduledEvent;
 import ru.ifmo.cs.interviews.domain.event.InterviewScheduledEvent;
 import ru.ifmo.cs.interviews.domain.specification.InterviewIsCancelledSpecification;
+import ru.ifmo.cs.interviews.domain.specification.InterviewIsFailedSpecification;
 import ru.ifmo.cs.interviews.domain.specification.InterviewIsWaitingForConductSpecification;
 import ru.ifmo.cs.interviews.domain.value.InterviewId;
 import ru.ifmo.cs.interviews.infrastructure.pg.entity.PgInterviewEntity;
@@ -76,6 +77,14 @@ public class Interview {
             throw new IllegalStateException("Interview is already cancelled");
         }
         getActualSchedule().orElseThrow().cancel();
+        this.events.add(InterviewCancelledEvent.fromEntity(this));
+    }
+
+    public void fail() {
+        if (InterviewIsFailedSpecification.isSatisfiedBy(this)) {
+            throw new IllegalStateException("Interview is already failed");
+        }
+        getActualSchedule().orElseThrow().fail();
         this.events.add(InterviewCancelledEvent.fromEntity(this));
     }
 
