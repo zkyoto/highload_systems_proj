@@ -4,6 +4,7 @@ libs=(
     "./libs/command_bus"
     "./libs/string-enum"
     "./libs/misc"
+    "./libs/synchronization"
     "./libs/domain_event"
     "./libs/page"
     "./libs/service-token"

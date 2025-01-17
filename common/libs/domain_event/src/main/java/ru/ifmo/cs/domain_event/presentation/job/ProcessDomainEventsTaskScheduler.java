@@ -10,7 +10,7 @@ public class ProcessDomainEventsTaskScheduler {
 
     @Scheduled(cron = "* * * * * *")
     public void runProcessDomainEventsTask() {
-        processDomainEventsTask.execute();
+        processDomainEventsTask.executeWithLockBetweenInstances();
     }
 
 }
