@@ -43,20 +43,4 @@ public class KafkaIntegrationEventConsumerConfig {
         return new KafkaConsumerProperties(topicsForConsume, kafkaConsumerGroupId);
     }
 
-//    @Bean
-//    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>>
-//    kafkaManualAckListenerContainerFactory() {
-//
-//        ConcurrentKafkaListenerContainerFactory<String, String> factory =
-//                new ConcurrentKafkaListenerContainerFactory<>();
-//        factory.setConsumerFactory(configuredConsumerFactory("clientIdViaProps3"));
-//        ContainerProperties props = factory.getContainerProperties();
-//        props.setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
-//        props.setIdleEventInterval(100L);
-//        props.setPollTimeout(50L);
-//        factory.setRecordFilterStrategy(manualFilter());
-//        factory.setAckDiscarded(true);
-//        return factory;
-//    }
-//
 }
