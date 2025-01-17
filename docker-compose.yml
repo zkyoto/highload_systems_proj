@@ -112,6 +112,8 @@ services:
     extends:
       file: c-services.yaml
       service: eureka-server
+    depends_on:
+      - kafka-ui
 
   config-server:
     extends:
