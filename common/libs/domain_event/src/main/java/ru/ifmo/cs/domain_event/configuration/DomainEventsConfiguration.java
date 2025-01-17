@@ -1,11 +1,12 @@
 package ru.ifmo.cs.domain_event.configuration;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hazelcast.core.HazelcastInstance;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.ifmo.cs.domain_event.application.service.ConsumptionLogJournalService;
@@ -23,9 +24,15 @@ import ru.ifmo.cs.domain_event.infrastructure.repository.pg.PgStoredDomainEventR
 import ru.ifmo.cs.domain_event.infrastructure.repository.pg.mapper.StoredDomainEventRowMapper;
 import ru.ifmo.cs.domain_event.presentation.job.ProcessDomainEventsTaskScheduler;
 import ru.ifmo.cs.domain_event.presentation.task.ProcessDomainEventsTask;
+import ru.ifmo.cs.synchronization.configuration.HazelCastConfiguration;
 
 @Configuration
+@Import(
+        HazelCastConfiguration.class
+)
 public class DomainEventsConfiguration {
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     @Bean
     public DomainEventFanoutDelivererService domainEventFanoutDelivererService(
@@ -106,9 +113,14 @@ public class DomainEventsConfiguration {
 
     @Bean
     public ProcessDomainEventsTask processDomainEventsTask(
+            HazelcastInstance hazelcastInstance,
             DomainEventFanoutDelivererService domainEventFanoutDelivererService
     ) {
-        return new ProcessDomainEventsTask(domainEventFanoutDelivererService);
+        return new ProcessDomainEventsTask(
+                hazelcastInstance,
+                applicationName,
+                domainEventFanoutDelivererService
+        );
     }
 
     @Bean

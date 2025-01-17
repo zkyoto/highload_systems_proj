@@ -11,7 +11,7 @@ import ru.ifmo.cs.file_manager.domain.File;
 import ru.ifmo.cs.file_manager.domain.FileRepository;
 import ru.ifmo.cs.file_manager.domain.value.FileContent;
 import ru.ifmo.cs.file_manager.domain.value.FileExternalId;
-import ru.ifmo.cs.file_manager.presentation.controller.dto.FileByExternalidResponseBodyDto;
+import ru.ifmo.cs.file_manager.presentation.controller.dto.FileByExternalIdResponseBodyDto;
 import ru.ifmo.cs.file_manager.presentation.controller.dto.FilePayload;
 import ru.itmo.cs.command_bus.CommandBus;
 
@@ -40,7 +40,7 @@ public class FileManagerApiController {
 
     @MessageMapping("/download-file")
     @SendTo("/topic/file-content")
-    public FileByExternalidResponseBodyDto downloadFile(@Payload String fileExternalId) {
+    public FileByExternalIdResponseBodyDto downloadFile(@Payload String fileExternalId) {
         FileExternalId externalId = new FileExternalId(fileExternalId);
         File file = fileRepository.findByExternalId(externalId);
 
@@ -48,6 +48,6 @@ public class FileManagerApiController {
             throw new RuntimeException("File not found for ID: " + fileExternalId);
         }
 
-        return FileByExternalidResponseBodyDto.fromEntity(file);
+        return FileByExternalIdResponseBodyDto.fromEntity(file);
     }
 }

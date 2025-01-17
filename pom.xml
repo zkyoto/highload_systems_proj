@@ -41,6 +41,7 @@
         <module>service-discovery/config-server</module>
         <module>service-discovery/eureka-server</module>
         <module>common/libs/jwt-token</module>
+        <module>common/libs/synchronization</module>
     </modules>
 
 </project>
