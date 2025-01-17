@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.ifmo.cs.contracts.interviewing_service.candidates.integration_event.CandidateStatusTransferToWaitingForInterviewFailIntegrationEvent;
 import ru.ifmo.cs.integration_event.IntegrationEventConsumer;
 import ru.ifmo.cs.interviews.application.command.CancelInterviewCommand;
+import ru.ifmo.cs.interviews.application.command.FailInterviewCommand;
 import ru.ifmo.cs.interviews.domain.value.InterviewId;
 import ru.itmo.cs.command_bus.CommandBus;
 
@@ -20,7 +21,7 @@ public class CandidateStatusTransferToWaitingForInterviewFailIntegrationEventCon
     public void consume(CandidateStatusTransferToWaitingForInterviewFailIntegrationEvent event) {
         log.info("Cancelling interview {} because candidate {} status transfer to wait for interview fail",
                 event.getInterviewId(), event.getCandidateId());
-        commandBus.submit(new CancelInterviewCommand(InterviewId.hydrate(event.getInterviewId())));
+        commandBus.submit(new FailInterviewCommand(InterviewId.hydrate(event.getInterviewId())));
     }
 
 }

@@ -41,11 +41,20 @@ public class Schedule {
         this.updatedAt = Instant.now();
     }
 
+    public void fail() {
+        this.status = ScheduleStatus.FAILED;
+        this.updatedAt = Instant.now();
+    }
+
     public boolean isActual() {
         return status == ScheduleStatus.ACTUAL;
     }
 
     public boolean isCancelled() {
         return status == ScheduleStatus.CANCELLED;
+    }
+
+    public boolean isFailed() {
+        return status == ScheduleStatus.FAILED;
     }
 }
