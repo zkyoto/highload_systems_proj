@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ru.ifmo.cs.feedbacks.AbstractIntegrationTest;
 import ru.ifmo.cs.consumer.KafkaConsumerProperties;
 import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.feedbacks.application.command.SaveCommentFeedbackCommand;
@@ -28,6 +27,7 @@ import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.SaveGradeFeedbac
 import ru.ifmo.cs.feedbacks.presentation.controller.dto.request.SubmitFeedbackRequestBodyDto;
 import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.FeedbackResponseDto;
 import ru.ifmo.cs.feedbacks.presentation.controller.dto.response.GetFeedbackResponseBodyDto;
+import ru.ifmo.cs.integration_tests.AbstractIntegrationTest;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import ru.ifmo.cs.service_token.domain.RequestData;
 import ru.ifmo.cs.service_token.domain.ServiceId;

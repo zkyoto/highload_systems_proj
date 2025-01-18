@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.ifmo.cs.candidates.AbstractIntegrationTest;
+import ru.ifmo.cs.candidates.CandidatesIntegrationTest;
 import ru.ifmo.cs.candidates.domain.Candidate;
 import ru.ifmo.cs.candidates.domain.CandidateRepository;
 import ru.ifmo.cs.candidates.domain.event.CandidateScheduledForInterviewEvent;
@@ -19,7 +19,7 @@ import ru.ifmo.cs.contracts.interviewing_service.interviews.integration_event.In
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 
 @MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
-class InterviewScheduledIntegrationEventConsumerTest extends AbstractIntegrationTest {
+class InterviewScheduledIntegrationEventConsumerTest extends CandidatesIntegrationTest {
     @Autowired
     private InterviewScheduledIntegrationEventConsumer consumer;
     @Autowired
@@ -50,6 +50,5 @@ class InterviewScheduledIntegrationEventConsumerTest extends AbstractIntegration
         Assertions.assertEquals(candidateRepository.findById(stubCandidate.getId()).getStatus(), CandidateStatus.WAITING_FOR_INTERVIEW);
         Assertions.assertTrue(storedDomainEventRepository.nextWaitedForDelivery().getEvent() instanceof CandidateScheduledForInterviewEvent);
     }
-
 
 }

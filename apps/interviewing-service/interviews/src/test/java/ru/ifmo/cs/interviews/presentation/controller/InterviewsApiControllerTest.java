@@ -15,7 +15,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.ifmo.cs.consumer.KafkaConsumerProperties;
 import ru.ifmo.cs.consumer.KafkaEventsConsumer;
-import ru.ifmo.cs.interviews.AbstractIntegrationTest;
+import ru.ifmo.cs.integration_tests.AbstractIntegrationTest;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import ru.ifmo.cs.service_token.domain.RequestData;
 import ru.ifmo.cs.service_token.domain.ServiceId;

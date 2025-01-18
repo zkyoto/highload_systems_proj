@@ -1,4 +1,4 @@
-package ru.ifmo.cs.feedbacks;
+package ru.ifmo.cs.integration_tests;
 
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -17,6 +18,7 @@ import ru.ifmo.cs.domain_event.application.service.DomainEventFanoutDelivererSer
 @Testcontainers
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(initializers = {AbstractIntegrationTest.Initializer.class})
+@Import(TestcontainersConfiguration.class)
 @TestPropertySource(properties = {"spring.config.location=classpath:application-properties.yml"})
 public abstract class AbstractIntegrationTest {
 

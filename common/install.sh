@@ -16,6 +16,7 @@ libs=(
     "./libs/jwt-token"
     "./libs/jwt-auth"
     "./libs/exception-handling"
+    "./libs/integration-tests"
     "./contracts/interviewing-service-contracts"
 )
 echo "Installing libs"

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.ifmo.cs.candidates.AbstractIntegrationTest;
+import ru.ifmo.cs.candidates.CandidatesIntegrationTest;
 import ru.ifmo.cs.candidates.application.query.CandidateByInterviewResultQueryService;
 import ru.ifmo.cs.candidates.domain.Candidate;
 import ru.ifmo.cs.candidates.presentation.integration_event.consumer.InterviewResultCreatedIntegrationEventConsumer;
@@ -16,7 +16,7 @@ import ru.ifmo.cs.contracts.interviewing_service.interview_results.integration_e
 import ru.itmo.cs.command_bus.CommandBus;
 
 @MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
-class InterviewResultCreatedIntegrationEventConsumerTest extends AbstractIntegrationTest {
+class InterviewResultCreatedIntegrationEventConsumerTest extends CandidatesIntegrationTest {
     @Autowired
     private CandidateByInterviewResultQueryService candidateByInterviewResultQueryService;
     @Autowired

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.ifmo.cs.interviewers.AbstractIntegrationTest;
+import ru.ifmo.cs.integration_tests.AbstractIntegrationTest;
 import ru.ifmo.cs.misc.UserId;
 import ru.ifmo.cs.passport.api.stub.PassportFeignClientStub;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;

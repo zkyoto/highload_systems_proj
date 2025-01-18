@@ -1,4 +1,4 @@
-package ru.ifmo.cs.candidates;
+package ru.ifmo.cs.integration_tests;
 
 import org.springframework.boot.test.context.TestConfiguration;
 
