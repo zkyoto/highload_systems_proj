@@ -1,4 +1,4 @@
-package ru.ifmo.cs.api_gateway.routing;
+package ru.ifmo.cs.api_gateway.routing.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
