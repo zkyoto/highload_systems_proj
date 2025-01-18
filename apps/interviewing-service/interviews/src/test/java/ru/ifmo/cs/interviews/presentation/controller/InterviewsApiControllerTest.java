@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.ifmo.cs.consumer.KafkaConsumerProperties;
+import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.interviews.AbstractIntegrationTest;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import ru.ifmo.cs.service_token.domain.RequestData;
@@ -30,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest("spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration")
 @Import(InterviewsApiControllerTest.MockKafkaConfiguration.class)
+@MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
 class InterviewsApiControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
