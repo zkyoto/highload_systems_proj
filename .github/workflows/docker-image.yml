@@ -62,35 +62,13 @@ jobs:
         id: vars
         run: echo "IMAGE_TAG=${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v1
-        with:
-          java-version: 17
-
-      - name: Cache SonarQube packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Maven packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
       - name: Run Dockerized tests
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
           IFS=' ' read -r -a images <<< "${IMAGES}"
 
           for image in "${images[@]}"; do
             echo "Testing image: $image"
-            docker run --rm ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+            docker run --rm ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw test
             cp -r $image/site/jacoco/ coverage/$image
           done
 

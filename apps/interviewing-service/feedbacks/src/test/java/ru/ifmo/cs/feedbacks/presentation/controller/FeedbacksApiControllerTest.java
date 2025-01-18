@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ru.ifmo.cs.AbstractIntegrationTest;
+import ru.ifmo.cs.feedbacks.AbstractIntegrationTest;
 import ru.ifmo.cs.consumer.KafkaConsumerProperties;
 import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.feedbacks.application.command.SaveCommentFeedbackCommand;

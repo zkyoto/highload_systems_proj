@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.ifmo.cs.AbstractIntegrationTest;
+import ru.ifmo.cs.feedbacks.AbstractIntegrationTest;
 import ru.ifmo.cs.consumer.KafkaConsumerProperties;
 import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.contracts.interviewing_service.interviews.integration_event.InterviewScheduledIntegrationEvent;

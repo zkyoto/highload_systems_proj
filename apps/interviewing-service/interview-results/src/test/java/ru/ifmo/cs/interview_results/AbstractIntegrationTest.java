@@ -1,4 +1,4 @@
-package ru.ifmo.cs;
+package ru.ifmo.cs.interview_results;
 
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;

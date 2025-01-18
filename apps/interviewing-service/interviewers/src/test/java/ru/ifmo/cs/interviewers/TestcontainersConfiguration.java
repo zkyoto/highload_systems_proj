@@ -1,5 +1,4 @@
-package ru.ifmo.cs;
-
+package ru.ifmo.cs.interviewers;
 
 import org.springframework.boot.test.context.TestConfiguration;
 
