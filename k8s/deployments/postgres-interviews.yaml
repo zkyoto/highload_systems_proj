@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-interviews
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-interviews
+  template:
+    metadata:
+      labels:
+        app: postgres-interviews
+    spec:
+      containers:
+        - name: postgres
+          image: kyoto67/highload/interviews-postgres:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "pwd"
+            - name: POSTGRES_USER
+              value: "postgres"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-interviews-storage
+      volumes:
+        - name: postgres-interviews-storage
+          persistentVolumeClaim:
+            claimName: postgres-interviews-pvc
