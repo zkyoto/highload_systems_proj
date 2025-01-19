@@ -12,6 +12,11 @@ import ru.ifmo.cs.jwt_auth.infrastructure.request_filter.JwtTokenAuthenticationF
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfiguration {
+    private static final String SUPERVISOR_AUTHORITY = "supervisor";
+    private static final String STAFF_AUTHORITY = "staff";
+    private static final String INTERVIEWER_AUTHORITY = "interviewer";
+    private static final String HR_AUTHORITY = "hr";
+    private static final String OUT_OF_SCOPE_AUTHORITY = "out-of-scope";
 
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http,
@@ -20,7 +25,7 @@ public class SecurityConfiguration {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(ServerHttpSecurity.CorsSpec::disable)
                 .addFilterAt(authFilter, SecurityWebFiltersOrder.AUTHENTICATION)
-                .authorizeExchange((authorize) -> authorize
+                .authorizeExchange(authorize -> authorize
 //                        .pathMatchers("**").permitAll()
                                 .pathMatchers("/actuator/**")
                                     .permitAll()
@@ -32,24 +37,28 @@ public class SecurityConfiguration {
                                     .permitAll()
                                 .pathMatchers("/api/v*/auth/authorized-token")
                                     .permitAll()
+                                .pathMatchers("/availability")
+                                    .permitAll()
+                                .pathMatchers("/switch")
+                                    .permitAll()
                                 .pathMatchers("/api/v*/auth/**")
-                                    .hasAuthority("supervisor")
+                                    .hasAuthority(SUPERVISOR_AUTHORITY)
                                 .pathMatchers("/api/v*/interview-results", "/api/v*/interview-results/**")
-                                    .hasAnyAuthority("staff", "out-of-scope")
+                                    .hasAnyAuthority(STAFF_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                                 .pathMatchers("/api/v*/candidates", "/api/v*/candidates/by-id")
-                                    .hasAnyAuthority("hr", "interviewer", "out-of-scope")
+                                    .hasAnyAuthority(HR_AUTHORITY, INTERVIEWER_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                                 .pathMatchers("/api/v*/candidates/add")
-                                    .hasAnyAuthority("hr", "out-of-scope")
+                                    .hasAnyAuthority(HR_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                                 .pathMatchers("/api/v*/feedbacks/pending-result")
-                                    .hasAnyAuthority("staff", "out-of-scope")
+                                    .hasAnyAuthority(STAFF_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                                 .pathMatchers("/api/v*/feedbacks", "/api/v*/feedbacks/**")
-                                    .hasAnyAuthority("interviewer", "out-of-scope")
+                                    .hasAnyAuthority(INTERVIEWER_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                                 .pathMatchers("/api/v*/interviews/cancel")
-                                    .hasAnyAuthority("hr", "interviewer", "out-of-scope")
+                                    .hasAnyAuthority(HR_AUTHORITY, INTERVIEWER_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                                 .pathMatchers("/api/v*/interviews", "/api/v*/interviews/**")
-                                    .hasAnyAuthority("interviewer", "out-of-scope")
+                                    .hasAnyAuthority(INTERVIEWER_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                                 .pathMatchers("/api/v*/interviewers", "/api/v1/interviewers/**")
-                                    .hasAnyAuthority("hr", "staff", "interviewer", "out-of-scope")
+                                    .hasAnyAuthority(HR_AUTHORITY, STAFF_AUTHORITY, INTERVIEWER_AUTHORITY, OUT_OF_SCOPE_AUTHORITY)
                 );
         return http.build();
     }

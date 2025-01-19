@@ -18,14 +18,14 @@ public class SaveSourceCodeFeedbackCommandHandlerTest {
     private Feedback feedback;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         feedbackRepository = mock(FeedbackRepository.class);
         commandHandler = new SaveSourceCodeFeedbackCommandHandler(feedbackRepository);
         feedback = mock(Feedback.class);
     }
 
     @Test
-    public void testHandle() {
+    void testHandle() {
         // Arrange
         FeedbackId feedbackId = FeedbackId.generate();
         SourceCodeFileId sourceCodeFileId = new SourceCodeFileId("sourceCode123");

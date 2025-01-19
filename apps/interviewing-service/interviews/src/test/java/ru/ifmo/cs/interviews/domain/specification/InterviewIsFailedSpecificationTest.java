@@ -19,7 +19,7 @@ public class InterviewIsFailedSpecificationTest {
     private Schedule successfulSchedule;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         interview = mock(Interview.class);
         failedSchedule = mock(Schedule.class);
         successfulSchedule = mock(Schedule.class);
@@ -29,7 +29,7 @@ public class InterviewIsFailedSpecificationTest {
     }
 
     @Test
-    public void testIsSatisfiedBy_AllSchedulesFailed() {
+    void testIsSatisfiedBy_AllSchedulesFailed() {
         // Arrange
         when(interview.getSchedules()).thenReturn(Arrays.asList(failedSchedule, failedSchedule));
 
@@ -41,7 +41,7 @@ public class InterviewIsFailedSpecificationTest {
     }
 
     @Test
-    public void testIsSatisfiedBy_NotAllSchedulesFailed() {
+    void testIsSatisfiedBy_NotAllSchedulesFailed() {
         // Arrange
         when(interview.getSchedules()).thenReturn(Arrays.asList(failedSchedule, successfulSchedule));
 
@@ -53,7 +53,7 @@ public class InterviewIsFailedSpecificationTest {
     }
 
     @Test
-    public void testIsSatisfiedBy_NoSchedules() {
+    void testIsSatisfiedBy_NoSchedules() {
         // Arrange
         when(interview.getSchedules()).thenReturn(Collections.emptyList());
 

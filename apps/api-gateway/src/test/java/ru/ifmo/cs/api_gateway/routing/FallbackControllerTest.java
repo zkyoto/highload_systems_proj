@@ -14,17 +14,15 @@ public class FallbackControllerTest {
     private FallbackController fallbackController;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         fallbackController = new FallbackController();
     }
 
     @Test
-    public void testFallback() {
-        ResponseEntity<String> response = fallbackController.fallback();
+    void testFallback() {
+        ResponseEntity<?> response = fallbackController.fallback();
 
         assertNotNull(response, "Response should not be null");
-        assertEquals(200, response.getStatusCodeValue(), "Response status code should be 200 (OK)");
-        assertEquals("This is simple fallback implementation.", response.getBody(),
-                "Response body should match the expected fallback message");
+        assertEquals(503, response.getStatusCodeValue(), "Response status code should be 503");
     }
 }

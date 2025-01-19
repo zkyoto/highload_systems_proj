@@ -18,7 +18,7 @@ public class FailInterviewCommandHandlerTest {
     private InterviewId interviewId;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         interviewRepository = mock(InterviewRepository.class);
         commandHandler = new FailInterviewCommandHandler(interviewRepository);
         interview = mock(Interview.class);
@@ -28,7 +28,7 @@ public class FailInterviewCommandHandlerTest {
     }
 
     @Test
-    public void testHandle() {
+    void testHandle() {
         // Arrange
         FailInterviewCommand command = new FailInterviewCommand(interviewId);
 
