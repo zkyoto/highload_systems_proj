@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.ifmo.cs.candidates.AbstractIntegrationTest;
+import ru.ifmo.cs.candidates.CandidatesIntegrationTest;
 import ru.ifmo.cs.candidates.application.command.AddCandidateCommand;
 import ru.ifmo.cs.candidates.domain.Candidate;
 import ru.ifmo.cs.candidates.domain.CandidateRepository;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
-class CandidatesApiControllerTest extends AbstractIntegrationTest {
+class CandidatesApiControllerTest extends CandidatesIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

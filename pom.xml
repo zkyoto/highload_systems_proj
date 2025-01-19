@@ -42,6 +42,7 @@
         <module>service-discovery/eureka-server</module>
         <module>common/libs/jwt-token</module>
         <module>common/libs/synchronization</module>
+        <module>common/libs/integration-tests</module>
     </modules>
 
 </project>

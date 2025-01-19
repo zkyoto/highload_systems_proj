@@ -1,4 +1,4 @@
-package ru.ifmo.cs.feedbacks.presentation.consumer;
+package ru.ifmo.cs.candidates.presentation.consumer;
 
 import java.time.Instant;
 
@@ -7,36 +7,37 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.ifmo.cs.candidates.CandidatesIntegrationTest;
+import ru.ifmo.cs.candidates.domain.Candidate;
+import ru.ifmo.cs.candidates.domain.CandidateRepository;
+import ru.ifmo.cs.candidates.domain.event.CandidateScheduledForInterviewEvent;
+import ru.ifmo.cs.candidates.domain.value.CandidateStatus;
+import ru.ifmo.cs.candidates.presentation.integration_event.consumer.InterviewScheduledIntegrationEventConsumer;
 import ru.ifmo.cs.consumer.KafkaConsumerProperties;
 import ru.ifmo.cs.consumer.KafkaEventsConsumer;
 import ru.ifmo.cs.contracts.interviewing_service.interviews.integration_event.InterviewScheduledIntegrationEvent;
 import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
-import ru.ifmo.cs.feedbacks.application.query.FeedbackByInterviewQueryService;
-import ru.ifmo.cs.feedbacks.domain.event.FeedbackCreatedEvent;
-import ru.ifmo.cs.feedbacks.presentation.integration_event.consumer.InterviewScheduledIntegrationEventConsumer;
-import ru.ifmo.cs.integration_tests.AbstractIntegrationTest;
-import ru.itmo.cs.command_bus.CommandBus;
 
 @MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
-class InterviewScheduledIntegrationEventConsumerTest extends AbstractIntegrationTest {
+class InterviewScheduledIntegrationEventConsumerTest extends CandidatesIntegrationTest {
+    @Autowired
     private InterviewScheduledIntegrationEventConsumer consumer;
     @Autowired
-    private CommandBus commandBus;
-    @Autowired
-    private FeedbackByInterviewQueryService feedbackByInterviewQueryService;
-    @Autowired
     private StoredDomainEventRepository storedDomainEventRepository;
+    @Autowired
+    private CandidateRepository candidateRepository;
     private InterviewScheduledIntegrationEvent stubEvent;
+    private Candidate stubCandidate;
 
     @BeforeEach
     void setup() {
-        consumer = new InterviewScheduledIntegrationEventConsumer(commandBus);
+        stubCandidate = createCandidate();
         stubEvent = new InterviewScheduledIntegrationEvent(
                 "z",
                 Instant.now(),
                 "z",
                 "z",
-                "z",
+                stubCandidate.getId().value().toString(),
                 Instant.now()
         );
         deliverAllSavedDomainEvents();
@@ -45,8 +46,9 @@ class InterviewScheduledIntegrationEventConsumerTest extends AbstractIntegration
     @Test
     void consumerTest() {
         consumer.consume(stubEvent);
-        Assertions.assertTrue(feedbackByInterviewQueryService.findByInterviewId("z").isPresent());
-        Assertions.assertTrue(storedDomainEventRepository.nextWaitedForDelivery().getEvent() instanceof FeedbackCreatedEvent);
+
+        Assertions.assertEquals(candidateRepository.findById(stubCandidate.getId()).getStatus(), CandidateStatus.WAITING_FOR_INTERVIEW);
+        Assertions.assertTrue(storedDomainEventRepository.nextWaitedForDelivery().getEvent() instanceof CandidateScheduledForInterviewEvent);
     }
 
 }

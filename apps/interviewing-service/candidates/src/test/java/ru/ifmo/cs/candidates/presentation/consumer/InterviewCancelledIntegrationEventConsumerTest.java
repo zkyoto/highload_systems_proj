@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.ifmo.cs.candidates.AbstractIntegrationTest;
+import ru.ifmo.cs.candidates.CandidatesIntegrationTest;
 import ru.ifmo.cs.candidates.domain.Candidate;
 import ru.ifmo.cs.candidates.domain.CandidateRepository;
 import ru.ifmo.cs.candidates.domain.event.CandidateCancelledEvent;
@@ -20,7 +20,7 @@ import ru.ifmo.cs.domain_event.domain.stored_event.StoredDomainEventRepository;
 import ru.ifmo.cs.misc.Name;
 
 @MockBean(classes = {KafkaConsumerProperties.class, KafkaEventsConsumer.class})
-class InterviewCancelledIntegrationEventConsumerTest extends AbstractIntegrationTest {
+class InterviewCancelledIntegrationEventConsumerTest extends CandidatesIntegrationTest {
     @Autowired
     private InterviewCancelledIntegrationEventConsumer consumer;
     @Autowired
