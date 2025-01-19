@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interview-results
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interview-results
+  template:
+    metadata:
+      labels:
+        app: interview-results
+    spec:
+      containers:
+        - name: interview-results
+          image: kyoto67/highload/interviewing-service/interview-results:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: passport
+  namespace: default
+spec:
+  ports:
+    - port: 81
+      targetPort: 81
+  selector:
+    app: passport
+  type: NodePort
+
