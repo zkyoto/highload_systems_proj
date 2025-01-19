@@ -15,10 +15,6 @@ public class CandidateByInterviewResultQueryServiceImpl implements CandidateByIn
 
     @Override
     public Candidate findFor(String interviewResultId) {
-//        InterviewResult interviewResult = interviewResultRepository.findById(interviewResultId);
-//        Feedback feedback = feedbackRepository.findById(interviewResult.getFeedbackId());
-//        Interview interview = interviewRepository.findById(feedback.getInterviewId());
-//        return candidateRepository.findById(interview.getCandidateId());
         return null;
     }
 
