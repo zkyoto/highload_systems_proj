@@ -64,11 +64,12 @@ jobs:
 
       - name: Run Dockerized tests
         run: |
+          mkdir -p coverage
           IFS=' ' read -r -a images <<< "${IMAGES}"
-
+      
           for image in "${images[@]}"; do
             echo "Testing image: $image"
-            docker run --rm ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw test
+            docker run --rm -v $image:/app/apps/$image/target ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw test
             cp -r $image/site/jacoco/ coverage/$image
           done
 
