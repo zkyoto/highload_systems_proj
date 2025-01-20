@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passport
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: passport
+  template:
+    metadata:
+      labels:
+        app: passport
+    spec:
+      containers:
+        - name: passport
+          image: kyoto67/highload/passport:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 81
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 81
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 81
+            initialDelaySeconds: 30
+            periodSeconds: 10
+

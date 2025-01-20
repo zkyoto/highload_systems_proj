@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-feedbacks
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-feedbacks
+  template:
+    metadata:
+      labels:
+        app: postgres-feedbacks
+    spec:
+      containers:
+        - name: postgres
+          image: kyoto67/highload/feedbacks-postgres:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "pwd"
+            - name: POSTGRES_USER
+              value: "postgres"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-feedbacks-storage
+      volumes:
+        - name: postgres-feedbacks-storage
+          persistentVolumeClaim:
+            claimName: postgres-feedbacks-pvc
+

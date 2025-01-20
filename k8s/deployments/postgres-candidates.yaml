@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-candidates
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-candidates
+  template:
+    metadata:
+      labels:
+        app: postgres-candidates
+    spec:
+      containers:
+        - name: postgres
+          image: kyoto67/highload/candidates-postgres:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "pwd"
+            - name: POSTGRES_USER
+              value: "postgres"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-candidates-storage
+      volumes:
+        - name: postgres-candidates-storage
+          persistentVolumeClaim:
+            claimName: postgres-candidates-pvc
+
