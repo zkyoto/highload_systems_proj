@@ -1,9 +1,11 @@
 package ru.ifmo.cs.integration_tests;
 
+import com.hazelcast.core.HazelcastInstance;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -20,6 +22,7 @@ import ru.ifmo.cs.domain_event.application.service.DomainEventFanoutDelivererSer
 @ContextConfiguration(initializers = {AbstractIntegrationTest.Initializer.class})
 @Import(TestcontainersConfiguration.class)
 @TestPropertySource(properties = {"spring.config.location=classpath:application-properties.yml"})
+@MockBean(HazelcastInstance.class)
 public abstract class AbstractIntegrationTest {
 
     @Autowired
