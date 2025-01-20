@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-candidates
+  name: candidates-postgres
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-candidates
+      app: candidates-postgres
   template:
     metadata:
       labels:
-        app: postgres-candidates
+        app: candidates-postgres
     spec:
       containers:
         - name: postgres
