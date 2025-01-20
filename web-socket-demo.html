@@ -31,7 +31,7 @@
 
     function connect() {
         // Connects to SockJS at the specified address
-        const socket = new SockJS('http://localhost:8111/ws');
+        const socket = new SockJS('http://localhost:8887/ws');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (frame) {

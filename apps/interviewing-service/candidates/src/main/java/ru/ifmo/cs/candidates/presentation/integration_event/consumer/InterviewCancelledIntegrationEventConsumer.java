@@ -15,6 +15,10 @@ public class InterviewCancelledIntegrationEventConsumer implements IntegrationEv
 
     @Override
     public void consume(InterviewCancelledIntegrationEvent event) {
-        commandBus.submit(new ChageStatusToCancelledCommand(CandidateId.hydrate(event.getCandidateId())));
+        try {
+            commandBus.submit(new ChageStatusToCancelledCommand(CandidateId.hydrate(event.getCandidateId())));
+        } catch (Exception e) {
+            //ignore
+        }
     }
 }

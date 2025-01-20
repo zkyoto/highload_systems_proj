@@ -1,7 +1,7 @@
 package ru.ifmo.cs.synchronization.configuration;
 
-import com.hazelcast.client.HazelcastClient;
-import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.config.Config;
+import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,16 +14,11 @@ import java.time.LocalDateTime;
 public class HazelCastConfiguration {
 
     @Bean
-    public ClientConfig clientConfig() {
-        ClientConfig config = new ClientConfig();
-        config.getNetworkConfig().addAddress("hz-hazelcast");
-        return config;
-    }
-
-
-    @Bean
-    public HazelcastInstance hazelcastInstance(ClientConfig clientConfig) {
-        return HazelcastClient.newHazelcastClient(clientConfig);
+    public HazelcastInstance hazelcastInstance() {
+        Config config = new Config();
+        config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+        config.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true);
+        return Hazelcast.newHazelcastInstance(config);
     }
 
     @Bean
