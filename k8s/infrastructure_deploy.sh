@@ -13,7 +13,7 @@ minikube kubectl -- create service clusterip hz-hazelcast --tcp=5701 -o yaml --d
 
 
 echo "⏳ Deploying PersistentVolumes and PersistentVolumeClaims..."
-minikube kubectl -- apply -f k8s/persistent-volumes/
+minikube kubectl -- apply -f persistent-volumes/
 
 echo "⏳ Deploying PostgreSQL databases..."
 minikube kubectl -- apply -f deployments/postgres-passport.yaml
