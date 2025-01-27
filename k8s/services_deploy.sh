@@ -19,3 +19,5 @@ minikube kubectl -- apply -f deployments/authorizator.yaml
 minikube kubectl -- apply -f services/authorizator-svc.yaml
 minikube kubectl -- apply -f deployments/passport.yaml
 minikube kubectl -- apply -f services/passport-svc.yaml
+
+minikube kubectl -- apply -f deployments/ingress.yaml

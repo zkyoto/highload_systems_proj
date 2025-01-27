@@ -4,13 +4,16 @@ echo "⏳ Deploying namespace..."
 minikube kubectl -- apply -f namespaces/default-namespace.yaml
 minikube kubectl -- apply -f https://raw.githubusercontent.com/hazelcast/hazelcast/master/kubernetes-rbac.yaml
 
-export HAZELCAST_VERSION=latest
-minikube kubectl -- run hz-hazelcast-0 --image=hazelcast/hazelcast:$HAZELCAST_VERSION -l "role=hazelcast"
-minikube kubectl -- run hz-hazelcast-1 --image=hazelcast/hazelcast:$HAZELCAST_VERSION -l "role=hazelcast"
-minikube kubectl -- run hz-hazelcast-2 --image=hazelcast/hazelcast:$HAZELCAST_VERSION -l "role=hazelcast"
+helm repo add hazelcast https://hazelcast-charts.s3.amazonaws.com/
+helm repo update
+helm install hz-hazelcast hazelcast/hazelcast
 
-minikube kubectl -- create service clusterip hz-hazelcast --tcp=5701 -o yaml --dry-run=client | minikube kubectl -- set selector --local -f - "role=hazelcast" -o yaml | minikube kubectl -- create -f -
-
+# export HAZELCAST_VERSION=latest
+# minikube kubectl -- run hz-hazelcast-0 --image=hazelcast/hazelcast:$HAZELCAST_VERSION -l "role=hazelcast"
+# minikube kubectl -- run hz-hazelcast-1 --image=hazelcast/hazelcast:$HAZELCAST_VERSION -l "role=hazelcast"
+# minikube kubectl -- run hz-hazelcast-2 --image=hazelcast/hazelcast:$HAZELCAST_VERSION -l "role=hazelcast"
+#
+# minikube kubectl -- create service clusterip hz-hazelcast --tcp=5701 -o yaml --dry-run=client | minikube kubectl -- set selector --local -f - "role=hazelcast" -o yaml | minikube kubectl -- create -f -
 
 echo "⏳ Deploying PersistentVolumes and PersistentVolumeClaims..."
 minikube kubectl -- apply -f persistent-volumes/

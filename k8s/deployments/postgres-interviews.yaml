@@ -24,6 +24,8 @@ spec:
               value: "pwd"
             - name: POSTGRES_USER
               value: "postgres"
+            - name: POSTGRESQL_PGAUDIT_LOG
+              value: "all, -misc"
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-interviews-storage
