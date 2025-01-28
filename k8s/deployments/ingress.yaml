@@ -15,3 +15,18 @@ spec:
                 name: eureka-server
                 port:
                   number: 8761
+
+          - pathType: Prefix
+            path: /kafka
+            backend:
+              service:
+                name: kafka-ui
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /gateway
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8765
