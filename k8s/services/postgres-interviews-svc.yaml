@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-interviews
+  name: interviews-postgres
   namespace: default
 spec:
   ports:
     - port: 5432
       targetPort: 5432
   selector:
-    app: postgres-interviews
+    app: interviews-postgres
 

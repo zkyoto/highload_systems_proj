@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.ifmo.cs.interview_results.AbstractIntegrationTest;
+import ru.ifmo.cs.integration_tests.AbstractIntegrationTest;
 import ru.ifmo.cs.service_token.application.ServiceTokenResolver;
 import ru.ifmo.cs.service_token.domain.RequestData;
 import ru.ifmo.cs.service_token.domain.ServiceId;

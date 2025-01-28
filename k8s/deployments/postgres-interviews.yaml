@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-interviews
+  name: interviews-postgres
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-interviews
+      app: interviews-postgres
   template:
     metadata:
       labels:
-        app: postgres-interviews
+        app: interviews-postgres
     spec:
       containers:
         - name: postgres
@@ -24,6 +24,8 @@ spec:
               value: "pwd"
             - name: POSTGRES_USER
               value: "postgres"
+            - name: POSTGRESQL_PGAUDIT_LOG
+              value: "all, -misc"
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-interviews-storage

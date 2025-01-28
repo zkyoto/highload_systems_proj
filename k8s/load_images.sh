@@ -33,7 +33,7 @@ fi
 echo "🚀 Loading Docker images into Minikube..."
 for IMAGE in "${IMAGES[@]}"; do
   echo "⏳ Loading image $IMAGE..."
-  minikube image load "$IMAGE"
+  minikube image load "$IMAGE" --overwrite=true
   if [ $? -eq 0 ]; then
     echo "✅ Image $IMAGE successfully loaded!"
   else

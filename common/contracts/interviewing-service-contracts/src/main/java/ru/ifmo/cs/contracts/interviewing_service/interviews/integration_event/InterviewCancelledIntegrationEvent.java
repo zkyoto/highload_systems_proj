@@ -19,11 +19,11 @@ public class InterviewCancelledIntegrationEvent implements IntegrationEvent {
 
     @JsonCreator
     public InterviewCancelledIntegrationEvent(
-            String deduplicationKey,
-            Instant occurredOn,
-            String interviewId,
-            String interviewerId,
-            String candidateId
+            @JsonProperty("deduplication_key") String deduplicationKey,
+            @JsonProperty("occurred_on") Instant occurredOn,
+            @JsonProperty("interview_id") String interviewId,
+            @JsonProperty("interviewer_id")String interviewerId,
+            @JsonProperty("candidate_id")String candidateId
     ) {
         this.deduplicationKey = deduplicationKey;
         this.occurredOn = occurredOn;

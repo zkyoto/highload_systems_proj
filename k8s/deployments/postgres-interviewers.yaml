@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-interviewers
+  name: interviewers-postgres
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-interviewers
+      app: interviewers-postgres
   template:
     metadata:
       labels:
-        app: postgres-interviewers
+        app: interviewers-postgres 
     spec:
       containers:
         - name: postgres

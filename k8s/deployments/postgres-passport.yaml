@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-passport
+  name: passport-postgres
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-passport
+      app: passport-postgres
   template:
     metadata:
       labels:
-        app: postgres-passport
+        app: passport-postgres
     spec:
       containers:
         - name: postgres
