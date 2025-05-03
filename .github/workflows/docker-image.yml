@@ -9,10 +9,8 @@ on:
       - main
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
-    outputs:
-      image_tag: ${{ steps.vars.outputs.image_tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,9 +26,9 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          registry: ghcr.io
+          username: zkyoto-sa
+          password: ${{ secrets.YC_SA_KEYS }}
+          registry: cr.yandex/crpc3a58ds50f3fj3c80
 
       - name: Build and push Docker images
         run: |
@@ -40,40 +38,21 @@ jobs:
 
           for image in "${images[@]}"; do
             echo "Building and pushing image: $image with tag: ${{ env.IMAGE_TAG }}"
-            docker build --build-arg BASE_IMAGE_VERSION=${{ env.IMAGE_TAG }} -t ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./apps/$image
-            docker push ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }}
+            docker build --build-arg BASE_IMAGE_VERSION=${{ env.IMAGE_TAG }} -t cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }} ./apps/$image
+            docker push cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}
           done
+          
+          echo "${{ secrets.YC_SA_KEYS }}" > /tmp/key.json;
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | sh;
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Use Docker tag from build
-        run: echo "IMAGE_TAG=${{ needs.build.outputs.image_tag }}" >> $GITHUB_ENV
+          /root/yandex-cloud/bin/yc config profile create sa-profile;
+          /root/yandex-cloud/bin/yc config set service-account-key /tmp/key.json;
+          /root/yandex-cloud/bin/yc config set folder-id b1gpc0hok0hnsr7oqg49;
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          registry: ghcr.io
+          /root/yandex-cloud/bin/yc managed-kubernetes cluster get-credentials zkyoto-cluster-name --external;
+          
+          FILE="k8s/deployments/api-gateway.yaml"
 
-      - name: Set up Docker tags
-        id: vars
-        run: echo "IMAGE_TAG=${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
-
-      - name: Run Dockerized tests
-        run: |
-          IFS=' ' read -r -a images <<< "${IMAGES}"
-
-          for image in "${images[@]}"; do
-            echo "Testing image: $image"
-            docker run --rm ghcr.io/kyoto67/highload/$image:${{ env.IMAGE_TAG }} ./mvnw test
-            cp -r $image/site/jacoco/ coverage/$image
-          done
-
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: jacoco-coverage-report
-          path: coverage
+          sed -i 's|image: %{IMAGE_TAG}|image: cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}|' "$FILE"
+          
+          kubectl apply $FILE

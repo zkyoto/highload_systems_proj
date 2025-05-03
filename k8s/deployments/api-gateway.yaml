@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: kyoto67/highload/api-gateway:latest
+          image: %{IMAGE_TAG}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8765
