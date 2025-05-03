@@ -32,9 +32,9 @@ jobs:
           cat key.json
           cat key.json | docker login --username json_key --password-stdin cr.yandex;
           curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash;
-          /root/yandex-cloud/bin/yc config profile create sa-profile;
-          /root/yandex-cloud/bin/yc config set service-account-key /tmp/key.json;
-          /root/yandex-cloud/bin/yc config set folder-id b1gpc0hok0hnsr7oqg49;
+          ~/yandex-cloud/bin/yc config profile create sa-profile;
+          ~/yandex-cloud/bin/yc config set service-account-key /tmp/key.json;
+          ~/yandex-cloud/bin/yc config set folder-id b1gpc0hok0hnsr7oqg49;
 
           /root/yandex-cloud/bin/yc managed-kubernetes cluster get-credentials zkyoto-cluster-name --external;
 
