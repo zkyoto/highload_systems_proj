@@ -23,33 +23,33 @@ jobs:
           images=("api-gateway" "authorizator" "passport" "interviewing-service/candidates" "interviewing-service/feedbacks" "interviewing-service/interviews" "interviewing-service/interviewers" "interviewing-service/interview-results")
           echo "IMAGES=${images[*]}" >> $GITHUB_ENV
 
-      - name: Build and push Docker images
-        run: |
-          echo "${{ secrets.YC_SA_KEYS }}" > key.json;
-          
-          cat key.json    
-          cat key.json | docker login --username json_key --password-stdin cr.yandex;
-          
-          docker build -t kyoto67/highload/base:${{ env.IMAGE_TAG }} .
-
-          IFS=' ' read -r -a images <<< "${IMAGES}"
-
-          for image in "${images[@]}"; do
-            echo "Building and pushing image: $image with tag: ${{ env.IMAGE_TAG }}"
-            docker build --build-arg BASE_IMAGE_VERSION=${{ env.IMAGE_TAG }} -t cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }} ./apps/$image
-            docker push cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}
-          done
-          
-          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | sh;
-
-          /root/yandex-cloud/bin/yc config profile create sa-profile;
-          /root/yandex-cloud/bin/yc config set service-account-key /tmp/key.json;
-          /root/yandex-cloud/bin/yc config set folder-id b1gpc0hok0hnsr7oqg49;
-
-          /root/yandex-cloud/bin/yc managed-kubernetes cluster get-credentials zkyoto-cluster-name --external;
-          
-          FILE="k8s/deployments/api-gateway.yaml"
-
-          sed -i 's|image: %{IMAGE_TAG}|image: cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}|' "$FILE"
-          
-          kubectl apply $FILE
+#      - name: Build and push Docker images
+#        run: |
+#          echo "${{ secrets.YC_SA_KEYS }}" > key.json;
+#
+#          cat key.json
+#          cat key.json | docker login --username json_key --password-stdin cr.yandex;
+#
+#          docker build -t kyoto67/highload/base:${{ env.IMAGE_TAG }} .
+#
+#          IFS=' ' read -r -a images <<< "${IMAGES}"
+#
+#          for image in "${images[@]}"; do
+#            echo "Building and pushing image: $image with tag: ${{ env.IMAGE_TAG }}"
+#            docker build --build-arg BASE_IMAGE_VERSION=${{ env.IMAGE_TAG }} -t cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }} ./apps/$image
+#            docker push cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}
+#          done
+#
+#          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | sh;
+#
+#          /root/yandex-cloud/bin/yc config profile create sa-profile;
+#          /root/yandex-cloud/bin/yc config set service-account-key /tmp/key.json;
+#          /root/yandex-cloud/bin/yc config set folder-id b1gpc0hok0hnsr7oqg49;
+#
+#          /root/yandex-cloud/bin/yc managed-kubernetes cluster get-credentials zkyoto-cluster-name --external;
+#
+#          FILE="k8s/deployments/api-gateway.yaml"
+#
+#          sed -i 's|image: %{IMAGE_TAG}|image: cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}|' "$FILE"
+#
+#          kubectl apply $FILE
