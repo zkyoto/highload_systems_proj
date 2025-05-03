@@ -25,7 +25,10 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          echo "${{ secrets.YC_SA_KEYS }}" | docker login --username json_key --password-stdin cr.yandex;
+          echo "${{ secrets.YC_SA_KEYS }}" > key.json;
+          
+          cat key.json    
+          cat key.json | docker login --username json_key --password-stdin cr.yandex;
           
           docker build -t kyoto67/highload/base:${{ env.IMAGE_TAG }} .
 
@@ -37,7 +40,6 @@ jobs:
             docker push cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}
           done
           
-          echo "${{ secrets.YC_SA_KEYS }}" > /tmp/key.json;
           curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | sh;
 
           /root/yandex-cloud/bin/yc config profile create sa-profile;
