@@ -25,7 +25,9 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          echo "${{ secrets.YC_SA_KEYS }}" > key.json;
+          cat <<EOF > key.json
+          ${{ secrets.YC_SA_KEYS }}
+          EOF
 #
 #          cat key.json
 #          cat key.json | docker login --username json_key --password-stdin cr.yandex;
