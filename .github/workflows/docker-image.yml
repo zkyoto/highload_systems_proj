@@ -23,9 +23,9 @@ jobs:
           images=("api-gateway" "authorizator" "passport" "interviewing-service/candidates" "interviewing-service/feedbacks" "interviewing-service/interviews" "interviewing-service/interviewers" "interviewing-service/interview-results")
           echo "IMAGES=${images[*]}" >> $GITHUB_ENV
 
-#      - name: Build and push Docker images
-#        run: |
-#          echo "${{ secrets.YC_SA_KEYS }}" > key.json;
+      - name: Build and push Docker images
+        run: |
+          echo "${{ secrets.YC_SA_KEYS }}" > key.json;
 #
 #          cat key.json
 #          cat key.json | docker login --username json_key --password-stdin cr.yandex;
