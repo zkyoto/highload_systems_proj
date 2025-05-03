@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   release:
@@ -18,10 +15,7 @@ jobs:
       - name: Set up Images and Tags
         id: vars
         run: |
-          echo "IMAGE_TAG=${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
-          echo "::set-output name=image_tag::${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}"
-          images=("api-gateway" "authorizator" "passport" "interviewing-service/candidates" "interviewing-service/feedbacks" "interviewing-service/interviews" "interviewing-service/interviewers" "interviewing-service/interview-results")
-          echo "IMAGES=${images[*]}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=api-gateway:${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
       - name: Build and push Docker images
         run: |
@@ -48,7 +42,6 @@ jobs:
             docker build --build-arg BASE_IMAGE_VERSION=${{ env.IMAGE_TAG }} -t cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }} ./apps/$image
             docker push cr.yandex/crpc3a58ds50f3fj3c80/$image:${{ env.IMAGE_TAG }}
           done
-
 
           FILE="k8s/deployments/api-gateway.yaml"
 
